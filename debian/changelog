@@ -1,0 +1,11 @@
+capi-network-nfc (0.0.1-5) unstable; urgency=low
+
+  * update version
+
+ -- Seungkeun Lee <sngn.lee@samsung.com>  Thu, 15 Dec 2011 12:50:23 +0900
+
+capi-network-nfc (0.0.1-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Seungkeun Lee <sngn.lee@samsung.com>  Wed, 07 Dec 2011 12:47:59 +0900
