@@ -22,6 +22,66 @@
 #include <net_nfc_exchanger.h>
 
 
+/**
+ * @brief The default factory key.
+ * @details The key is 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_DEFAULT[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+/**
+ * @brief The well-known key for tags formatted according to the MIFARE Application Directory (MAD) specification.
+ * @details The key is 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_APPLICATION_DIRECTORY[6] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5};
+
+/**
+ * @brief The well-known key for tags formatted according to the NDEF on Mifare Classic specification.
+ * @details The key is 0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_NFC_FORUM[6] = {0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7};
+
+
+/**
+ * @brief RTD(Record type definition) Type - Smart Poster type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_SMART_POSTER_TYPE[2] = { 'S', 'p' };
+
+/**
+ * @brief  RTD(Record type definition) Type - Text type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_TEXT_TYPE[1] = { 'T' };
+/**
+ * @brief  RTD(Record type definition) Type - URI type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_URI_TYPE[1] = { 'U' };
+/**
+ * @brief  RTD(Record type definition) Type - Alternative Carrier type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_ALTERNATIVE_CARRIER_TYPE[2] = { 'a','c' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Carrier type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_CARRIER_TYPE[2] = { 'H','c' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Request type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_REQUEST_TYPE[2] = { 'H','r' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Select type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_SELECT_TYPE[2] = { 'H','s' };
+
+
 #ifdef LOG_TAG
 #undef LOG_TAG
 #endif

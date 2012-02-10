@@ -1,3 +1,9 @@
+capi-network-nfc (0.0.1-6) unstable; urgency=low
+
+  * declare extern variable
+
+ -- Seungkeun Lee <sngn.lee@samsung.com>  Tue, 07 Feb 2012 13:20:25 +0900
+
 capi-network-nfc (0.0.1-5) unstable; urgency=low
 
   * update version
