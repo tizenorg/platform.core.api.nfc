@@ -1,3 +1,11 @@
+capi-network-nfc (0.0.1-7) unstable; urgency=low
+
+  * add so version
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-7
+
+ -- Seungkeun Lee <sngn.lee@samsung.com>, Kangho Hur<kagho.hur@samsung.com>  Tue, 14 Feb 2012 16:49:32 +0900
+
 capi-network-nfc (0.0.1-6) unstable; urgency=low
 
   * declare extern variable
