@@ -11,7 +11,7 @@
 * distributed under the License is distributed on an "AS IS" BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
-* limitations under the License. 
+* limitations under the License.
 */
 
 #include <Elementary.h>
@@ -59,12 +59,12 @@ char *byteToString(unsigned char* buffer, int size){
 	static char localbuffer[255];
 	memset(localbuffer, 0, 255);
 	memcpy(localbuffer, buffer, size);
-	return localbuffer;	
+	return localbuffer;
 }
 
 void print_ndef_message(nfc_ndef_message_h message){
 	char *tnf_tbl[] = {
-			"NFC_RECORD_TNF_EMPTY", 
+			"NFC_RECORD_TNF_EMPTY",
 			"NFC_RECORD_TNF_WELL_KNOWN",
 			"NFC_RECORD_TNF_MIME_MEDIA",
 			"NFC_RECORD_TNF_URI",
@@ -86,14 +86,14 @@ void print_ndef_message(nfc_ndef_message_h message){
 		return;
 	}
 
-		
+
 	nfc_ndef_record_get_tnf(record, &tnf);
 	nfc_ndef_record_get_type(record, &type, &type_size);
 	nfc_ndef_record_get_payload(record, &payload, &payload_size);
-	
+
 	printf("tnf \t: %s\n", tnf_tbl[tnf]);
 	printf("type \t: %s\n", byteToString(type, type_size));
-	printf("payload : %s\n", byteToString(payload, payload_size)	);	
+	printf("payload : %s\n", byteToString(payload, payload_size)	);
 
 	if( tnf == NFC_RECORD_TNF_WELL_KNOWN && type[0] == 'U' ){
 		char *uri;
@@ -111,14 +111,14 @@ void print_ndef_message(nfc_ndef_message_h message){
 		printf("langcode : %s\n", text);
 		free(text);
 	}
-	
+
 }
 
 
-int ndef_record_create_test(){
+void ndef_record_create_test(nfc_error_e error, void *user_data){
 	int ret=0;
 	char *tnf_tbl[] = {
-			"NFC_RECORD_TNF_EMPTY", 
+			"NFC_RECORD_TNF_EMPTY",
 			"NFC_RECORD_TNF_WELL_KNOWN",
 			"NFC_RECORD_TNF_MIME_MEDIA",
 			"NFC_RECORD_TNF_URI",
@@ -134,29 +134,29 @@ int ndef_record_create_test(){
 	int id_size;
 	unsigned char *payload;
 	int payload_size;
-	
+
 	char *strp = NULL;
-	char *strp2 = NULL;	
-	
+	char *strp2 = NULL;
+
 
 	printf("---------------------------------------------------\n");
-	printf(" NEF Record Create Test\n");	
-	
+	printf(" NEF Record Create Test\n");
+
 	ret = nfc_ndef_record_create(&record1, NFC_RECORD_TNF_WELL_KNOWN, NFC_RECORD_SMART_POSTER_TYPE, sizeof(NFC_RECORD_SMART_POSTER_TYPE), (unsigned char*)"id", strlen("id"), (unsigned char*)"testpayload", strlen("testpayload"));
 	print_result("nfc_ndef_record_create" , ret);
-	
+
 	nfc_ndef_record_get_tnf(record1, &tnf);
 	nfc_ndef_record_get_type(record1, &type, &type_size);
-	nfc_ndef_record_get_id(record1, &id, &id_size);	
+	nfc_ndef_record_get_id(record1, &id, &id_size);
 	nfc_ndef_record_get_payload(record1, &payload, &payload_size);
 
 	printf("tnf \t: %s\n", tnf_tbl[tnf]);
 	printf("type \t: %s\n", byteToString(type, type_size));
 	printf("id \t: %s\n" , byteToString(id, id_size) );
-	printf("payload : %s\n", byteToString(payload, payload_size)	);		
-	
+	printf("payload : %s\n", byteToString(payload, payload_size)	);
+
 	nfc_ndef_record_destroy(record1);
-	
+
 	printf("\n");
 
 	strp = NULL;
@@ -171,17 +171,17 @@ int ndef_record_create_test(){
 	printf("tnf \t: %s\n", tnf_tbl[tnf]);
 	printf("mimetype: %s\n", strp);
 	printf("type \t: %s\n", byteToString(type, type_size));
-	printf("payload : %s\n", byteToString(payload, payload_size)	);		
+	printf("payload : %s\n", byteToString(payload, payload_size)	);
 
 
 	nfc_ndef_record_destroy(record1);
 	free(strp);
-	
-	printf("\n");	
-	
+
+	printf("\n");
+
 	ret = nfc_ndef_record_create_text(&record1, "the text record", "us-en", NFC_ENCODE_UTF_8);
 	print_result("nfc_ndef_record_create_text" , ret);
-	
+
 	nfc_ndef_record_get_tnf(record1, &tnf);
 	nfc_ndef_record_get_type(record1, &type, &type_size);
 	nfc_ndef_record_get_payload(record1, &payload, &payload_size);
@@ -190,15 +190,15 @@ int ndef_record_create_test(){
 
 	printf("tnf \t: %s\n", tnf_tbl[tnf]);
 	printf("type \t: %s\n", byteToString(type, type_size));
-	printf("payload : %s\n", byteToString(payload, payload_size)	);		
+	printf("payload : %s\n", byteToString(payload, payload_size)	);
 	printf("text \t: %s\n", strp);
 	printf("langcode: %s\n", strp2);
 	nfc_ndef_record_destroy(record1);
 	free(strp);
 	free(strp2);
-	
-	printf("\n");	
-	
+
+	printf("\n");
+
 	ret = nfc_ndef_record_create_uri(&record1,"http://samsung.com");
 	print_result("nfc_ndef_record_create_uri" , ret);
 
@@ -210,15 +210,15 @@ int ndef_record_create_test(){
 
 	printf("tnf \t: %s\n", tnf_tbl[tnf]);
 	printf("type \t: %s\n", byteToString(type, type_size));
-	printf("payload : %s\n", byteToString(payload, payload_size)	);		
+	printf("payload : %s\n", byteToString(payload, payload_size)	);
 	printf("uri \t: %s\n", strp);
 
 	nfc_ndef_record_destroy(record1);
 	free(strp);
-	
-	printf("\n");	
 
-	
+	printf("\n");
+
+
 	ret = nfc_ndef_record_create_uri(&record1,"http://samsung.com");
 	print_result("nfc_ndef_record_create_uri" , ret);
 
@@ -231,14 +231,14 @@ int ndef_record_create_test(){
 	ret = nfc_ndef_record_get_uri(record1,&strp);
 	print_result("nfc_ndef_record_get_uri" , ret);
 	free(strp);
-	
+
 	nfc_ndef_record_destroy(record1);
 
 	printf("---------------------------------------------------\n");
 	printf("\n");
 	is_terminate = 1;
-	return 0;
-	
+	return ;
+
 }
 
 
@@ -250,30 +250,30 @@ void _ndef_discovered_cb(nfc_ndef_message_h message, void * user_data){
 	is_terminate = 1;
 }
 
-void read_ndef_from_tag_using_ndef_discovered(){
+void read_ndef_from_tag_using_ndef_discovered(nfc_error_e error, void *user_data){
 	int ret;
-	
+
 	success = 0;
 	timeout_counter = 30;
-	
+
 	ret = nfc_manager_set_ndef_discovered_cb(_ndef_discovered_cb , NULL);
 	print_result("nfc_manager_set_ndef_discovered_cb", ret);
 	printf("Now, Bring the tag closer.\n");
 	ecore_timer_add(1, timeout_handler, NULL);
-	
+
 }
 
 void _write_completed_cb(nfc_error_e result ,  void * user_data){
 
 	printf("write completed!result %s\n" , result == 0 ? "Success": "Fail");
-	success  = 1;	
+	success  = 1;
 	is_terminate = 1;
 }
 
 
 void _tag_discovered_cb(nfc_discovered_type_e type, nfc_tag_h tag, void * user_data){
 	if( type == NFC_DISCOVERED_TYPE_ATTACHED ){
-		
+
 		printf("Discovered Tag!\n");
 		//write NDEF Message
 		nfc_ndef_record_h record;
@@ -284,39 +284,79 @@ void _tag_discovered_cb(nfc_discovered_type_e type, nfc_tag_h tag, void * user_d
 		printf("Write request!\n");
 		timeout_counter = 30;
 		nfc_tag_write_ndef(tag, message , _write_completed_cb , NULL);
-		nfc_ndef_message_destroy(message);		
+		nfc_ndef_message_destroy(message);
 	}
 }
 
 
-void write_ndef_to_tag(){
+void write_ndef_to_tag(nfc_error_e error, void *user_data){
+
+	nfc_tag_h  tag;
+	int ret ;
+
+	printf("write_ndef_to_tag\n");
+	ret = nfc_manager_get_connected_tag(&tag);
+	printf("nfc_manager_get_connected_tag ret(0x%08x)  !\n",ret);
+
+
+	if ( ret == NFC_ERROR_NONE)
+	{
+		printf("tag alread attached !\n");
+		//write NDEF Message
+		nfc_ndef_record_h record;
+		nfc_ndef_message_h message;
+		nfc_ndef_record_create_uri(&record, "http://samsung.com");
+		nfc_ndef_message_create(&message);
+		nfc_ndef_message_append_record(message, record);
+		printf("Write request!\n");
+		timeout_counter = 30;
+		nfc_tag_write_ndef(tag, message , _write_completed_cb , NULL);
+		nfc_ndef_message_destroy(message);
+	}
+	else
+	{
+
 	int ret;
 
 	success = 0;
 	timeout_counter = 30;
-	
+
 	ret = nfc_manager_set_tag_discovered_cb( _tag_discovered_cb , NULL);
 	print_result("nfc_manager_set_tag_discovered_cb", ret);
 
 	printf("Now, Bring the tag closer. Will be writen a new NDEF Message\n");
 	ecore_timer_add(1, timeout_handler, NULL);
-		
+
+	}
 }
 
 
 void _send_completed_cb(nfc_error_e result , void *user_data){
 	printf("send completed!result %s\n" , result == 0 ? "Success": "Fail");
-	success  = 1;	
+	success  = 1;
 	is_terminate = 1;
 }
 
+
+
+void _handover_completed_cb(nfc_error_e result, nfc_ac_type_e carrior, void * ac_data, int ac_data_size , void *user_data){
+
+	char * address =(char *) (strdup(ac_data));
+
+	printf("handover completed!result %d AC type is [%d] \n" , result,carrior);
+	printf("address [%s] address size[%d]\n" , address, ac_data_size);
+
+	free(address);
+	success  = 1;
+	is_terminate = 1;
+}
 
 Eina_Bool send_test(void *data){
 
 	nfc_p2p_target_h target = (nfc_p2p_target_h)data;
 	nfc_ndef_message_h message;
 	nfc_ndef_record_h record;
-	
+
 	nfc_ndef_record_create_uri(&record, "http://samsung.com");
 	nfc_ndef_message_create(&message);
 	nfc_ndef_message_append_record(message, record);
@@ -327,29 +367,74 @@ Eina_Bool send_test(void *data){
 	return 0;
 }
 
+
+Eina_Bool handover_test(void *data){
+
+	nfc_p2p_target_h target = (nfc_p2p_target_h)data;
+	nfc_ac_type_e type = NFC_AC_TYPE_BT;
+
+	if(nfc_p2p_is_supported_ac_type(type))
+		printf("NFC_AC_TYPE_BT supported\n");
+
+	nfc_p2p_connection_handover(target, type , _handover_completed_cb, NULL);
+
+	return 0;
+}
+
 void _target_discovered_cb(nfc_discovered_type_e type, nfc_p2p_target_h target, void * user_data){
 	if( type == NFC_DISCOVERED_TYPE_ATTACHED){
 		printf("Discovered new target!\n");
 		ecore_idler_add(send_test, target);
-	}	
+	}
 }
 
-void send_ndef_to_peer(){
+void _target_discovered_for_connect_handover_cb(nfc_discovered_type_e type, nfc_p2p_target_h target, void * user_data){
+	if( type == NFC_DISCOVERED_TYPE_ATTACHED){
+		printf("Discovered new target!\n");
+		ecore_idler_add(handover_test, target);
+	}
+}
+
+void send_ndef_to_peer(nfc_error_e error, void *user_data){
+
+	nfc_p2p_target_h target;
+	int ret ;
+
+	printf("send_ndef_to_peer\n");
+
+	ret = nfc_manager_get_connected_target(&target);
+	if ( ret == NFC_ERROR_NONE)
+	{
+		printf("target already attached!\n");
+		ecore_idler_add(send_test, target);
+	}
+	else
+	{
+
 	int ret ;
 	success = 0;
 	timeout_counter =30;
 	ret = nfc_manager_set_p2p_target_discovered_cb(_target_discovered_cb , NULL);
 	printf("Now, Bring the target closer. Will be sent a new NDEF Message\n");
 	ecore_timer_add(1, timeout_handler, NULL);
+	}
 }
 
+void connect_handover_to_peer(nfc_error_e error, void *user_data){
+	int ret ;
+	success = 0;
+	timeout_counter =30;
+	ret = nfc_manager_set_p2p_target_discovered_cb(_target_discovered_for_connect_handover_cb , NULL);
+	printf("Now, Bring the target closer. Will be tried to connect handover\n");
+	ecore_timer_add(1, timeout_handler, NULL);
+}
 
 void _p2p_recv_cb(nfc_p2p_target_h target , nfc_ndef_message_h message, void *user_data){
 
 	printf("recevie a new message!\n");
 	print_ndef_message(message);
 
-	success  = 1;	
+	success  = 1;
 	is_terminate = 1;
 }
 
@@ -366,14 +451,14 @@ void _target_discovered_cb2(nfc_discovered_type_e type, nfc_p2p_target_h target,
 }
 
 
-void recv_ndef_from_peer(){
+void recv_ndef_from_peer(nfc_error_e error, void *user_data){
 	int ret ;
 	success = 0;
 	timeout_counter = 30;
 	ret = nfc_manager_set_p2p_target_discovered_cb(_target_discovered_cb2 , NULL);
 	printf("Now, Bring the target closer. and send a new NDEF Message to the this target\n");
 	ecore_timer_add(1, timeout_handler, NULL);
-	
+
 }
 
 
@@ -388,60 +473,149 @@ Eina_Bool check_terminate(void *data){
 }
 
 
-char *menu = 
+char *menu =
 	"------------------\n"
+	" 0. NFC OFF\n"
+	" 1. NFC ON\n"
+	"------------------\n"
+
 	" a. ndef record test\n"
 	" b. ndef discoverd cb test\n"
 	" c. write ndef to tag \n"
 	" d. send ndef to peer \n"
 	" e. recv ndef from peer\n"
+	" f. connect handover to peer\n"
+	"------------------\n"
+
+	" g. ON nfc_manager_enable_system_handler\n"
+	" h. OFF nfc_manager_enable_system_handler\n"
+
+
 	"------------------\n"
 	">";
-	
 
+ void  set_activation_completed_cb(nfc_error_e error, void *user_data)
+{
+	printf("set_activation_completed_cb  ret(%d) \n", error);
+
+}
 
 int main(int argc, char ** argv)
-{	
+{
 	elm_init(argc, argv);
 	is_terminate = 0;
 	char select[255];
 	int ret;
-	
-	ret = nfc_manager_initialize();
-	print_result("nfc_manager_initialize", ret);
 
-	
+
 	printf( menu );
 	gets(select);
 
 	switch(select[0]){
+
+		case '0':
+			ret =  nfc_manager_set_activation(0, set_activation_completed_cb, NULL);
+			printf("nfc_manager_set_activation set off  ret(0x%08x) \n", ret);
+
+			if (ret == NFC_ERROR_NOT_SUPPORTED)
+			{
+				printf("NFC_ERROR_NOT_SUPPORTED \n");
+			}
+			else if (ret == NFC_ERROR_ALREADY_ACTIVATED)
+			{
+				printf("NFC_ERROR_ALREADY_ACTIVATED \n");
+
+			}
+			else if (ret == NFC_ERROR_ALREADY_DEACTIVATED)
+			{
+				printf("NFC_ERROR_ALREADY_DEACTIVATED \n");
+
+			}
+			else if (ret == NFC_ERROR_OPERATION_FAILED)
+			{
+				printf("NFC_ERROR_OPERATION_FAILED \n");
+
+			}
+			elm_shutdown();
+			return 0;
+
+		case '1':
+			ret =  nfc_manager_set_activation(1, set_activation_completed_cb, NULL);
+			printf("nfc_manager_set_activation set off  ret(0x%08x) \n", ret);
+
+			if (ret == NFC_ERROR_NOT_SUPPORTED)
+			{
+				printf("NFC_ERROR_NOT_SUPPORTED \n");
+			}
+			else if (ret == NFC_ERROR_ALREADY_ACTIVATED)
+			{
+				printf("NFC_ERROR_ALREADY_ACTIVATED \n");
+
+			}
+			else if (ret == NFC_ERROR_ALREADY_DEACTIVATED)
+			{
+				printf("NFC_ERROR_ALREADY_DEACTIVATED \n");
+
+			}
+			else if (ret == NFC_ERROR_OPERATION_FAILED)
+			{
+				printf("NFC_ERROR_OPERATION_FAILED \n");
+
+			}
+			elm_shutdown();
+			return 0;
+
 		case 'a':
-			ndef_record_create_test();			
+			ret = nfc_manager_initialize(ndef_record_create_test,NULL);
+			print_result("nfc_manager_initialize", ret);
 			break;
 		case 'b':
-			read_ndef_from_tag_using_ndef_discovered();
-			break;		
+			ret = nfc_manager_initialize(read_ndef_from_tag_using_ndef_discovered,NULL);
+			print_result("nfc_manager_initialize", ret);
+			break;
 		case 'c':
-			write_ndef_to_tag();
+			ret = nfc_manager_initialize(write_ndef_to_tag,NULL);
+			print_result("nfc_manager_initialize", ret);
 			break;
 		case 'd':
-			send_ndef_to_peer();
+			ret = nfc_manager_initialize(send_ndef_to_peer,NULL);
+			print_result("nfc_manager_initialize", ret);
 			break;
 		case 'e':
-			recv_ndef_from_peer();
-			break;			
+			ret = nfc_manager_initialize(recv_ndef_from_peer,NULL);
+			print_result("nfc_manager_initialize", ret);
+			break;
+		case 'f':
+			ret = nfc_manager_initialize(connect_handover_to_peer,NULL);
+			print_result("nfc_manager_initialize", ret);
+			break;
+
+
+		case 'g':
+			ret = nfc_manager_set_system_handler_enable(true);
+
+			printf("nfc_manager_set_system_handler_enable(true) ret [%d] current [%d]\n", ret,nfc_manager_is_system_handler_enabled());
+			elm_shutdown();
+			return 0;
+		case 'h':
+			ret = nfc_manager_set_system_handler_enable(false);
+			printf("nfc_manager_set_system_handler_enable(false) ret [%d] current [%d]\n", ret,nfc_manager_is_system_handler_enabled());
+			elm_shutdown();
+			return 0;
+
+
 		default:
 			printf("wrong selection!\n");
 			is_terminate = 1;
 	}
 
-	
-		
+
+
 	ecore_timer_add(1, check_terminate, NULL);
 
 	elm_run();
 	elm_shutdown();
-	
+
 
 	return 0;
 }

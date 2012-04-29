@@ -11,7 +11,7 @@
 * distributed under the License is distributed on an "AS IS" BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
-* limitations under the License. 
+* limitations under the License.
 */
 
 #ifndef __NFC_PRIVATE_H__
@@ -24,7 +24,7 @@
 
 typedef enum {
 	_NFC_CALLBACK_TYPE_RESULT=0,
-	_NFC_CALLBACK_TYPE_DATA=1,	
+	_NFC_CALLBACK_TYPE_DATA=1,
 } _nfc_callback_type;
 
 
@@ -43,14 +43,20 @@ typedef struct {
 
 	nfc_se_event_cb							on_se_event_cb;
 	void *											on_se_event_user_data;
-	
+
 	nfc_p2p_send_completed_cb on_p2p_send_completed_cb;
 	void *										on_p2p_send_completed_user_data;
 
 	nfc_p2p_data_recived_cb		on_p2p_recv_cb;
 	void * 										on_p2p_recv_user_data;
 
-	
+	nfc_p2p_connection_handover_completed_cb on_p2p_connection_handover_completed_cb;
+	void *										on_p2p_connection_handover_completed_user_data;
+
+	nfc_initialize_completed_cb	 	on_initialize_completed_cb;
+
+	nfc_se_transaction_event_cb		on_se_transaction_event_cb;
+	void *											on_se_transaction_event_user_data;
 } _nfc_context_s;
 
 typedef struct {

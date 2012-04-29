@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-SET(Services 
+SET(Services
         "application"
         "base"
         "content"
@@ -24,10 +24,8 @@ SET(service "network")
 SET(submodule "nfc")
 
 # for package file
-SET(dependents "dlog glib-2.0 nfc-common-lib nfc")
-
-# for deb
-SET(deb_dependents "libdlog-0 libnfc-common-lib-0 libnfc-manager-0")
+SET(dependents "dlog glib-2.0 nfc-common-lib nfc capi-base-common")
+SET(pc_dependents "capi-base-common")
 
 SET(fw_name "${project_prefix}-${service}-${submodule}")
 
@@ -79,9 +77,8 @@ INSTALL(
         )
 
 SET(PC_NAME ${fw_name})
-SET(PC_REQUIRED ${dependents})
+SET(PC_REQUIRED ${pc_dependents})
 SET(PC_LDFLAGS -l${fw_name})
-SET(PC_CFLAGS -I\${includedir}/${service})
 
 CONFIGURE_FILE(
     ${fw_name}.pc.in
@@ -96,10 +93,10 @@ IF(UNIX)
 
 ADD_CUSTOM_TARGET (distclean @echo cleaning for source distribution)
 ADD_CUSTOM_COMMAND(
-        DEPENDS clean 
+        DEPENDS clean
         COMMENT "distribution clean"
         COMMAND find
-        ARGS    . 
+        ARGS    .
         -not -name config.cmake -and \(
         -name tester.c -or
         -name Testing -or

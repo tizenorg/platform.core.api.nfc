@@ -1,5 +1,6 @@
+#sbs-git:slp/api/nfc capi-network-nfc 0.0.1 14f15050f8f6ff8217421da04fa5d66e834e2016
 Name:       capi-network-nfc
-Summary:    A NFC library in Tizen Native API
+Summary:    A NFC library in SLP C API
 Version:    0.0.1
 Release:    1
 Group:      TO_BE/FILLED_IN
@@ -18,7 +19,7 @@ Requires(postun): /sbin/ldconfig
 
 
 %package devel
-Summary:  A NFC library in Tizen Native API (Development)
+Summary:  A NFC library in SLP C API (Development)
 Group:    TO_BE/FILLED_IN
 Requires: %{name} = %{version}-%{release}
 
@@ -31,9 +32,8 @@ Requires: %{name} = %{version}-%{release}
 
 
 %build
-FULLVER=%{version}
-MAJORVER=`echo ${FULLVER} | cut -d '.' -f 1`
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=${FULLVER} -DMAJORVER=${MAJORVER}
+MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`  
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}  
 
 
 make %{?jobs:-j%jobs}
@@ -48,10 +48,10 @@ rm -rf %{buildroot}
 
 
 %files
-%{_libdir}/libcapi-network-nfc.so*
+%{_libdir}/libcapi-network-nfc.so.0
+%{_libdir}/libcapi-network-nfc.so.0.0.1
 
 %files devel
 %{_includedir}/network/*.h
 %{_libdir}/pkgconfig/*.pc
-
-
+%{_libdir}/libcapi-network-nfc.so
