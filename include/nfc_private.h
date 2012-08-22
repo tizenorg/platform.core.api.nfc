@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011 Samsung Electronics Co., Ltd All Rights Reserved
+* Copyright (c) 2012 Samsung Electronics Co., Ltd All Rights Reserved
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,33 +30,41 @@ typedef enum {
 
 typedef struct {
 	nfc_tag_discovered_cb 			on_tag_discovered_cb;
-	void *										on_tag_discovered_user_data;
+	void *						on_tag_discovered_user_data;
 	nfc_ndef_discovered_cb 		on_ndef_discovered_cb;
-	void * 										on_ndef_discovered_user_data;
+	void * 						on_ndef_discovered_user_data;
 	net_nfc_target_info_s 			current_tag;
 
 	//net_nfc_target_handle_s 		current_target;
 	net_nfc_target_handle_h		current_target;
 
 	nfc_p2p_target_discovered_cb	on_p2p_discovered_cb;
-	void *											on_p2p_discovered_user_data;
+	void *						on_p2p_discovered_user_data;
 
-	nfc_se_event_cb							on_se_event_cb;
-	void *											on_se_event_user_data;
+	nfc_se_event_cb				on_se_event_cb;
+	void *						on_se_event_user_data;
 
-	nfc_p2p_send_completed_cb on_p2p_send_completed_cb;
-	void *										on_p2p_send_completed_user_data;
+	nfc_p2p_send_completed_cb 	on_p2p_send_completed_cb;
+	void *						on_p2p_send_completed_user_data;
 
 	nfc_p2p_data_recived_cb		on_p2p_recv_cb;
-	void * 										on_p2p_recv_user_data;
+	void * 						on_p2p_recv_user_data;
 
-	nfc_p2p_connection_handover_completed_cb on_p2p_connection_handover_completed_cb;
+	nfc_p2p_connection_handover_completed_cb 		on_p2p_connection_handover_completed_cb;
 	void *										on_p2p_connection_handover_completed_user_data;
 
 	nfc_initialize_completed_cb	 	on_initialize_completed_cb;
 
 	nfc_se_transaction_event_cb		on_se_transaction_event_cb;
-	void *											on_se_transaction_event_user_data;
+	void *						on_se_transaction_event_user_data;
+
+	nfc_activation_changed_cb	on_activation_changed_cb;
+	void *						on_activation_changed_user_data;
+
+	nfc_activation_completed_cb	on_activation_completed_cb;
+	void *						on_activation_completed_user_data;
+	bool                        on_activation_doing;
+
 } _nfc_context_s;
 
 typedef struct {

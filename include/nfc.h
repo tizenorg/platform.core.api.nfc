@@ -1,18 +1,18 @@
 /*
-* Copyright (c) 2011 Samsung Electronics Co., Ltd All Rights Reserved
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 
 #ifndef __NFC_H__
@@ -47,11 +47,13 @@ typedef enum {
 	NFC_ERROR_DEVICE_BUSY = TIZEN_ERROR_RESOURCE_BUSY,	/**< Previous opertion is not finished still busy */
 	NFC_ERROR_NO_DEVICE = NFC_ERROR_CLASS | 0x04, /**< no device */
 	NFC_ERROR_NOT_ACTIVATED = NFC_ERROR_CLASS | 0x05, /**< NFC is not activated */
-	NFC_ERROR_NOT_SUPPORTED = NFC_ERROR_CLASS | 0x06, /**< Not supported NFC */
+	NFC_ERROR_NOT_SUPPORTED = NFC_ERROR_CLASS | 0x06, /**< Not supported */
 	NFC_ERROR_ALREADY_ACTIVATED = NFC_ERROR_CLASS | 0x07, /**< Already activated */
 	NFC_ERROR_ALREADY_DEACTIVATED = NFC_ERROR_CLASS | 0x08, /**< Already deactivated */
 	NFC_ERROR_READ_ONLY_NDEF = NFC_ERROR_CLASS | 0x09, /**< Read only tag */
-	NFC_ERROR_NO_SPACE_ON_NDEF = NFC_ERROR_CLASS | 0x0a /**< No enough space on tag */
+	NFC_ERROR_NO_SPACE_ON_NDEF = NFC_ERROR_CLASS | 0x0a, /**< No enough space on tag */
+	NFC_ERROR_NO_NDEF_MESSAGE = NFC_ERROR_CLASS | 0x0b, /**< No NDEF Message on Tag */
+	NFC_ERROR_NOT_NDEF_FORMAT = NFC_ERROR_CLASS | 0x0c /**< Not NDEF format Tag */
 } nfc_error_e;
 
 /**
@@ -262,7 +264,18 @@ extern const unsigned char NFC_RECORD_HANDOVER_SELECT_TYPE[2];
  *
  * @see nfc_manager_set_activation()
  */
-typedef void (* nfc_set_activation_completed_cb)(nfc_error_e error, void *user_data);
+typedef void (* nfc_activation_completed_cb)(nfc_error_e error, void *user_data);
+
+/**
+ * @brief Called when nfc activation state is changed.
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @param [in] activated The activation state
+ * @param [in] user_data The user data passed from the callback registeration function
+ *
+ * @see nfc_manager_set_activation_changed_cb()
+ */
+typedef void (*nfc_activation_changed_cb)(bool activated , void *user_data);
 
 /**
  * @brief Called after nfc_manager_initialize() has completed.
@@ -568,12 +581,20 @@ typedef void (*nfc_p2p_data_recived_cb)(nfc_p2p_target_h target, nfc_ndef_messag
  */
 typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc_ac_type_e carrior, void * ac_data, int ac_data_size , void *user_data);
 
+/**
+ * @brief Gets the value that indicates whether NFC is supported.
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @remarks This function can executed Regardless of nfc_manager_initialize state.
+ *
+ * @return true on NFC supported,  otherwise false
+ * @see nfc_manager_set_activation()
+ */
+bool nfc_manager_is_supported(void);
 
 /**
  * @brief Sets NFC Activation
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
- *
- * @remarks This function can executed Regardless of nfc_manager_initialize state.
  *
  * @param [in] activation The NFC state for setting
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
@@ -586,9 +607,35 @@ typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc
  * @retval #NFC_ERROR_ALREADY_ACTIVATED Already activated
  * @retval #NFC_ERROR_ALREADY_DEACTIVATED Already deactivated
  * @see nfc_manager_is_activated()
- * @see nfc_set_activation_completed_cb()
+ * @see nfc_activation_completed_cb()
  */
-int nfc_manager_set_activation(bool activation, nfc_set_activation_completed_cb callback, void *user_data);
+int nfc_manager_set_activation(bool activation, nfc_activation_completed_cb callback, void *user_data);
+
+/**
+ * @brief Set NFC Activation state changed callback
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @param [in] callback The callback function to invoke when activation state is changed.
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_INVALID_PARAMETER Invalid parameter
+ *
+ * @see nfc_activation_changed_cb()
+ * @see nfc_manager_unset_activation_changed_cb()
+ */
+int nfc_manager_set_activation_changed_cb(nfc_activation_changed_cb callback , void *user_data);
+
+/**
+ * @brief Unregisters the callback function.
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @see nfc_manager_set_activation_changed_cb()
+ * @see nfc_activation_changed_cb()
+ */
+void nfc_manager_unset_activation_changed_cb(void);
+
 
 /**
  * @brief Gets NFC Activation state
@@ -615,7 +662,6 @@ bool nfc_manager_is_activated(void);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OPERATION_FAILED Operation fail
- * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  * @see nfc_manager_deinitialize()
  */
 int nfc_manager_initialize(nfc_initialize_completed_cb callback, void *user_data);
@@ -1420,6 +1466,7 @@ int nfc_tag_foreach_information(nfc_tag_h tag, nfc_tag_information_cb callback, 
 * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
 * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
 * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+* @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
 *
 * @post It invokes nfc_tag_transceive_completed_cb() when it has completed to t
 * @see nfc_tag_read_ndef()
@@ -1442,6 +1489,8 @@ int nfc_tag_transceive(nfc_tag_h tag, unsigned char *buffer, int buffer_size, nf
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_NOT_NDEF_FORMAT Not ndef format tag
  *
  * @post It invokes nfc_tag_read_completed_cb() when it has completed to read NDEF formatted data.
  *
@@ -1468,6 +1517,8 @@ int nfc_tag_read_ndef(nfc_tag_h tag, nfc_tag_read_completed_cb callback, void *u
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_NOT_NDEF_FORMAT Not ndef format tag
  *
  * @post It invokes nfc_tag_write_completed_cb() when it has completed to write NDEF data.
  * @see nfc_tag_is_support_ndef()
@@ -1493,6 +1544,8 @@ int nfc_tag_write_ndef(nfc_tag_h tag, nfc_ndef_message_h msg, nfc_tag_write_comp
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_NOT_NDEF_FORMAT Not ndef format tag
  *
  * @post It invokes nfc_tag_format_completed_cb() when it has completed to format the NFC tag.
  *
@@ -1529,6 +1582,7 @@ int nfc_tag_format_ndef(nfc_tag_h tag, unsigned char *key, int key_size, nfc_tag
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_authenticate_with_keyA_completed_cb() when it has completed to authenticate the given sector with key A.
  * @see nfc_mifare_authenticate_with_keyB()
@@ -1571,6 +1625,7 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag, int sector_index, unsigned 
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_authenticate_with_keyB_completed_cb() when it has completed to authenticate the given sector with key B.
  * @see nfc_mifare_authenticate_with_keyA()
@@ -1601,6 +1656,7 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag, int sector_index, unsigned 
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_read_block_completed_cb() when it has completed to read a block.
  * @see nfc_mifare_read_page()
@@ -1624,10 +1680,10 @@ int nfc_mifare_read_block(nfc_tag_h tag, int block_index, nfc_mifare_read_block_
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
-
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_read_page_completed_cb() when it has completed to read a page.
  * @see nfc_mifare_read_block()
@@ -1655,6 +1711,7 @@ int nfc_mifare_read_page(nfc_tag_h tag, int page_index, nfc_mifare_read_page_com
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_write_block_completed_cb() when it hase completed to write a block.
  *
@@ -1679,10 +1736,10 @@ int nfc_mifare_write_block(nfc_tag_h tag, int block_index, unsigned char *buffer
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
-
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @post It invokes nfc_mifare_write_page_completed_cb() when it has completed to write a page.
  *
@@ -1710,6 +1767,7 @@ int nfc_mifare_write_page(nfc_tag_h tag, int page_index, unsigned char *buffer, 
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_mifare_decrement()
  * @see nfc_mifare_write_block()
@@ -1734,6 +1792,7 @@ int nfc_mifare_increment(nfc_tag_h tag, int block_index, int value, nfc_mifare_i
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_mifare_increment()
  * @see nfc_mifare_write_block()
@@ -1757,6 +1816,7 @@ int nfc_mifare_decrement(nfc_tag_h tag, int block_index, int value, nfc_mifare_d
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_mifare_restore()
 */
@@ -1779,6 +1839,7 @@ int nfc_mifare_transfer(nfc_tag_h tag, int block_index, nfc_mifare_transfer_comp
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_mifare_transfer()
 */
@@ -1834,6 +1895,7 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target);
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_p2p_send_completed_cb()
  * @see @see nfc_p2p_target_discovered_cb()
@@ -1858,6 +1920,7 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_se
  * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
  * @retval #NFC_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_p2p_connection_handover_completed_cb()
  * @see @see nfc_p2p_connection_handover_completed_cb()

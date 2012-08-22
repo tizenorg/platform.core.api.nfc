@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011 Samsung Electronics Co., Ltd All Rights Reserved
+* Copyright (c) 2012 Samsung Electronics Co., Ltd All Rights Reserved
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -451,12 +451,33 @@ void _target_discovered_cb2(nfc_discovered_type_e type, nfc_p2p_target_h target,
 }
 
 
+
 void recv_ndef_from_peer(nfc_error_e error, void *user_data){
 	int ret ;
 	success = 0;
 	timeout_counter = 30;
 	ret = nfc_manager_set_p2p_target_discovered_cb(_target_discovered_cb2 , NULL);
 	printf("Now, Bring the target closer. and send a new NDEF Message to the this target\n");
+	ecore_timer_add(1, timeout_handler, NULL);
+
+}
+
+
+void _activation_changed_cb(bool activated , void *user_data){
+	if( activated == true){
+		printf("NET_NFC_MESSAGE_INIT received\n");
+	}else if( activated == false){
+		printf("NET_NFC_MESSAGE_DEINIT received\n");
+	}
+}
+
+
+void on_activation_changed_cb_test(nfc_error_e error, void *user_data){
+	int ret ;
+	success = 0;
+	timeout_counter = 30;
+	ret = nfc_manager_set_activation_changed_cb(_activation_changed_cb , NULL);
+	printf("Now, wait NET_NFC_MESSAGE_INIT or NET_NFC_MESSAGE_DEINIT\n");
 	ecore_timer_add(1, timeout_handler, NULL);
 
 }
@@ -477,6 +498,7 @@ char *menu =
 	"------------------\n"
 	" 0. NFC OFF\n"
 	" 1. NFC ON\n"
+	" 2. ON/OFF on_activation_changed_cb check\n"
 	"------------------\n"
 
 	" a. ndef record test\n"
@@ -489,6 +511,7 @@ char *menu =
 
 	" g. ON nfc_manager_enable_system_handler\n"
 	" h. OFF nfc_manager_enable_system_handler\n"
+
 
 
 	"------------------\n"
@@ -565,6 +588,11 @@ int main(int argc, char ** argv)
 			elm_shutdown();
 			return 0;
 
+		case '2':
+			ret = nfc_manager_initialize(on_activation_changed_cb_test,NULL);
+			print_result("on_activation_changed_cb", ret);
+			break;
+
 		case 'a':
 			ret = nfc_manager_initialize(ndef_record_create_test,NULL);
 			print_result("nfc_manager_initialize", ret);
@@ -602,6 +630,7 @@ int main(int argc, char ** argv)
 			printf("nfc_manager_set_system_handler_enable(false) ret [%d] current [%d]\n", ret,nfc_manager_is_system_handler_enabled());
 			elm_shutdown();
 			return 0;
+
 
 
 		default:

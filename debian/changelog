@@ -1,3 +1,67 @@
+capi-network-nfc (0.0.1-20) unstable; urgency=low
+
+  * Modify the nfc set state function
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-20
+
+ -- Sungjae Lim <neueziel.lim@samsung.com>  Wed, 11 July 2012 12:20:08 +0900
+
+capi-network-nfc (0.0.1-19) unstable; urgency=low
+
+  * ADD NFC Err case for empty tag and not ndef format
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-19
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Fri, 18 May 2012 14:20:08 +0900
+
+capi-network-nfc (0.0.1-18) unstable; urgency=low
+
+  * Patch for NFC Err case pssing issue 
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-18
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Fri, 11 May 2012 14:45:44 +0900
+
+capi-network-nfc (0.0.1-17) unstable; urgency=low
+
+  * prevent NFC set state CB reset 
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-17
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Wed, 18 Apr 2012 17:21:56 +0900
+
+capi-network-nfc (0.0.1-16) unstable; urgency=low
+
+  * make transfer NFC set state user data
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-16
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Tue, 10 Apr 2012 15:05:24 +0900
+
+capi-network-nfc (0.0.1-15) unstable; urgency=low
+
+  * Adjust the calling sequence of callback
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-15
+
+ -- Wonkyu Kwon <wonkyu.kwon@samsung.com>  Mon, 09 Apr 2012 15:50:00 +0900
+
+capi-network-nfc (0.0.1-14) unstable; urgency=low
+
+  * add NFC nfc_manager_is_supported added
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-14
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Mon, 09 Apr 2012 12:18:51 +0900
+
+capi-network-nfc (0.0.1-13) unstable; urgency=low
+
+  * add NFC init/deinit CB
+  * Git: slp/api/nfc
+  * Tag: capi-network-nfc_0.0.1-13
+
+ -- Sechang Sohn <sc.sohn@samsung.com>  Thu, 05 Apr 2012 14:15:52 +0900
+
 capi-network-nfc (0.0.1-12) unstable; urgency=low
 
   * add NFC tag write exception
