@@ -188,26 +188,26 @@ typedef enum {
  * @brief The handle to the NDEF record
  * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
  */
-typedef struct ndef_record_s *nfc_ndef_record_h;
+typedef struct _ndef_record_s *nfc_ndef_record_h;
 
 /**
  * @brief The handle to the NDEF message
  * @ingroup CAPI_NETWORK_NFC_NDEF_MESSAGE_MODULE
  */
-typedef struct ndef_message_s *nfc_ndef_message_h;
+typedef struct _ndef_message_s *nfc_ndef_message_h;
 
 /**
  * @brief The handle to the NFC tag
  * @ingroup CAPI_NETWORK_NFC_TAG_MODULE
  */
-typedef struct net_nfc_target_info_s *nfc_tag_h;
+typedef struct _net_nfc_target_info_s *nfc_tag_h;
 
 
 /**
  * @brief The handle to NFC p2p target
  * @ingroup CAPI_NETWORK_NFC_TAG_MODULE
  */
-typedef void* nfc_p2p_target_h;
+typedef void *nfc_p2p_target_h;
 
 /**
  * @brief The default factory key.

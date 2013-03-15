@@ -885,9 +885,7 @@ void nfc_manager_unset_ndef_discovered_cb( void )
 
 void nfc_manager_set_tag_filter(int filter )
 {
-
-	int ret ;
-	ret = net_nfc_set_tag_filter(filter);
+	net_nfc_set_tag_filter(filter);
 }
 
 int nfc_manager_get_tag_filter(void)
