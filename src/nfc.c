@@ -1866,6 +1866,46 @@ int nfc_p2p_send(nfc_p2p_target_h target , nfc_ndef_message_h message , nfc_p2p_
 	return 0;
 }
 
+int nfc_p2p_send_no_permission(nfc_p2p_target_h target , nfc_ndef_message_h message , nfc_p2p_send_completed_cb callback, void *user_data){
+	int ret;
+
+	if( target == NULL || message == NULL  )
+		return _return_invalid_param(__func__);
+
+	if(!nfc_manager_is_activated())
+	{
+		return NFC_ERROR_NOT_ACTIVATED;
+	}
+
+	net_nfc_exchanger_data_h data_handle;
+	data_h rawdata;
+	net_nfc_create_rawdata_from_ndef_message(message, &rawdata);
+	ret = net_nfc_create_exchanger_data(&data_handle,  rawdata);
+	net_nfc_free_data(rawdata);
+
+
+	if( ret != 0)
+		return _convert_error_code(__func__, ret);
+
+	ret = net_nfc_send_exchanger_data(data_handle ,(net_nfc_target_handle_h)target, NULL);
+
+	if( ret != 0 ){
+		net_nfc_free_exchanger_data(data_handle);
+		return _convert_error_code(__func__, ret);
+	}
+
+	g_nfc_context.on_p2p_send_completed_cb = callback;
+	g_nfc_context.on_p2p_send_completed_user_data = user_data;
+
+	ret = net_nfc_free_exchanger_data(data_handle);
+
+	if( ret != 0 ){
+		return _convert_error_code(__func__, ret);
+	}
+
+	return 0;
+}
+
 int nfc_p2p_connection_handover(nfc_p2p_target_h target , nfc_ac_type_e type, nfc_p2p_connection_handover_completed_cb callback, void *user_data){
 	int ret;
 	net_nfc_conn_handover_carrier_type_e net_ac_type = NET_NFC_CONN_HANDOVER_CARRIER_UNKNOWN;

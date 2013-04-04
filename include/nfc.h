@@ -1976,6 +1976,28 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target);
 int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data);
 
 
+/**
+ * @brief Sends data to NFC peer-to-peer target without permission check
+ * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
+ *
+ * @param [in] tag The handle to NFC tag
+ * @param [in] message The message to send
+ * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
+ * @param [in] user_data The user data to be passed to the callback funcation
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
+ * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ *
+ * @see nfc_p2p_send_completed_cb()
+ * @see @see nfc_p2p_target_discovered_cb()
+*/
+int nfc_p2p_send_no_permission(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data);
+
 
 
 /**
