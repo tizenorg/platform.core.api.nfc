@@ -1260,16 +1260,22 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message , int *cou
 
 int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message , unsigned char ** rawdata , int *rawdata_size)
 {
-
-	if( ndef_message == NULL || rawdata == NULL || rawdata_size == NULL)
-		return _return_invalid_param(__func__);
 	int ret=0;
 	data_s *rawdata_data;
-	ret = net_nfc_create_rawdata_from_ndef_message(ndef_message , (data_h*)&rawdata_data);
-	if( ret == 0 )
-	{
-		*rawdata = rawdata_data->buffer;
+
+	if (ndef_message == NULL || rawdata == NULL || rawdata_size == NULL )
+		return _return_invalid_param(__func__);
+
+	*rawdata = NULL;
+	*rawdata_size = 0;
+
+	ret = net_nfc_create_rawdata_from_ndef_message(ndef_message, (data_h *)&rawdata_data);
+	if (ret == 0) {
+		*rawdata = calloc(1, rawdata_data->length);
+		memcpy(*rawdata, rawdata_data->buffer, rawdata_data->length);
 		*rawdata_size = rawdata_data->length;
+
+		net_nfc_free_data((data_h)rawdata_data);
 	}
 	return _convert_error_code(__func__, ret);
 }
