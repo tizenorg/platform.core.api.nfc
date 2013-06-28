@@ -6,6 +6,7 @@ Release:    0
 Group:      API/C API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
+Source1001: 	capi-network-nfc.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
@@ -33,6 +34,7 @@ This package contains the development files for %{name}.
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 
 %build
@@ -54,11 +56,12 @@ cp -af %{_builddir}/%{name}-%{version}/packaging/capi-network-nfc %{buildroot}/u
 
 
 %files
-%manifest capi-network-nfc.manifest
+%manifest %{name}.manifest
 %{_libdir}/libcapi-network-nfc.so*
 /usr/share/license/capi-network-nfc
 
 %files devel
+%manifest %{name}.manifest
 %{_includedir}/network/*.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-network-nfc.so
