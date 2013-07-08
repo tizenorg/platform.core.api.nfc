@@ -1,0 +1,8 @@
+Change-Id: I9675a5d3357375303f2edaae543e5eeb29788630
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 10:06:42 -0700
+Reviewed-on: https://review.tizen.org/gerrit/4553
+Project: platform/core/api/nfc
+Branch: refs/heads/tizen
