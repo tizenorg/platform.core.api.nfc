@@ -11,40 +11,26 @@ SET(Services
         "social"
         "telephony"
         "system"
-   )
-
+)
 
 # project
 SET(project_prefix "capi")
-SET(prefix "/usr")
-SET(version "0.0.3")
-SET(maintainer "Seungkeun Lee <sngn.lee@samsung.com>, Kangho Hur<kagho.hur@samsung.com>")
-SET(description "A NFC library in Tizen Native API")
 SET(service "network")
 SET(submodule "nfc")
 
-# for package file
-SET(dependents "dlog glib-2.0 nfc-common-lib nfc capi-base-common vconf ecore-x capi-appfw-app-manager")
-SET(pc_dependents "capi-base-common")
-
 SET(fw_name "${project_prefix}-${service}-${submodule}")
+PROJECT(${fw_name} C)
 
-PROJECT(${fw_name})
-
-SET(CMAKE_INSTALL_PREFIX ${prefix})
-SET(PREFIX ${CMAKE_INSTALL_PREFIX})
-SET(VERSION ${version})
-
-SET(INC_DIR include)
-INCLUDE_DIRECTORIES(${INC_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 INCLUDE(FindPkgConfig)
-pkg_check_modules(${fw_name} REQUIRED ${dependents})
-FOREACH(flag ${${fw_name}_CFLAGS})
+pkg_check_modules(pkgs REQUIRED dlog glib-2.0 gio-2.0 nfc-common-lib nfc capi-base-common
+	vconf ecore-x)
+FOREACH(flag ${pkgs_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror")
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
 IF("${ARCH}" STREQUAL "arm")
@@ -52,40 +38,31 @@ IF("${ARCH}" STREQUAL "arm")
 ENDIF("${ARCH}" STREQUAL "arm")
 
 ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
-ADD_DEFINITIONS("-DTIZEN_DEBUG")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIB_INSTALL_DIR}")
 
-aux_source_directory(src SOURCES)
+SET(SOURCES src/nfc.c)
+
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
-
-TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
-
-SET_TARGET_PROPERTIES(${fw_name}
-     PROPERTIES
-     VERSION ${FULLVER}
-     SOVERSION ${MAJORVER}
-     CLEAN_DIRECT_OUTPUT 1
-)
+TARGET_LINK_LIBRARIES(${fw_name} ${pkgs_LDFLAGS})
+SET_TARGET_PROPERTIES(${fw_name} PROPERTIES VERSION ${FULLVER} SOVERSION ${MAJORVER})
 
 INSTALL(TARGETS ${fw_name} DESTINATION ${LIB_INSTALL_DIR})
 INSTALL(
-        DIRECTORY ${INC_DIR}/ DESTINATION include/${service}
+        DIRECTORY include/ DESTINATION include/${service}
         FILES_MATCHING
-        PATTERN "*_private.h" EXCLUDE
-        PATTERN "${INC_DIR}/*.h"
+        PATTERN "*_internal.h" EXCLUDE
+        PATTERN "include/*.h"
         )
 
 SET(PC_NAME ${fw_name})
-SET(PC_REQUIRED ${pc_dependents})
+SET(PC_REQUIRED "capi-base-common")
 SET(PC_LDFLAGS -l${fw_name})
+SET(PREFIX ${CMAKE_INSTALL_PREFIX})
+SET(VERSION ${FULLVER})
 
-CONFIGURE_FILE(
-    ${fw_name}.pc.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc
-    @ONLY
-)
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+CONFIGURE_FILE(${fw_name}.pc.in ${fw_name}.pc @ONLY)
+INSTALL(FILES ${fw_name}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
 
 #ADD_SUBDIRECTORY(test)
 
