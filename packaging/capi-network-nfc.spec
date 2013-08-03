@@ -1,21 +1,23 @@
 #sbs-git:slp/api/nfc capi-network-nfc 0.0.1 14f15050f8f6ff8217421da04fa5d66e834e2016
 Name:       capi-network-nfc
 Summary:    A NFC library in SLP C API
-Version:    0.0.8
+Version:    0.0.18
 Release:    0
 Group:      API/C API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
-Source1001: 	capi-network-nfc.manifest
+Source1001: 	%{name}.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(nfc)
 BuildRequires:  pkgconfig(nfc-common-lib)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(ecore-x)
-BuildRequires:  pkgconfig(capi-appfw-app-manager)
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 
 %description
 A NFC library in SLP C API.
@@ -39,7 +41,7 @@ cp %{SOURCE1001} .
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
 make %{?jobs:-j%jobs}
 
@@ -57,11 +59,10 @@ cp -af %{_builddir}/%{name}-%{version}/packaging/capi-network-nfc %{buildroot}/u
 
 %files
 %manifest %{name}.manifest
-%{_libdir}/libcapi-network-nfc.so*
+%{_libdir}/libcapi-network-nfc.so.*
 /usr/share/license/capi-network-nfc
 
 %files devel
-%manifest %{name}.manifest
 %{_includedir}/network/*.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-network-nfc.so
