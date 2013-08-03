@@ -19,7 +19,7 @@
 #include <net_nfc.h>
 #include <net_nfc_typedef_private.h>
 
-#include <nfc.h>
+#include "nfc.h"
 
 
 typedef enum {
@@ -75,4 +75,4 @@ typedef struct {
 	int callback_type;
 } _async_callback_data;
 
-#endif // __NET_NFC_PRIVATE_H__
+#endif // __NFC_PRIVATE_H__

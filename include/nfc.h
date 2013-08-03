@@ -44,7 +44,7 @@ typedef enum {
 	NFC_ERROR_INVALID_NDEF_MESSAGE = NFC_ERROR_CLASS | 0x02,	/**< Invalid NDEF message */
 	NFC_ERROR_INVALID_RECORD_TYPE  = NFC_ERROR_CLASS | 0x03,	/**< Invalid record type*/
 	NFC_ERROR_TIMED_OUT = TIZEN_ERROR_TIMED_OUT,	/**< Timeout error, no answer */
-	NFC_ERROR_DEVICE_BUSY = TIZEN_ERROR_RESOURCE_BUSY,	/**< Previous opertion is not finished still busy */
+	NFC_ERROR_DEVICE_BUSY = TIZEN_ERROR_RESOURCE_BUSY,	/**< Previous operation is not finished still busy */
 	NFC_ERROR_NO_DEVICE = NFC_ERROR_CLASS | 0x04, /**< no device */
 	NFC_ERROR_NOT_ACTIVATED = NFC_ERROR_CLASS | 0x05, /**< NFC is not activated */
 	NFC_ERROR_NOT_SUPPORTED = NFC_ERROR_CLASS | 0x06, /**< Not supported */
@@ -168,17 +168,15 @@ typedef enum{
 	NFC_SE_TYPE_UICC = 0x02 /**< UICC type card emulation */
 } nfc_se_type_e;
 
-
-
 /**
- * @brief Enumerations for NFC AC(Alternative Carrior)
+ * @brief Enumerations for NFC AC(Alternative Carrier)
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
  */
 typedef enum {
 	NFC_AC_TYPE_BT = 0x00, /**< Bluetooth AC*/
 	NFC_AC_TYPE_WIFI, /**<Wifi AC*/
 	NFC_AC_TYPE_WIFI_DIRECT,/**<Wifi-direct AC*/
-	NFC_AC_TYPE_UNKNOWN, /* No selected preferd AC */
+	NFC_AC_TYPE_UNKNOWN, /* No selected preferred AC */
 } nfc_ac_type_e ;
 
 
@@ -205,7 +203,7 @@ typedef struct _net_nfc_target_info_s *nfc_tag_h;
 
 /**
  * @brief The handle to NFC p2p target
- * @ingroup CAPI_NETWORK_NFC_TAG_MODULE
+ * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
  */
 typedef void *nfc_p2p_target_h;
 
@@ -284,7 +282,7 @@ typedef void (* nfc_activation_completed_cb)(nfc_error_e error, void *user_data)
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
  * @param [in] activated The activation state
- * @param [in] user_data The user data passed from the callback registeration function
+ * @param [in] user_data The user data passed from the callback registration function
  *
  * @see nfc_manager_set_activation_changed_cb()
  */
@@ -356,7 +354,7 @@ typedef void (* nfc_ndef_discovered_cb)(nfc_ndef_message_h message, void *user_d
  * @param[in] value_size The data size in bytes
  * @param[in] user_data The user data passed from the foreach function
  *
- * @return @c true to continue with the next iteration of the loop, \n @c false to break outsp of the loop.
+ * @return @c true to continue with the next iteration of the loop, \n @c false to break out of the loop.
  * @pre nfc_tag_foreach_informations() invokes this callback.
  *
  * @see	nfc_tag_foreach_informations()
@@ -420,8 +418,10 @@ typedef void (* nfc_tag_format_completed_cb)(nfc_error_e result, void *user_data
 /**
  * @brief Called after nfc_mifare_authenticate_with_keyA() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_authenticate_with_keyA()
  * @param [in] user_data The user data passed from nfc_mifare_authenticate_with_keyA()
+ *
  * @see nfc_mifare_authenticate_with_keyA()
  */
 typedef void (* nfc_mifare_authenticate_with_keyA_completed_cb)(nfc_error_e result, void *user_data);
@@ -429,8 +429,10 @@ typedef void (* nfc_mifare_authenticate_with_keyA_completed_cb)(nfc_error_e resu
 /**
  * @brief Called after nfc_mifare_authenticate_with_keyB() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of function call
  * @param [in] user_data The user data passed from nfc_mifare_authenticate_with_keyB()
+ *
  * @see nfc_mifare_authenticate_with_keyB()
  */
 typedef void (* nfc_mifare_authenticate_with_keyB_completed_cb)(nfc_error_e result, void *user_data);
@@ -438,8 +440,10 @@ typedef void (* nfc_mifare_authenticate_with_keyB_completed_cb)(nfc_error_e resu
 /**
  * @brief Called after nfc_mifare_write_block() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_write_block()
  * @param [in] user_data The user data passed from nfc_mifare_write_block()
+ *
  * @see nfc_mifare_write_block()
  */
 typedef void (* nfc_mifare_write_block_completed_cb)(nfc_error_e result, void *user_data);
@@ -447,8 +451,10 @@ typedef void (* nfc_mifare_write_block_completed_cb)(nfc_error_e result, void *u
 /**
  * @brief Called after nfc_mifare_write_page() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of function call
  * @param [in] user_data The user data passed from nfc_mifare_write_page()
+ *
  * @see nfc_mifare_write_page()
  */
 typedef void (* nfc_mifare_write_page_completed_cb)(nfc_error_e result, void *user_data);
@@ -460,9 +466,10 @@ typedef void (* nfc_mifare_write_page_completed_cb)(nfc_error_e result, void *us
  * @remarks @a buffer will be automatically destroyed when the callback function returns. (Do not release @a buffer.)
  *
  * @param [in] result The result of function call
- * @param [in] buffer Thre read buffer
+ * @param [in] buffer The read buffer
  * @param [in] size The size of buffer in bytes
  * @param [in] user_data The user data passed from nfc_mifare_read_block()
+ *
  * @see nfc_mifare_read_block()
  */
 typedef void (* nfc_mifare_read_block_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
@@ -477,6 +484,7 @@ typedef void (* nfc_mifare_read_block_completed_cb)(nfc_error_e result, unsigned
  * @param [in] buffer The read buffer
  * @param [in] size The size of read buffer in bytes
  * @param [in] user_data The user data passed from nfc_mifare_read_page()
+ *
  * @see nfc_mifare_read_page()
  */
 typedef void (* nfc_mifare_read_page_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
@@ -484,8 +492,10 @@ typedef void (* nfc_mifare_read_page_completed_cb)(nfc_error_e result, unsigned 
 /**
  * @brief Called after nfc_mifare_increment() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_increment()
  * @param [in] user_data The user data passed from nfc_mifare_increment()
+ *
  * @see nfc_mifare_increment()
  */
 typedef void (* nfc_mifare_increment_completed_cb)(nfc_error_e result, void *user_data);
@@ -493,8 +503,10 @@ typedef void (* nfc_mifare_increment_completed_cb)(nfc_error_e result, void *use
 /**
  * @brief Called after nfc_mifare_decrement() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_decrement()
  * @param [in] user_data The user data passed from nfc_mifare_decrement()
+ *
  * @see nfc_mifare_decrement()
  */
 typedef void (* nfc_mifare_decrement_completed_cb)(nfc_error_e result, void *user_data);
@@ -502,8 +514,10 @@ typedef void (* nfc_mifare_decrement_completed_cb)(nfc_error_e result, void *use
 /**
  * @brief Called after nfc_mifare_transfer() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_transfer()
  * @param [in] user_data The user data passed from nfc_mifare_transfer()
+ *
  * @see nfc_mifare_transfer()
  */
 typedef void (* nfc_mifare_transfer_completed_cb)(nfc_error_e result, void *user_data);
@@ -511,8 +525,10 @@ typedef void (* nfc_mifare_transfer_completed_cb)(nfc_error_e result, void *user
 /**
  * @brief Called after nfc_mifare_restore() has completed
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ *
  * @param [in] result The result of nfc_mifare_restore()
  * @param [in] user_data The user data passed from nfc_mifare_restore()
+ *
  * @see nfc_mifare_restore()
  */
 typedef void (* nfc_mifare_restore_completed_cb)(nfc_error_e result, void *user_data);
@@ -522,6 +538,7 @@ typedef void (* nfc_mifare_restore_completed_cb)(nfc_error_e result, void *user_
 /**
  * @brief Called when NFC peer-to-peer target appeared or disappeared
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
  * @param [in] type The discovered type attached or detached
  * @param [in] target The handle to p2p target
  * @param [in] user_data The user data passed from nfc_manager_set_p2p_target_discovered_cb()
@@ -534,6 +551,7 @@ typedef void (*nfc_p2p_target_discovered_cb)(nfc_discovered_type_e type, nfc_p2p
 /**
  * @brief Called when receiving  Secure Element (SIM/UICC(Universal Integrated Circuit Card)) event.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
  * @param [in] event The Secure Element event
  * @param [in] user_data The user data passed from nfc_manager_set_se_event_cb()
  *
@@ -547,6 +565,7 @@ typedef void (*nfc_se_event_cb)(nfc_se_event_e event , void *user_data);
  * @brief Called when receiving Secure Element(SIM/UICC(Universal Integrated Circuit Card)) transaction event data
  * @remarks This event  notifies , external reader trys to access secure element.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
  * @param [in] aid Application Id, specified in ISO/IEC 7816-4
  * @param [in] aid_size The size of aid (5~16)
  * @param [in] param The parameter list, specified in ISO/IEC 8825-1
@@ -563,6 +582,7 @@ typedef void (*nfc_se_transaction_event_cb)(unsigned char* aid, int aid_size , u
 /**
  * @brief Called after nfc_p2p_send() has completed.
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
+ *
  * @param [in] result The result of function call
  * @param [in] user_data The user data passed from nfc_p2p_send()
  *
@@ -578,7 +598,7 @@ typedef void (*nfc_p2p_send_completed_cb)(nfc_error_e result, void *user_data);
  * @remarks @a message will be automatically destroyed when the callback function returns. (Do not release @a message.)
  *
  * @param [in] target The handle to p2p target
- * @param [in] message The recevied message
+ * @param [in] message The received message
  * @param [in] user_data The user data passed from nfc_p2p_set_recv_cb()
  *
  * @see nfc_p2p_set_data_received_cb()
@@ -593,12 +613,12 @@ typedef void (*nfc_p2p_data_recived_cb)(nfc_p2p_target_h target, nfc_ndef_messag
  *
  * @remark To use the @a ac_data outside this function, copy the @a ac_data.
  * @remark @a ac_data could be NULL, if nfc_p2p_connection_handover failed.
- * @remark If @a carrior is #NFC_AC_TYPE_BT, @ac_data should be converted to 'char *' type. This is bluetooth address information.
+ * @remark If @a carrier is #NFC_AC_TYPE_BT, @ac_data should be converted to 'char *' type. This is bluetooth address information.
  *
  * @param [in] result The result of function call
- * @param [in] carrior The type of Alternative Carrior
- * @param [in] ac_data The connected remote device AC(Alternative Carrior) information data
- * @param [in] ac_data_size The connected remote device AC(Alternative Carrior) information data size
+ * @param [in] carrier The type of Alternative Carrier
+ * @param [in] ac_data The connected remote device AC(Alternative Carrier) information data
+ * @param [in] ac_data_size The connected remote device AC(Alternative Carrier) information data size
  * @param [in] user_data The user data passed from nfc_p2p_connection_handover()
  *
  * @see nfc_p2p_connection_handover()
@@ -612,6 +632,7 @@ typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc
  * @remarks This function can executed Regardless of nfc_manager_initialize state.
  *
  * @return true on NFC supported,  otherwise false
+ *
  * @see nfc_manager_set_activation()
  */
 bool nfc_manager_is_supported(void);
@@ -630,6 +651,7 @@ bool nfc_manager_is_supported(void);
  * @retval #NFC_ERROR_NOT_SUPPORTED Not supported NFC
  * @retval #NFC_ERROR_ALREADY_ACTIVATED Already activated
  * @retval #NFC_ERROR_ALREADY_DEACTIVATED Already deactivated
+ *
  * @see nfc_manager_is_activated()
  * @see nfc_activation_completed_cb()
  */
@@ -668,6 +690,7 @@ void nfc_manager_unset_activation_changed_cb(void);
  * @remarks This function can executed Regardless of nfc_manager_initialize state.
  *
  * @return true on NFC activated,  otherwise false
+ *
  * @see nfc_manager_set_activation()
  */
 
@@ -687,6 +710,7 @@ bool nfc_manager_is_activated(void);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OPERATION_FAILED Operation fail
+ *
  * @see nfc_manager_initialize_sync()
  * @see nfc_manager_deinitialize()
  */
@@ -703,6 +727,7 @@ int nfc_manager_initialize(nfc_initialize_completed_cb callback, void *user_data
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OPERATION_FAILED Operation fail
+ *
  * @see nfc_manager_initialize()
  * @see nfc_manager_deinitialize()
  */
@@ -710,12 +735,13 @@ int nfc_manager_initialize_sync();
 
 
 /**
- * @brief Releases all the resource of the NFC Manager and disconnecst the session between an application and NFC Manager.
+ * @brief Releases all the resource of the NFC Manager and disconnect the session between an application and NFC Manager.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_OPERATION_FAILED Operation fail
+ *
  * @see nfc_manager_initialize()
  */
 int nfc_manager_deinitialize(void);
@@ -730,6 +756,7 @@ int nfc_manager_deinitialize(void);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_manager_unset_tag_discovered_cb()
  * @see nfc_tag_discovered_cb()
  */
@@ -754,6 +781,7 @@ void nfc_manager_unset_tag_discovered_cb(void);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_manager_unset_ndef_discovered_cb()
  * @see nfc_ndef_discovered_cb()
  */
@@ -856,7 +884,6 @@ void nfc_manager_unset_se_transaction_event_cb(void);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_NDEF_MESSAGE The cached message does not exist
- *
  */
 int nfc_manager_get_cached_message(nfc_ndef_message_h *ndef_message);
 
@@ -864,7 +891,7 @@ int nfc_manager_get_cached_message(nfc_ndef_message_h *ndef_message);
 /**
  * @brief Sets filter of target types.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
- * @remarks Bit operator OR(|) can be used in the config parameter (like  NFC_TAG_FILTER_ISO14443A_ENABLE | NFC_TAG_FILTER_ISO14443B_ENABLE)
+ * @remarks Bit operator OR(|) can be used in the configure parameter (like  NFC_TAG_FILTER_ISO14443A_ENABLE | NFC_TAG_FILTER_ISO14443B_ENABLE)
  *	or you may choose "NFC_TAG_ALL_ENABLE" enum value to get all result.
  *	It prevent getting tag types from RF level.
  *	If the client api does call this function, default is always NFC_TAG_ALL_ENABLE.
@@ -882,7 +909,9 @@ void nfc_manager_set_tag_filter(int filter);
  *
  * @remarks Bit operation OR(|) is used in return data\n
  * The default value is NFC_TAG_FILTER_ALL_ENABLE
+ *
  * @return The filter which is set #nfc_tag_filter_e
+ *
  * @see nfc_manager_set_tag_filter()
  */
 int nfc_manager_get_tag_filter(void);
@@ -897,7 +926,6 @@ int nfc_manager_get_tag_filter(void);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_NO_DEVICE There is no connected tag
- *
  */
 int nfc_manager_get_connected_tag(nfc_tag_h *tag);
 
@@ -911,7 +939,6 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_NO_DEVICE There is no connected target
- *
  */
 int nfc_manager_get_connected_target(nfc_p2p_target_h *target);
 
@@ -994,6 +1021,7 @@ int nfc_manager_get_card_emulation_se_type(nfc_se_type_e* type);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_record_create_text()
  * @see nfc_ndef_record_create_uri()
  * @see nfc_ndef_record_create_mime()
@@ -1023,6 +1051,7 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record, nfc_record_tnf_e tnf, cons
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_record_create()
  * @see nfc_ndef_record_create_uri()
  * @see nfc_ndef_record_create_mime()
@@ -1041,7 +1070,7 @@ int nfc_ndef_record_create_text(nfc_ndef_record_h *record, const char *text, con
  * The record is created in this format\n
  * - TNF : NFC_RECORD_TNF_WELL_KNOWN\n
  * - type : "U"\n
- * - payload : procotol scheme + uri\n
+ * - payload : protocol scheme + uri\n
  * Defined in Record Type Definition Technical Specifications.
  *
  * @param [out] record A handle to record
@@ -1052,6 +1081,7 @@ int nfc_ndef_record_create_text(nfc_ndef_record_h *record, const char *text, con
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_record_create()
  * @see nfc_ndef_record_create_text()
  * @see nfc_ndef_record_create_mime()
@@ -1083,6 +1113,7 @@ int nfc_ndef_record_create_uri(nfc_ndef_record_h* record, const char *uri);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_record_create()
  * @see nfc_ndef_record_create_uri()
  * @see nfc_ndef_record_create_text()
@@ -1101,6 +1132,7 @@ int nfc_ndef_record_create_mime(nfc_ndef_record_h* record, const char *mime_type
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_ndef_record_create()
  * @see nfc_ndef_record_create_text()
  * @see nfc_ndef_record_create_uri()
@@ -1117,9 +1149,11 @@ int nfc_ndef_record_destroy(nfc_ndef_record_h record);
  * @param [in] record The handle to record
  * @param [in] id The record ID
  * @param [in] id_size The size of ID in bytes
+ *
  * @return 0 on success, otherwise a negative error value.
  * @retval	#NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_ndef_record_get_id()
  */
 int nfc_ndef_record_set_id(nfc_ndef_record_h record, unsigned char *id, int id_size);
@@ -1139,6 +1173,7 @@ int nfc_ndef_record_set_id(nfc_ndef_record_h record, unsigned char *id, int id_s
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_ndef_record_set_id()
  */
 int nfc_ndef_record_get_id(nfc_ndef_record_h record, unsigned char **id, int *size);
@@ -1147,7 +1182,7 @@ int nfc_ndef_record_get_id(nfc_ndef_record_h record, unsigned char **id, int *si
  * @brief Gets record payload.
  * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
  *
- * @remarks This function gives you  the pointer of pyaload that is contained by record\n
+ * @remarks This function gives you  the pointer of payload that is contained by record\n
  * Do not free the payload. it will be freed when @a record is destroyed by nfc_ndef_record_destroy().
  *
  * @param [in] record The handle to record
@@ -1205,6 +1240,7 @@ int nfc_ndef_record_get_tnf(nfc_ndef_record_h record, nfc_record_tnf_e *tnf);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_RECORD_TYPE Invalid record type
+ *
  * @see nfc_ndef_record_create_text()
  */
 int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **text);
@@ -1223,6 +1259,7 @@ int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **text);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_RECORD_TYPE Invalid record type
+ *
  * @see nfc_ndef_record_create_text()
  */
 int nfc_ndef_record_get_langcode(nfc_ndef_record_h record, char **lang_code);
@@ -1241,6 +1278,7 @@ int nfc_ndef_record_get_langcode(nfc_ndef_record_h record, char **lang_code);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_RECORD_TYPE Invalid record type
+ *
  * @see nfc_ndef_record_create_text()
  */
 int nfc_ndef_record_get_encode_type(nfc_ndef_record_h record, nfc_encode_type_e *encode);
@@ -1260,6 +1298,7 @@ int nfc_ndef_record_get_encode_type(nfc_ndef_record_h record, nfc_encode_type_e 
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_RECORD_TYPE Invalid record type
+ *
  * @see nfc_ndef_record_create_uri()
  */
 int nfc_ndef_record_get_uri(nfc_ndef_record_h record, char **uri);
@@ -1280,6 +1319,7 @@ int nfc_ndef_record_get_uri(nfc_ndef_record_h record, char **uri);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_RECORD_TYPE Invalid record type
+ *
  * @see nfc_ndef_record_create_mime()
  */
 int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record, char **mime_type);
@@ -1295,9 +1335,9 @@ int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record, char **mime_type);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_message_create_from_rawdata()
  * @see nfc_ndef_message_destroy()
- *
  */
 int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message);
 
@@ -1316,10 +1356,10 @@ int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message);
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ *
  * @see nfc_ndef_message_create()
  * @see nfc_ndef_message_destroy()
  * @see nfc_ndef_message_get_rawdata()
- *
  */
 int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message, const unsigned char *rawdata, int rawdata_size);
 
@@ -1334,6 +1374,7 @@ int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message, const
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_ndef_message_create()
  * @see nfc_ndef_message_create_from_rawdata()
  */
@@ -1349,7 +1390,6 @@ int nfc_ndef_message_destroy(nfc_ndef_message_h ndef_message);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
- *
  */
 int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message, int *count);
 
@@ -1357,11 +1397,11 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message, int *coun
  * @brief Gets serial bytes array of NDEF message.
  * @ingroup CAPI_NETWORK_NFC_NDEF_MESSAGE_MODULE
  *
- * @remarks It gets copy of the rawdata bytes from NDEF message. @a rawdata must be released with free() by you.
+ * @remarks It gets copy of the bytes array from NDEF message. @a rawdata must be released with free() by you.
  *
  * @param [in] ndef_message The handle to NDEF message
- * @param [out] rawdata The bytes array of rawdata
- * @param [out] rawdata_size The size of rawdata in byte
+ * @param [out] rawdata The bytes array of bytes array
+ * @param [out] rawdata_size The size of bytes array in byte
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1385,6 +1425,7 @@ int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message, unsigned char 
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
  * @see nfc_ndef_message_insert_record()
  * @see nfc_ndef_message_remove_record()
  */
@@ -1405,6 +1446,7 @@ int nfc_ndef_message_append_record(nfc_ndef_message_h ndef_message, nfc_ndef_rec
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_NDEF_MESSAGE	Invalid NDEF message
+ *
  * @see nfc_ndef_message_append_record()
  * @see nfc_ndef_message_remove_record()
  */
@@ -1421,6 +1463,7 @@ int nfc_ndef_message_insert_record(nfc_ndef_message_h ndef_message, int index, n
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  * @retval #NFC_ERROR_INVALID_NDEF_MESSAGE	Invalid NDEF message
+ *
  * @see nfc_ndef_message_append_record()
  * @see nfc_ndef_message_insert_record()
  */
@@ -1439,7 +1482,6 @@ int nfc_ndef_message_remove_record(nfc_ndef_message_h ndef_message, int index);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
- *
  */
 int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message, int index, nfc_ndef_record_h *record);
 
@@ -1453,7 +1495,6 @@ int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message, int index, nfc_
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
- *
  */
 int nfc_tag_get_type(nfc_tag_h tag, nfc_tag_type_e *type);
 
@@ -1484,7 +1525,6 @@ int nfc_tag_is_support_ndef(nfc_tag_h tag, bool *is_supported);
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
- *
  */
 int nfc_tag_get_maximum_ndef_size(nfc_tag_h tag, unsigned int *maximum_ndef_bytes_size);
 
@@ -1523,14 +1563,14 @@ int nfc_tag_foreach_information(nfc_tag_h tag, nfc_tag_information_cb callback, 
  * @brief Transceives the data of the raw format card.
  * @details This function is the only way to access the raw format card (not formated),
 	each tag type requires own command to access tags. \n
-	This function provides the low level access of tag operation and you require the knowlege of each tag technology.
+	This function provides the low level access of tag operation and you require the knowledge of each tag technology.
 * @ingroup CAPI_NETWORK_NFC_TAG_MODULE
 *
 * @param [in] tag The handle to NFC tag
 * @param [in] buffer The binary data for parameter or additional commands
 * @param [in] buffer_size The size of buffer in bytes
 * @param [in] callback The callback function to invoke after this function has completed\n It can be null if a notification is not required
-* @param [in] user_data	The user data to be passed to the callback funcation
+* @param [in] user_data	The user data to be passed to the callback function
 *
 * @return 0 on success, otherwise a negative error value.
 * @retval #NFC_ERROR_NONE Successful
@@ -1553,7 +1593,7 @@ int nfc_tag_transceive(nfc_tag_h tag, unsigned char *buffer, int buffer_size, nf
  *
  * @param [in] tag The handle to NFC tag
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1580,7 +1620,7 @@ int nfc_tag_read_ndef(nfc_tag_h tag, nfc_tag_read_completed_cb callback, void *u
  * @param [in] tag The handle to NFC tag
  * @param [in] msg The message will be write to the tag
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_dataa The user data to be passed to the callback funcation
+ * @param [in] user_dataa The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1608,7 +1648,7 @@ int nfc_tag_write_ndef(nfc_tag_h tag, nfc_ndef_message_h msg, nfc_tag_write_comp
  * @param [in] key The key value that may need to format the tag
  * @param [in] key_size The size of key in byte
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1646,7 +1686,7 @@ int nfc_tag_format_ndef(nfc_tag_h tag, unsigned char *key, int key_size, nfc_tag
  * @param[in] sector_index The index of sector to authenticate with key A, starting from 0
  * @param[in] auth_key 6-byte authentication key
  * @param[in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param[in] user_data	The user data to be passed to the callback funcation
+ * @param[in] user_data	The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1689,7 +1729,7 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag, int sector_index, unsigned 
  * @param [in] sector_index The index of sector to authenticate with key B, starting from 0
  * @param [in] auth_key 6-byte authentication key
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1720,7 +1760,7 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag, int sector_index, unsigned 
  * @param [in] tag The handle to NFC tag
  * @param [in] block_index The block or starting page number
  * @param [in] callback	The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1746,7 +1786,7 @@ int nfc_mifare_read_block(nfc_tag_h tag, int block_index, nfc_mifare_read_block_
  * @param [in] tag The handle to NFC tag
  * @param [in] page_index  The index of page to read, starting from 0
  * @param [in] callback	The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  *
  * @return 0 on success, otherwise a negative error value.
@@ -1774,7 +1814,7 @@ int nfc_mifare_read_page(nfc_tag_h tag, int page_index, nfc_mifare_read_page_com
  * @param [in] buffer 16 bytes of data to write
  * @param [in] buffer_size The size of buffer in bytes
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1786,7 +1826,7 @@ int nfc_mifare_read_page(nfc_tag_h tag, int page_index, nfc_mifare_read_page_com
  * @retval #NFC_ERROR_TIMED_OUT Timeout is reached while communicating with tag
  * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
- * @post It invokes nfc_mifare_write_block_completed_cb() when it hase completed to write a block.
+ * @post It invokes nfc_mifare_write_block_completed_cb() when it has completed to write a block.
  *
  * @see nfc_mifare_write_page()
  * @see nfc_mifare_read_block()
@@ -1803,7 +1843,7 @@ int nfc_mifare_write_block(nfc_tag_h tag, int block_index, unsigned char *buffer
  * @param [in] buffer 4 bytes of data to write
  * @param [in] buffer_size The size of buffer in bytes
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1856,7 +1896,7 @@ int nfc_mifare_increment(nfc_tag_h tag, int block_index, int value, nfc_mifare_i
  * @param [in] block_index The index of block to decrease, starting from 0
  * @param [in] value non-negative to decrement by
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1874,13 +1914,13 @@ int nfc_mifare_decrement(nfc_tag_h tag, int block_index, int value, nfc_mifare_d
 
 /**
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
- * @brief Copys from the temporary block to the specified block.
+ * @brief Copy from the temporary block to the specified block.
  * @remarks This function is only available for MIFARE classic
  *
  * @param [in] tag The handle to NFC tag
  * @param [in] block_index The index of block to copy to, starting from 0
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1897,13 +1937,13 @@ int nfc_mifare_transfer(nfc_tag_h tag, int block_index, nfc_mifare_transfer_comp
 
 /**
  * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
- * @brief Copys from a value block to the temporary block.
+ * @brief Copy from a value block to the temporary block.
  * @remarks This function is only available for MIFARE classic
  *
  * @param [in] tag The handle to NFC tag
  * @param [in] block_index The index of block to copy from, starting from 0
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1960,7 +2000,7 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target);
  * @param [in] tag The handle to NFC tag
  * @param [in] message The message to send
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1971,7 +2011,7 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target);
  * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_p2p_send_completed_cb()
- * @see @see nfc_p2p_target_discovered_cb()
+ * @see nfc_p2p_target_discovered_cb()
 */
 int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data);
 
@@ -1983,7 +2023,7 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_se
  * @param [in] tag The handle to NFC tag
  * @param [in] message The message to send
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
- * @param [in] user_data The user data to be passed to the callback funcation
+ * @param [in] user_data The user data to be passed to the callback function
  *
  * @return 0 on success, otherwise a negative error value.
  * @retval #NFC_ERROR_NONE Successful
@@ -1994,18 +2034,18 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_se
  * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_p2p_send_completed_cb()
- * @see @see nfc_p2p_target_discovered_cb()
+ * @see nfc_p2p_target_discovered_cb()
 */
 int nfc_p2p_send_no_permission(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data);
 
 
 
 /**
- * @brief NFC Connetionhandover between NFC peer-to-peer target
+ * @brief NFC Connection handover between NFC peer-to-peer target
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
  *
  * @param [in] target The handle to NFC device
- * @param [in] type Prepered Alternative Carrior
+ * @param [in] type Preferred Alternative Carrier
  * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
  * @param [in] user_data The user data to be passed to the callback function
  *
@@ -2018,24 +2058,19 @@ int nfc_p2p_send_no_permission(nfc_p2p_target_h target, nfc_ndef_message_h messa
  * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
  *
  * @see nfc_p2p_connection_handover_completed_cb()
- * @see @see nfc_p2p_connection_handover_completed_cb()
-
 */
 int nfc_p2p_connection_handover(nfc_p2p_target_h target , nfc_ac_type_e type, nfc_p2p_connection_handover_completed_cb callback, void *user_data);
 
-
-
 /**
- * @brief Check available Alternative Carrior(AC) for NFC handover between NFC peer-to-peer target
+ * @brief Check available Alternative Carrier(AC) for NFC handover between NFC peer-to-peer target
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
  *
- * @param [in] carrior Alternative Carrior whan to be checked whether supported or not
+ * @param [in] carrier Alternative Carrier when to be checked whether supported or not
  *
  * @retval #true Supported
  * @retval #false Not Supported
  *
  * @see nfc_p2p_is_supported_ac_type()
- *
 */
 bool nfc_p2p_is_supported_ac_type( nfc_ac_type_e carrior);
 
