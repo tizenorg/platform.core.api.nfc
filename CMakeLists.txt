@@ -13,18 +13,14 @@ SET(Services
         "system"
    )
 
-
 # project
 SET(project_prefix "capi")
-SET(prefix "/usr")
 SET(version "0.0.3")
-SET(maintainer "Seungkeun Lee <sngn.lee@samsung.com>, Kangho Hur<kagho.hur@samsung.com>")
-SET(description "A NFC library in Tizen Native API")
 SET(service "network")
 SET(submodule "nfc")
 
 # for package file
-SET(dependents "dlog glib-2.0 nfc-common-lib nfc capi-base-common vconf ecore-x capi-appfw-app-manager")
+SET(dependents "dlog glib-2.0 gio-2.0 nfc-common-lib nfc capi-base-common vconf ecore-x")
 SET(pc_dependents "capi-base-common")
 
 SET(fw_name "${project_prefix}-${service}-${submodule}")
@@ -44,7 +40,7 @@ FOREACH(flag ${${fw_name}_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror")
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
 IF("${ARCH}" STREQUAL "arm")
@@ -56,7 +52,8 @@ ADD_DEFINITIONS("-DTIZEN_DEBUG")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIB_INSTALL_DIR}")
 
-aux_source_directory(src SOURCES)
+SET(SOURCES src/nfc.c)
+
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
 
 TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS})
@@ -72,7 +69,7 @@ INSTALL(TARGETS ${fw_name} DESTINATION ${LIB_INSTALL_DIR})
 INSTALL(
         DIRECTORY ${INC_DIR}/ DESTINATION include/${service}
         FILES_MATCHING
-        PATTERN "*_private.h" EXCLUDE
+        PATTERN "*_internal.h" EXCLUDE
         PATTERN "${INC_DIR}/*.h"
         )
 
