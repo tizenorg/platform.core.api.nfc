@@ -1,7 +1,7 @@
 #sbs-git:slp/api/nfc capi-network-nfc 0.0.1 14f15050f8f6ff8217421da04fa5d66e834e2016
 Name:       capi-network-nfc
 Summary:    A NFC library in SLP C API
-Version:    0.0.18
+Version:    0.0.9
 Release:    0
 Group:      API/C API
 License:    Apache-2.0
@@ -9,14 +9,12 @@ Source0:    %{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
-BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(nfc)
 BuildRequires:  pkgconfig(nfc-common-lib)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(ecore-x)
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
+BuildRequires:  pkgconfig(capi-appfw-app-manager)
 
 %description
 A NFC library in SLP C API.
@@ -39,7 +37,7 @@ This package contains the development files for %{name}.
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-%cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
 make %{?jobs:-j%jobs}
 
