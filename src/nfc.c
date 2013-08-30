@@ -1747,7 +1747,6 @@ int nfc_p2p_send(nfc_p2p_target_h target,
 	void *user_data)
 {
 	int ret;
-	net_nfc_exchanger_data_h data_handle;
 	data_h rawdata;
 	GVariant *parameter;
 
@@ -1769,18 +1768,14 @@ int nfc_p2p_send(nfc_p2p_target_h target,
 		GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		net_nfc_create_rawdata_from_ndef_message(message, &rawdata);
-		ret = net_nfc_client_create_exchanger_data(&data_handle, rawdata);
-		if (ret == NET_NFC_OK) {
-			ret = net_nfc_client_p2p_send(data_handle,
-				(net_nfc_target_handle_h)target,
-				_p2p_send_cb,
-				parameter);
-			if (ret != NET_NFC_OK) {
-				g_variant_unref(parameter);
-			}
-
-			net_nfc_client_free_exchanger_data(data_handle);
+		ret = net_nfc_client_p2p_send((net_nfc_target_handle_h)target,
+			rawdata,
+			_p2p_send_cb,
+			parameter);
+		if (ret != NET_NFC_OK) {
+			g_variant_unref(parameter);
 		}
+
 		net_nfc_free_data(rawdata);
 	} else {
 		ret = NET_NFC_ALLOC_FAIL;
@@ -1796,7 +1791,6 @@ int nfc_p2p_send_no_permission(
 	void *user_data)
 {
 	int ret;
-	net_nfc_exchanger_data_h data_handle;
 	data_h rawdata;
 	GVariant *parameter;
 
@@ -1813,18 +1807,14 @@ int nfc_p2p_send_no_permission(
 		GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		net_nfc_create_rawdata_from_ndef_message(message, &rawdata);
-		ret = net_nfc_client_create_exchanger_data(&data_handle, rawdata);
-		if (ret == NET_NFC_OK) {
-			ret = net_nfc_client_p2p_send(data_handle,
-				(net_nfc_target_handle_h)target,
-				_p2p_send_cb,
-				parameter);
-			if (ret != NET_NFC_OK) {
-				g_variant_unref(parameter);
-			}
-
-			net_nfc_client_free_exchanger_data(data_handle);
+		ret = net_nfc_client_p2p_send((net_nfc_target_handle_h)target,
+			rawdata,
+			_p2p_send_cb,
+			parameter);
+		if (ret != NET_NFC_OK) {
+			g_variant_unref(parameter);
 		}
+
 		net_nfc_free_data(rawdata);
 	} else {
 		ret = NET_NFC_ALLOC_FAIL;
