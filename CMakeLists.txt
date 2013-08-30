@@ -24,7 +24,7 @@ PROJECT(${fw_name} C)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 INCLUDE(FindPkgConfig)
-pkg_check_modules(pkgs REQUIRED dlog glib-2.0 gio-2.0 nfc-common-lib nfc capi-base-common
+pkg_check_modules(pkgs REQUIRED dlog glib-2.0 gio-2.0 nfc-common nfc capi-base-common
 	vconf ecore-x)
 FOREACH(flag ${pkgs_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
