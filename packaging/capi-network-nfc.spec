@@ -1,6 +1,6 @@
 Name:       capi-network-nfc
 Summary:    A NFC library in SLP C API
-Version:    0.1.0
+Version:    0.1.1
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0
