@@ -1,6 +1,6 @@
 Name:       capi-network-nfc
-Summary:    A NFC library in SLP C API
-Version:    0.1.1
+Summary:    NFC Core API
+Version:    0.1.2
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0
@@ -11,7 +11,7 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  nfc-client-lib-devel
-BuildRequires:  nfc-common-lib-devel
+BuildRequires:  nfc-common-devel
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(ecore-x)
@@ -19,17 +19,14 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %description
-A NFC library in SLP C API.
-
+A library for Tizen NFC Core API.
 
 %package devel
-Summary:  A NFC library in SLP C API -- Development Files
+Summary:  NFC Core API (devel)
 Group:    Network & Connectivity/Development
 Requires: %{name} = %{version}-%{release}
 
 %description devel
-A NFC library in SLP C API.
-
 This package contains the development files for %{name}.
 
 

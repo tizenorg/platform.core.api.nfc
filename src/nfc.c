@@ -1508,9 +1508,9 @@ int nfc_manager_set_system_handler_enable(bool enable)
 	int state;
 
 	if (enable == true) {
-		state = 0;
+		state = NET_NFC_LAUNCH_APP_SELECT;
 	} else {
-		state = 1;
+		state = NET_NFC_NO_LAUNCH_APP_SELECT;
 	}
 
 	ret = net_nfc_client_sys_handler_set_launch_popup_state(state);
@@ -1524,9 +1524,9 @@ int nfc_manager_set_system_handler_enable_force(bool enable)
 	int state;
 
 	if (enable == true) {
-		state = 0;
+		state = NET_NFC_LAUNCH_APP_SELECT;
 	} else {
-		state = 1;
+		state = NET_NFC_NO_LAUNCH_APP_SELECT;
 	}
 
 	ret = net_nfc_client_sys_handler_set_launch_popup_state_force(state);
@@ -1950,8 +1950,7 @@ static void _net_nfc_manager_snep_start_client(
 			break;
 		}
 
-		callback(arg_handle, snep_event,
-				_convert_error_code(__func__, result),
+		callback(arg_handle, snep_event, _convert_error_code(__func__, result),
 				msg, user_param);
 
 		if (snep_event == NFC_SNEP_EVENT_STOP) {
@@ -2084,9 +2083,7 @@ static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t eve
 			break;
 		}
 
-		callback(target, event,
-				_convert_error_code(__func__, result),
-				(ndef_message_h)msg, user_param);
+		callback(target, event, _convert_error_code(__func__, result), (ndef_message_h)msg, user_param);
 	}
 
 	if ((int)event == NFC_SNEP_EVENT_UNREGISTER) {
