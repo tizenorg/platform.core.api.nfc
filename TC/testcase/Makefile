@@ -2,7 +2,7 @@ CC ?= gcc
 
 C_FILES = $(shell ls *.c)
 	
-PKGS = capi-network-nfc
+PKGS = glib-2.0 capi-network-nfc
 
 LDFLAGS = `pkg-config --libs $(PKGS)`
 LDFLAGS += $(TET_ROOT)/lib/tet3/tcm_s.o
