@@ -23,7 +23,7 @@ SET(service "network")
 SET(submodule "nfc")
 
 # for package file
-SET(dependents "dlog glib-2.0 nfc-common-lib nfc capi-base-common vconf ecore-x capi-appfw-app-manager")
+SET(dependents "dlog glib-2.0 nfc-common-lib nfc capi-base-common vconf ecore-x")
 SET(pc_dependents "capi-base-common")
 
 SET(fw_name "${project_prefix}-${service}-${submodule}")

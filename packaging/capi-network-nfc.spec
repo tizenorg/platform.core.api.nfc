@@ -1,7 +1,7 @@
 #sbs-git:slp/api/nfc capi-network-nfc 0.0.1 14f15050f8f6ff8217421da04fa5d66e834e2016
 Name:       capi-network-nfc
 Summary:    A NFC library in SLP C API
-Version:    0.0.9
+Version:    0.0.10
 Release:    0
 Group:      API/C API
 License:    Apache-2.0
@@ -14,7 +14,6 @@ BuildRequires:  pkgconfig(nfc-common-lib)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(ecore-x)
-BuildRequires:  pkgconfig(capi-appfw-app-manager)
 
 %description
 A NFC library in SLP C API.
@@ -44,7 +43,7 @@ make %{?jobs:-j%jobs}
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/license
-cp -af %{_builddir}/%{name}-%{version}/packaging/capi-network-nfc %{buildroot}/usr/share/license/
+cp -af LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
 
 %make_install
 
