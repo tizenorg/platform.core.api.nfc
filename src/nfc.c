@@ -1540,7 +1540,10 @@ bool nfc_manager_is_system_handler_enabled(void)
 
 	net_nfc_client_sys_handler_get_launch_popup_state(&state);
 
-	return (state == 0);
+	if (NET_NFC_LAUNCH_APP_SELECT == state)
+		return true;
+	else
+		return false;
 }
 
 /******************************Handover*******************************/
