@@ -1,6 +1,6 @@
 Name:       capi-network-nfc
 Summary:    NFC Core API
-Version:    0.1.3
+Version:    0.1.4
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0
