@@ -26,8 +26,8 @@ typedef struct
 	bool initialized;
 	bool on_activation_doing;
 
-	net_nfc_target_info_h current_tag;
-	net_nfc_target_handle_h current_target;
+	net_nfc_target_info_s *current_tag;
+	net_nfc_target_handle_s *current_target;
 
 	nfc_tag_discovered_cb on_tag_discovered_cb;
 	void *on_tag_discovered_user_data;

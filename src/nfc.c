@@ -347,7 +347,7 @@ void nfc_manager_unset_activation_changed_cb(void)
 #if 0
 void _net_nfc_manager_get_current_target_handle_(
 		net_nfc_error_e result,
-		net_nfc_target_handle_h handle,
+		net_nfc_target_handle_s *handle,
 		void *user_data)
 {
 	gdbus_nfc_context.current_target =(net_nfc_target_handle_s*) handle;
@@ -364,22 +364,18 @@ void _net_nfc_manager_get_current_target_handle_(
 
 void _net_nfc_manager_get_current_tag_info_(
 		net_nfc_error_e result,
-		net_nfc_target_info_h info,
+		net_nfc_target_info_s *info,
 		void *user_data)
 {
-	net_nfc_target_info_s *target_info = (net_nfc_target_info_s *)info;
-
-	if (target_info != NULL)
+	if (info != NULL)
 	{
 		if (gdbus_nfc_context.current_tag != NULL)
 		{
-			net_nfc_release_tag_info(
-					(net_nfc_target_info_h)gdbus_nfc_context.current_tag);
+			net_nfc_release_tag_info(gdbus_nfc_context.current_tag);
 			gdbus_nfc_context.current_tag = NULL;
 		}
 
-		net_nfc_duplicate_target_info((net_nfc_target_info_h)target_info,
-				(net_nfc_target_info_h *)&gdbus_nfc_context.current_tag);
+		net_nfc_duplicate_target_info(info, &gdbus_nfc_context.current_tag);
 	}
 
 	nfc_initialize_completed_cb cb =
@@ -432,28 +428,25 @@ void _net_nfc_manager_tag_connected_cb(
 }
 #endif
 
-static void _nfc_manager_tag_discovered_cb(net_nfc_target_info_h info,
+static void _nfc_manager_tag_discovered_cb(net_nfc_target_info_s *info,
 		void *user_data)
 {
-	net_nfc_target_info_s *target_info = (net_nfc_target_info_s *)info;
-
-	gdbus_nfc_context.current_tag = target_info;
+	gdbus_nfc_context.current_tag = info;
 
 	if (gdbus_nfc_context.on_tag_discovered_cb != NULL) {
 		gdbus_nfc_context.on_tag_discovered_cb(
 				NFC_DISCOVERED_TYPE_ATTACHED,
-				(nfc_tag_h)gdbus_nfc_context.current_tag,
+				gdbus_nfc_context.current_tag,
 				gdbus_nfc_context.on_tag_discovered_user_data);
 	}
 
 	/* ndef discovered cb */
 	if (gdbus_nfc_context.on_ndef_discovered_cb &&
-			target_info->raw_data.buffer != NULL)
+			info->raw_data.buffer != NULL)
 	{
-		ndef_message_h ndef_message;
+		ndef_message_s *ndef_message;
 
-		net_nfc_create_ndef_message_from_rawdata(&ndef_message,
-				(data_h)&(target_info->raw_data));
+		net_nfc_create_ndef_message_from_rawdata(&ndef_message, &(info->raw_data));
 
 		gdbus_nfc_context.on_ndef_discovered_cb(ndef_message,
 				gdbus_nfc_context.on_ndef_discovered_user_data);
@@ -467,14 +460,14 @@ static void _nfc_manager_tag_detached_cb(void *user_data)
 	if (gdbus_nfc_context.on_tag_discovered_cb != NULL) {
 		gdbus_nfc_context.on_tag_discovered_cb(
 				NFC_DISCOVERED_TYPE_DETACHED,
-				(nfc_tag_h)gdbus_nfc_context.current_tag,
+				gdbus_nfc_context.current_tag,
 				gdbus_nfc_context.on_tag_discovered_user_data);
 	}
 
 	gdbus_nfc_context.current_tag = NULL;
 }
 static void _p2p_target_discovered_cb(
-		net_nfc_target_handle_h handle_info,
+		net_nfc_target_handle_s *handle_info,
 		void *user_data)
 {
 	gdbus_nfc_context.current_target = handle_info;
@@ -489,8 +482,7 @@ static void _p2p_target_discovered_cb(
 
 static void _p2p_device_detached(void *user_data)
 {
-	nfc_p2p_target_h handle =
-		(nfc_p2p_target_h)gdbus_nfc_context.current_target;
+	nfc_p2p_target_h handle = (nfc_p2p_target_h)gdbus_nfc_context.current_target;
 
 	if (gdbus_nfc_context.on_p2p_target_discovered_cb != NULL) {
 		gdbus_nfc_context.on_p2p_target_discovered_cb(
@@ -616,7 +608,6 @@ int nfc_manager_initialize_sync()
 					(devType == NET_NFC_NFCIP1_INITIATOR))
 			{
 				net_nfc_client_tag_get_current_target_handle_sync(
-						(net_nfc_target_handle_h *)
 						&gdbus_nfc_context.current_target);
 			}
 			else if ((devType > NET_NFC_UNKNOWN_TARGET) &&
@@ -624,15 +615,12 @@ int nfc_manager_initialize_sync()
 			{
 				if (gdbus_nfc_context.current_tag != NULL)
 				{
-					net_nfc_release_tag_info(
-							(net_nfc_target_info_h)
-							gdbus_nfc_context.current_tag);
+					net_nfc_release_tag_info(gdbus_nfc_context.current_tag);
 					gdbus_nfc_context.current_tag = NULL;
 				}
 
 				net_nfc_client_tag_get_current_tag_info_sync(
-						(net_nfc_target_info_h *)
-						&gdbus_nfc_context.current_tag);
+					&gdbus_nfc_context.current_tag);
 			}
 		}
 		else
@@ -726,7 +714,6 @@ int nfc_tag_format_ndef(nfc_tag_h tag, unsigned char *key, int key_size,
 {
 	int ret;
 	data_s key_data = { key, key_size };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -748,8 +735,8 @@ int nfc_tag_format_ndef(nfc_tag_h tag, unsigned char *key, int key_size,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_ndef_format(
-				(net_nfc_target_handle_h)tag_info->handle,
-				(data_h)&key_data,
+				tag->handle,
+				&key_data,
 				_net_nfc_manager_tag_format_ndef_cb,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -763,7 +750,7 @@ int nfc_tag_format_ndef(nfc_tag_h tag, unsigned char *key, int key_size,
 }
 
 static void _net_nfc_manager_tag_read_ndef_cb(net_nfc_error_e result,
-		ndef_message_h message, void *user_data)
+		ndef_message_s *message, void *user_data)
 {
 	nfc_tag_read_completed_cb callback;
 	void *user_param;
@@ -775,9 +762,7 @@ static void _net_nfc_manager_tag_read_ndef_cb(net_nfc_error_e result,
 	g_variant_get((GVariant*)user_data, "(uu)", (guint*)&callback, (guint*)&user_param);
 
 	if (callback != NULL) {
-		callback(_convert_error_code(__func__, result),
-				(nfc_ndef_message_h)message,
-				user_param);
+		callback(_convert_error_code(__func__, result), message, user_param);
 	}
 
 	g_variant_unref((GVariant *)user_data);
@@ -787,7 +772,6 @@ int nfc_tag_read_ndef(nfc_tag_h tag, nfc_tag_read_completed_cb callback,
 		void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -802,7 +786,7 @@ int nfc_tag_read_ndef(nfc_tag_h tag, nfc_tag_read_completed_cb callback,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_ndef_read(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				_net_nfc_manager_tag_read_ndef_cb,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -852,7 +836,6 @@ int nfc_tag_write_ndef(nfc_tag_h tag, nfc_ndef_message_h msg,
 		nfc_tag_write_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	int byte_size = 0;
 	GVariant *parameter;
 
@@ -870,12 +853,12 @@ int nfc_tag_write_ndef(nfc_tag_h tag, nfc_ndef_message_h msg,
 		return NFC_ERROR_SECURITY_RESTRICTED;
 	}
 
-	if (tag_info->ndefCardState == NET_NFC_NDEF_CARD_READ_ONLY) {
+	if (tag->ndefCardState == NET_NFC_NDEF_CARD_READ_ONLY) {
 		return NFC_ERROR_READ_ONLY_NDEF;
 	}
 
 	nfc_ndef_message_get_rawdata_size(msg, &byte_size);
-	if (tag_info->maxDataSize < byte_size) {
+	if (tag->maxDataSize < byte_size) {
 		return NFC_ERROR_NO_SPACE_ON_NDEF;
 	}
 
@@ -883,7 +866,7 @@ int nfc_tag_write_ndef(nfc_tag_h tag, nfc_ndef_message_h msg,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_ndef_write(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				msg,
 				_net_nfc_manager_tag_write_ndef_cb,
 				parameter);
@@ -926,12 +909,7 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record,
 	if (record == NULL || type == NULL || type_size <= 0)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_create_record(
-			(ndef_record_h *)record,
-			tnf,
-			(data_h)&type_data,
-			(data_h)&id_data,
-			(data_h)&payload_data);
+	ret = net_nfc_create_record(record, tnf, &type_data, &id_data, &payload_data);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -944,11 +922,7 @@ int nfc_ndef_record_create_text(nfc_ndef_record_h *record, const char *text,
 	if (record == NULL || text == NULL || lang_code == NULL)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_create_text_type_record(
-			(ndef_record_h *)record,
-			text,
-			lang_code,
-			encode);
+	ret = net_nfc_create_text_type_record(record, text, lang_code, encode);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -961,10 +935,7 @@ int nfc_ndef_record_create_uri(nfc_ndef_record_h *record,
 	if (record == NULL || uri == NULL)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_create_uri_type_record(
-			(ndef_record_h *)record,
-			uri,
-			NET_NFC_SCHEMA_FULL_URI);
+	ret = net_nfc_create_uri_type_record(record, uri, NET_NFC_SCHEMA_FULL_URI);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -1039,7 +1010,7 @@ int nfc_ndef_record_set_id(nfc_ndef_record_h record, unsigned char *id, int id_s
 	if (record == NULL || id == NULL)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_set_record_id(record, (data_h)&id_data);
+	ret = net_nfc_set_record_id(record, &id_data);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -1056,7 +1027,7 @@ int nfc_ndef_record_get_payload(nfc_ndef_record_h record, unsigned char **payloa
 	*payload = NULL;
 	*size = 0;
 
-	ret = net_nfc_get_record_payload(record, (data_h *)&payload_data);
+	ret = net_nfc_get_record_payload(record, &payload_data);
 	if (ret == NET_NFC_OK) {
 		*payload = payload_data->buffer;
 		*size = payload_data->length;
@@ -1077,7 +1048,7 @@ int nfc_ndef_record_get_type(nfc_ndef_record_h record, unsigned char **type,
 	if (record == NULL || type == NULL || size == NULL)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_get_record_type(record, (data_h *)&type_data);
+	ret = net_nfc_get_record_type(record, &type_data);
 	if (ret == NET_NFC_OK) {
 		*type = type_data->buffer;
 		*size = type_data->length;
@@ -1100,7 +1071,7 @@ int nfc_ndef_record_get_id(nfc_ndef_record_h record, unsigned char **id, int *si
 	*id = NULL;
 	*size = 0;
 
-	ret = net_nfc_get_record_id(record, (data_h *)&id_data);
+	ret = net_nfc_get_record_id(record, &id_data);
 	if (ret == NET_NFC_OK) {
 		*id = id_data->buffer;
 		*size = id_data->length;
@@ -1200,9 +1171,7 @@ int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message,
 	if (ndef_message == NULL || rawdata == NULL || rawdata_size <= 0)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_create_ndef_message_from_rawdata(
-			(ndef_message_h *)ndef_message,
-			(data_h)&rawdata_data);
+	ret = net_nfc_create_ndef_message_from_rawdata(ndef_message, &rawdata_data);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -1244,14 +1213,13 @@ int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
 	*rawdata = NULL;
 	*rawdata_size = 0;
 
-	ret = net_nfc_create_rawdata_from_ndef_message(ndef_message,
-			(data_h *)&rawdata_data);
+	ret = net_nfc_create_rawdata_from_ndef_message(ndef_message, &rawdata_data);
 	if (ret == NET_NFC_OK) {
 		*rawdata = calloc(1, rawdata_data->length);
 		memcpy(*rawdata, rawdata_data->buffer, rawdata_data->length);
 		*rawdata_size = rawdata_data->length;
 
-		net_nfc_free_data((data_h)rawdata_data);
+		net_nfc_free_data(rawdata_data);
 	}
 
 	return _convert_error_code(__func__, ret);
@@ -1304,9 +1272,7 @@ int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message,
 	if (ndef_message == NULL || record == NULL)
 		return _return_invalid_param(__func__);
 
-	ret = net_nfc_get_record_by_index(ndef_message,
-			index,
-			(ndef_record_h*)record);
+	ret = net_nfc_get_record_by_index(ndef_message, index, record);
 
 	return _convert_error_code(__func__, ret);
 }
@@ -1362,7 +1328,6 @@ int nfc_tag_get_ndef_size(nfc_tag_h tag, unsigned int *actual_data_size)
 int nfc_tag_foreach_information(nfc_tag_h tag, nfc_tag_information_cb callback,
 		void *user_data)
 {
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	net_nfc_tag_info_s *taglist = NULL;
 	int i;
 	bool cont;
@@ -1370,13 +1335,13 @@ int nfc_tag_foreach_information(nfc_tag_h tag, nfc_tag_information_cb callback,
 	if (tag == NULL || callback == NULL)
 		return _return_invalid_param(__func__);
 
-	taglist = tag_info->tag_info_list;
+	taglist = tag->tag_info_list;
 
 	if (taglist == NULL) {
 		return NFC_ERROR_NOT_SUPPORTED;
 	}
 
-	for (i = 0; i < tag_info->number_of_keys; i++) {
+	for (i = 0; i < tag->number_of_keys; i++) {
 		cont = callback(taglist[i].key,
 				net_nfc_get_data_buffer(taglist[i].value),
 				net_nfc_get_data_length(taglist[i].value),
@@ -1394,7 +1359,7 @@ int nfc_tag_foreach_information(nfc_tag_h tag, nfc_tag_information_cb callback,
 int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 {
 	int ret;
-	net_nfc_target_info_h result = NULL;
+	net_nfc_target_info_s *result = NULL;
 
 	if (tag == NULL)
 		return _return_invalid_param(__func__);
@@ -1404,7 +1369,7 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 	if (gdbus_nfc_context.current_tag == NULL) {
 		ret = net_nfc_client_tag_get_current_tag_info_sync(&result);
 		if (ret == NET_NFC_OK) {
-			*tag = (nfc_tag_h)result;
+			*tag = result;
 		}
 	} else {
 		/* FIXME ??? */
@@ -1419,7 +1384,7 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 int nfc_manager_get_connected_target(nfc_p2p_target_h *target)
 {
 	int ret;
-	net_nfc_target_handle_h result = NULL;
+	net_nfc_target_handle_s *result = NULL;
 
 	if (target == NULL)
 		return _return_invalid_param(__func__);
@@ -1473,8 +1438,7 @@ void _nfc_manager_tag_detached_cb(void *user_data)
 
 	if (gdbus_nfc_context.current_tag != NULL )
 	{
-		net_nfc_release_tag_info(
-				(net_nfc_target_info_h)gdbus_nfc_context.current_tag);
+		net_nfc_release_tag_info(gdbus_nfc_context.current_tag);
 		gdbus_nfc_context.current_tag = NULL;
 	}
 }
@@ -1549,7 +1513,7 @@ bool nfc_manager_is_system_handler_enabled(void)
 /******************************Handover*******************************/
 
 static void _net_nfc_manager_p2p_handover_cb(net_nfc_error_e result,
-		net_nfc_conn_handover_carrier_type_e carrier, data_h ac_data, void *user_data)
+		net_nfc_conn_handover_carrier_type_e carrier, data_s *ac_data, void *user_data)
 {
 	nfc_p2p_connection_handover_completed_cb callback;
 	void *user_param;
@@ -1565,16 +1529,14 @@ static void _net_nfc_manager_p2p_handover_cb(net_nfc_error_e result,
 		char buffer[50] = { 0, };
 
 		if (carrier == NET_NFC_CONN_HANDOVER_CARRIER_BT) {
-			data_s *data = (data_s *)ac_data;
-
 			carrior_type = NFC_AC_TYPE_BT;
-			if (data != NULL && data->buffer != NULL)
+			if (ac_data != NULL && ac_data->buffer != NULL)
 			{
 				snprintf(buffer, sizeof(buffer),
 						"%02x:%02x:%02x:%02x:%02x:%02x",
-						data->buffer[0], data->buffer[1],
-						data->buffer[2], data->buffer[3],
-						data->buffer[4], data->buffer[5]);
+						ac_data->buffer[0], ac_data->buffer[1],
+						ac_data->buffer[2], ac_data->buffer[3],
+						ac_data->buffer[4], ac_data->buffer[5]);
 			}
 		}
 
@@ -1630,7 +1592,7 @@ int nfc_p2p_connection_handover(nfc_p2p_target_h target, nfc_ac_type_e type,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_p2p_connection_handover(
-				(net_nfc_target_handle_h)target,
+				(net_nfc_target_handle_s*)target,
 				net_ac_type,
 				_net_nfc_manager_p2p_handover_cb,
 				parameter);
@@ -1678,7 +1640,7 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message,
 		nfc_p2p_send_completed_cb callback, void *user_data)
 {
 	int ret;
-	data_h rawdata;
+	data_s *rawdata;
 	GVariant *parameter;
 
 	if (target == NULL || message == NULL)
@@ -1698,7 +1660,7 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		net_nfc_create_rawdata_from_ndef_message(message, &rawdata);
-		ret = net_nfc_client_p2p_send((net_nfc_target_handle_h)target,
+		ret = net_nfc_client_p2p_send((net_nfc_target_handle_s*)target,
 				rawdata,
 				_p2p_send_cb,
 				parameter);
@@ -1718,7 +1680,7 @@ int nfc_p2p_send_no_permission(nfc_p2p_target_h target,
 		nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data)
 {
 	int ret;
-	data_h rawdata;
+	data_s *rawdata;
 	GVariant *parameter;
 
 	if (target == NULL || message == NULL)
@@ -1733,7 +1695,7 @@ int nfc_p2p_send_no_permission(nfc_p2p_target_h target,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		net_nfc_create_rawdata_from_ndef_message(message, &rawdata);
-		ret = net_nfc_client_p2p_send((net_nfc_target_handle_h)target,
+		ret = net_nfc_client_p2p_send((net_nfc_target_handle_s*)target,
 				rawdata,
 				_p2p_send_cb,
 				parameter);
@@ -1749,12 +1711,12 @@ int nfc_p2p_send_no_permission(nfc_p2p_target_h target,
 	return _convert_error_code(__func__, ret);
 }
 
-static void _net_nfc_manager_p2p_set_data_received_cb(data_h data,
+static void _net_nfc_manager_p2p_set_data_received_cb(data_s *data,
 		void *user_data)
 {
 	if (gdbus_nfc_context.on_p2p_recv_cb != NULL)
 	{
-		ndef_message_h ndef_message;
+		ndef_message_s *ndef_message;
 
 		net_nfc_create_ndef_message_from_rawdata(&ndef_message, data);
 
@@ -1892,7 +1854,7 @@ int nfc_snep_start_server(nfc_p2p_target_h target, const char *san, int sap,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		result = net_nfc_client_snep_start_server(
-				(net_nfc_target_handle_h)target,
+				(net_nfc_target_handle_s*)target,
 				san,
 				(sap_t)sap,
 				_net_nfc_manager_snep_start_server,
@@ -1976,7 +1938,7 @@ int nfc_snep_start_client(nfc_p2p_target_h target, const char *san, int sap,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		result = net_nfc_client_snep_start_client(
-				(net_nfc_target_handle_h)target,
+				(net_nfc_target_handle_s*)target,
 				san,
 				(sap_t)sap,
 				_net_nfc_manager_snep_start_client,
@@ -1995,7 +1957,7 @@ static void _net_nfc_manager_snep_send_request(
 		net_nfc_snep_handle_h target,
 		net_nfc_snep_type_t event,
 		net_nfc_error_e result,
-		ndef_message_h msg,
+		ndef_message_s *msg,
 		void *user_data)
 {
 	nfc_snep_event_cb callback;
@@ -2032,7 +1994,7 @@ int nfc_snep_send_client_request(nfc_p2p_snep_h handle, nfc_snep_type_e type,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		result = net_nfc_client_snep_send_client_request(
-				(net_nfc_target_handle_h)handle,
+				(net_nfc_target_handle_s*)handle,
 				type,
 				msg,
 				_net_nfc_manager_snep_send_request,
@@ -2048,7 +2010,7 @@ int nfc_snep_send_client_request(nfc_p2p_snep_h handle, nfc_snep_type_e type,
 }
 
 static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t event,
-		net_nfc_error_e result, ndef_message_h msg, void *user_data)
+		net_nfc_error_e result, ndef_message_s *msg, void *user_data)
 {
 	nfc_snep_event_cb callback;
 	void *user_param;
@@ -2086,7 +2048,7 @@ static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t eve
 			break;
 		}
 
-		callback(target, event, _convert_error_code(__func__, result), (ndef_message_h)msg, user_param);
+		callback(target, event, _convert_error_code(__func__, result), msg, user_param);
 	}
 
 	if ((int)event == NFC_SNEP_EVENT_UNREGISTER) {
@@ -2240,7 +2202,7 @@ int nfc_se_open_secure_element(nfc_se_type_e se_type, nfc_se_h *handle)
 {
 	net_nfc_error_e result;
 	net_nfc_se_type_e type;
-	net_nfc_target_handle_h temp = NULL;
+	net_nfc_target_handle_s *temp = NULL;
 
 	switch (se_type)
 	{
@@ -2283,9 +2245,9 @@ int nfc_se_send_apdu(nfc_se_h handle, unsigned char *cmd, unsigned int cmd_len,
 	command.length = cmd_len;
 
 	result = net_nfc_client_se_send_apdu_sync(
-			(net_nfc_target_handle_h)handle,
-			(data_h)&command,
-			(data_h *)&response);
+			(net_nfc_target_handle_s*)handle,
+			&command,
+			&response);
 
 	if (result == NET_NFC_OK && response != NULL
 			&& response->buffer != NULL) {
@@ -2303,7 +2265,7 @@ int nfc_se_send_apdu(nfc_se_h handle, unsigned char *cmd, unsigned int cmd_len,
 	}
 
 	if (response != NULL) {
-		net_nfc_free_data((data_h)response);
+		net_nfc_free_data(response);
 	}
 
 	return _convert_error_code(__func__, result);
@@ -2322,8 +2284,8 @@ int nfc_se_get_atr(nfc_se_h handle, unsigned char **atr, unsigned int *atr_len)
 	*atr_len = 0;
 
 	result = net_nfc_client_se_get_atr_sync(
-			(net_nfc_target_handle_h)handle,
-			(data_h *)&response);
+			(net_nfc_target_handle_s*)handle,
+			&response);
 
 	if (result == NET_NFC_OK && response != NULL
 			&& response->buffer != NULL && response->length > 0) {
@@ -2337,7 +2299,7 @@ int nfc_se_get_atr(nfc_se_h handle, unsigned char **atr, unsigned int *atr_len)
 	}
 
 	if (response != NULL) {
-		net_nfc_free_data((data_h)response);
+		net_nfc_free_data(response);
 	}
 
 	return _convert_error_code(__func__, result);
@@ -2348,7 +2310,7 @@ int nfc_se_close_secure_element(nfc_se_h handle)
 	net_nfc_error_e result;
 
 	result = net_nfc_client_se_close_internal_secure_element_sync(
-			(net_nfc_target_handle_h)handle);
+			(net_nfc_target_handle_s*)handle);
 
 	return _convert_error_code(__func__, result);
 }
@@ -2373,7 +2335,7 @@ void nfc_manager_unset_se_event_cb(void)
 	gdbus_nfc_context.on_se_transaction_event_user_data = NULL;
 }
 
-static void _se_transaction_event_cb(data_h aid, data_h param, void *user_data)
+static void _se_transaction_event_cb(data_s *aid, data_s *param, void *user_data)
 {
 	if (gdbus_nfc_context.on_se_transaction_event_cb != NULL) {
 		gdbus_nfc_context.on_se_transaction_event_cb(
@@ -2408,7 +2370,7 @@ void nfc_manager_unset_se_transaction_event_cb(void)
 /************************************Raw Data- Transceive*********************/
 
 static void _net_nfc_manager_tag_transceive_data(net_nfc_error_e result,
-		data_h arg_data, void *user_data)
+		data_s *arg_data, void *user_data)
 {
 	nfc_tag_transceive_completed_cb callback;
 	void *user_param;
@@ -2424,10 +2386,8 @@ static void _net_nfc_manager_tag_transceive_data(net_nfc_error_e result,
 		int buffer_size = 0;
 
 		if (result == NET_NFC_OK && arg_data != NULL) {
-			data_s *data = (data_s *)arg_data;
-
-			buffer = data->buffer;
-			buffer_size = data->length;
+			buffer = arg_data->buffer;
+			buffer_size = arg_data->length;
 		}
 
 		callback(_convert_error_code(__func__, result),
@@ -2444,7 +2404,6 @@ int nfc_tag_transceive(nfc_tag_h tag, unsigned char *buffer, int buffer_size,
 {
 	int ret;
 	data_s rawdata = { buffer, buffer_size };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL || buffer == NULL || buffer_size <= 0)
@@ -2466,8 +2425,8 @@ int nfc_tag_transceive(nfc_tag_h tag, unsigned char *buffer, int buffer_size,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_transceive_data(
-				(net_nfc_target_handle_h)tag_info->handle,
-				(data_h)&rawdata,
+				tag->handle,
+				&rawdata,
 				_net_nfc_manager_tag_transceive_data,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -2509,7 +2468,6 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 {
 	int ret;
 	data_s auth_key_data = { auth_key, 6 };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL || auth_key == NULL)
@@ -2524,9 +2482,9 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_authenticate_with_keyA(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				sector_index,
-				(data_h)&auth_key_data,
+				&auth_key_data,
 				_net_nfc_manager_mifare_authenticate_with_keyA,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -2566,7 +2524,6 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 {
 	int ret;
 	data_s auth_key_data = { auth_key, 6 };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL || auth_key == NULL)
@@ -2581,9 +2538,9 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_authenticate_with_keyB(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				sector_index,
-				(data_h)&auth_key_data,
+				&auth_key_data,
 				_net_nfc_manager_mifare_authenticate_with_keyB,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -2598,7 +2555,7 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 
 /* FIXME */
 static void _net_nfc_manager_mifare_read_block(net_nfc_error_e result,
-		data_h data, void *user_data)
+		data_s *data, void *user_data)
 {
 	nfc_mifare_read_block_completed_cb callback;
 	void *user_param;
@@ -2614,10 +2571,8 @@ static void _net_nfc_manager_mifare_read_block(net_nfc_error_e result,
 		int length = 0;
 
 		if (result == NET_NFC_OK && data != NULL) {
-			data_s *temp = (data_s *)data;
-
-			buffer = temp->buffer;
-			length = temp->length;
+			buffer = data->buffer;
+			length = data->length;
 		}
 
 		callback(_convert_error_code(__func__, result),
@@ -2633,7 +2588,6 @@ int nfc_mifare_read_block(nfc_tag_h tag, int block_index,
 		nfc_mifare_read_block_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -2648,7 +2602,7 @@ int nfc_mifare_read_block(nfc_tag_h tag, int block_index,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_read(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
 				_net_nfc_manager_mifare_read_block,
 				parameter);
@@ -2664,7 +2618,7 @@ int nfc_mifare_read_block(nfc_tag_h tag, int block_index,
 #if 0
 /* FIXME : ... */
 static void _mifare_read_page(net_nfc_error_e result,
-		data_h data,
+		data_s *data,
 		void *user_data)
 {
 	nfc_mifare_read_page_completed_cb callback;
@@ -2681,10 +2635,8 @@ static void _mifare_read_page(net_nfc_error_e result,
 		int length = 0;
 
 		if (result == NET_NFC_OK && data != NULL) {
-			data_s *temp = (data_s *)data;
-
-			buffer = temp->buffer;
-			length = temp->length;
+			buffer = data->buffer;
+			length = data->length;
 		}
 
 		callback(_convert_error_code(__func__, result),
@@ -2749,7 +2701,6 @@ int nfc_mifare_write_block(nfc_tag_h tag, int block_index, unsigned char *buffer
 {
 	int ret;
 	data_s block_data = { buffer, buffer_size };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL || buffer == NULL || buffer_size <= 0)
@@ -2764,9 +2715,9 @@ int nfc_mifare_write_block(nfc_tag_h tag, int block_index, unsigned char *buffer
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_write_block(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
-				(data_h)&block_data,
+				&block_data,
 				_net_nfc_manager_mifare_write_block,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -2802,7 +2753,6 @@ int nfc_mifare_write_page(nfc_tag_h tag, int page_index, unsigned char *buffer,
 {
 	int ret;
 	data_s block_data = { buffer, buffer_size };
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL || buffer == NULL || buffer_size <= 0)
@@ -2817,9 +2767,9 @@ int nfc_mifare_write_page(nfc_tag_h tag, int page_index, unsigned char *buffer,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_write_page(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				page_index,
-				(data_h)&block_data,
+				&block_data,
 				_mifare_write_page,
 				parameter);
 		if (ret != NET_NFC_OK) {
@@ -2855,7 +2805,6 @@ int nfc_mifare_increment(nfc_tag_h tag, int block_index, int value,
 		nfc_mifare_increment_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL )
@@ -2870,7 +2819,7 @@ int nfc_mifare_increment(nfc_tag_h tag, int block_index, int value,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_increment(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
 				value,
 				_net_nfc_manager_mifare_increment,
@@ -2908,7 +2857,6 @@ int nfc_mifare_decrement(nfc_tag_h tag, int block_index, int value,
 		nfc_mifare_decrement_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -2923,7 +2871,7 @@ int nfc_mifare_decrement(nfc_tag_h tag, int block_index, int value,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_decrement(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
 				value,
 				_net_nfc_manager_mifare_decrement,
@@ -2961,7 +2909,6 @@ int nfc_mifare_transfer(nfc_tag_h tag, int block_index,
 		nfc_mifare_transfer_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -2976,7 +2923,7 @@ int nfc_mifare_transfer(nfc_tag_h tag, int block_index,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_transfer(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
 				_net_nfc_manager_mifare_transfer,
 				parameter);
@@ -3013,7 +2960,6 @@ int nfc_mifare_restore(nfc_tag_h tag, int block_index,
 		nfc_mifare_restore_completed_cb callback, void *user_data)
 {
 	int ret;
-	net_nfc_target_info_s *tag_info = (net_nfc_target_info_s *)tag;
 	GVariant *parameter;
 
 	if (tag == NULL)
@@ -3028,7 +2974,7 @@ int nfc_mifare_restore(nfc_tag_h tag, int block_index,
 			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
 		ret = net_nfc_client_mifare_restore(
-				(net_nfc_target_handle_h)tag_info->handle,
+				tag->handle,
 				block_index,
 				_net_nfc_manager_mifare_restore,
 				parameter);
