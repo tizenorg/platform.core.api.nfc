@@ -1,7 +1,7 @@
 CC ?= gcc
 
 C_FILES = $(shell ls *.c)
-	
+
 PKGS = glib-2.0 capi-network-nfc
 
 LDFLAGS = `pkg-config --libs $(PKGS)`
