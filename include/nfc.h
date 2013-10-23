@@ -155,7 +155,8 @@ typedef enum{
 	NFC_SE_EVENT_FIELD_ON, /**< When the CLF(Contactless Front-end) detects a RF field, the card RF gate sends the event #NFC_SE_EVENT_FIELD_ON to the card application gate.\nWhen there are multiple open card RF gates the CLF shall send the #NFC_SE_EVENT_FIELD_ON on all open pipes to these gates.Next the CLF starts the initialization and anti-collision process as defined in ISO/IEC 14443-3 [6]*/
 	NFC_SE_EVENT_FIELD_OFF,	/**< When the CLF(Contactless Front-end) detects that the RF field is off, the card RF gate shall send #NFC_SE_EVENT_FIELD_OFF to the card application gate.\nWhen there are multiple open card RF gates the CLF shall send the #NFC_SE_EVENT_FIELD_OFF to one gate only.*/
 	NFC_SE_EVENT_TRANSACTION, /**< This event  notifies , external reader trys to access secure element */
-	NFC_SE_EVENT_SE_TYPE_CHANGED /**< This event notifies, changing the emulated secure element type */
+	NFC_SE_EVENT_SE_TYPE_CHANGED, /**< This event notifies, changing the emulated secure element type */
+	NFC_SE_EVENT_SE_CARD_EMULATION_CHANGED
 } nfc_se_event_e;
 
 /**
@@ -167,6 +168,15 @@ typedef enum{
 	NFC_SE_TYPE_ESE = 0x01, /**< SmartMX type card emulation */
 	NFC_SE_TYPE_UICC = 0x02 /**< UICC type card emulation */
 } nfc_se_type_e;
+
+/**
+ *  * @brief Enumerations for NFC Card Emulation Mode type
+ *   * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *    */
+typedef enum{
+	NFC_SE_CARD_EMULATION_MODE_OFF = 0x00, /**< Card Emulation mode OFF */
+	NFC_SE_CARD_EMULATION_MODE_ON = 0x01, /**< Card Emulation mode ON */
+} nfc_se_card_emulation_mode_type_e;
 
 /**
  * @brief Enumerations for NFC AC(Alternative Carrier)
@@ -566,6 +576,7 @@ typedef void (*nfc_se_event_cb)(nfc_se_event_e event , void *user_data);
  * @remarks This event  notifies , external reader trys to access secure element.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
+ * @param [in] se type
  * @param [in] aid Application Id, specified in ISO/IEC 7816-4
  * @param [in] aid_size The size of aid (5~16)
  * @param [in] param The parameter list, specified in ISO/IEC 8825-1
@@ -575,7 +586,7 @@ typedef void (*nfc_se_event_cb)(nfc_se_event_e event , void *user_data);
  * @see nfc_manager_set_se_transaction_event_cb()
  * @see nfc_manager_unset_se_transaction_event_cb()
  */
-typedef void (*nfc_se_transaction_event_cb)(unsigned char* aid, int aid_size , unsigned char* param, int param_size,  void *user_data);
+typedef void (*nfc_se_transaction_event_cb)(nfc_se_type_e se_type, unsigned char* aid, int aid_size , unsigned char* param, int param_size,  void *user_data);
 
 
 
@@ -635,6 +646,7 @@ typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc
  *
  * @see nfc_manager_set_activation()
  */
+
 bool nfc_manager_is_supported(void);
 
 /**
@@ -852,6 +864,7 @@ void nfc_manager_unset_se_event_cb(void);
  * @brief Registers a callback function for receiving  Secure Element (SIM/UICC(Universal Integrated Circuit Card)) transaction event(#NFC_SE_EVENT_TRANSACTION) data.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
+ * @param [in] se_type The type os secure element
  * @param [in] callback The callback function called when occurred SE transaction event.
  * @param [in] user_data The user data to be passed to the callback function
  *
@@ -862,16 +875,19 @@ void nfc_manager_unset_se_event_cb(void);
  * @see nfc_se_transaction_event_cb()
  * @see nfc_manager_unset_se_transaction_event_cb()
  */
-int nfc_manager_set_se_transaction_event_cb(nfc_se_transaction_event_cb callback, void *user_data);
+int nfc_manager_set_se_transaction_event_cb(nfc_se_type_e se_type,
+		nfc_se_transaction_event_cb callback, void *user_data);
 
 /**
  * @brief Unregisters the callback function.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
+ * @param [in] se_type The type of secure element.
+ *
  * @see nfc_se_transaction_event_cb()
  * @see nfc_manager_set_se_transaction_event_cb()
  */
-void nfc_manager_unset_se_transaction_event_cb(void);
+void nfc_manager_unset_se_transaction_event_cb(nfc_se_type_e se_type);
 
 /**
  * @brief Gets NDEF message cached when the tag is detected or when data received from NFC peer-to-peer target.
@@ -1193,7 +1209,7 @@ int nfc_ndef_record_get_id(nfc_ndef_record_h record, unsigned char **id, int *si
  * @retval #NFC_ERROR_NONE Successful
  * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
  */
-int nfc_ndef_record_get_payload(nfc_ndef_record_h record, unsigned char ** payload, int *size);
+int nfc_ndef_record_get_payload(nfc_ndef_record_h record, unsigned char ** payload, unsigned int *size);
 
 /**
  * @brief Gets record type.
@@ -1361,7 +1377,8 @@ int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message);
  * @see nfc_ndef_message_destroy()
  * @see nfc_ndef_message_get_rawdata()
  */
-int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message, const unsigned char *rawdata, int rawdata_size);
+int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message,
+		const unsigned char *rawdata, unsigned int rawdata_size);
 
 /**
  * @brief Destroys NDEF message handle
@@ -1411,7 +1428,8 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message, int *coun
  *
  * @see nfc_ndef_message_create_from_rawdata()
  */
-int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message, unsigned char **rawdata, int *rawdata_size);
+int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
+		unsigned char **rawdata, unsigned int *rawdata_size);
 
 /**
  * @brief Appends a record into NDEF message

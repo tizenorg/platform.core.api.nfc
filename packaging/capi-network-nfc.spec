@@ -1,7 +1,7 @@
 #sbs-git:slp/api/nfc capi-network-nfc 0.0.1 14f15050f8f6ff8217421da04fa5d66e834e2016
 Name:       capi-network-nfc
 Summary:    A NFC library in SLP C API
-Version:    0.0.10
+Version:    0.0.11
 Release:    0
 Group:      API/C API
 License:    Apache-2.0

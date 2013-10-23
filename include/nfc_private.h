@@ -57,8 +57,16 @@ typedef struct {
 
 	nfc_initialize_completed_cb	 	on_initialize_completed_cb;
 
-	nfc_se_transaction_event_cb		on_se_transaction_event_cb;
-	void *						on_se_transaction_event_user_data;
+	//nfc_se_transaction_event_cb		on_se_transaction_event_cb;
+	//void *						on_se_transaction_event_user_data;
+
+	nfc_se_transaction_event_cb		on_eSE_transaction_event_cb;
+	void *						on_eSE_transaction_event_user_data;
+
+	nfc_se_transaction_event_cb		on_UICC_transaction_event_cb;
+	void *						on_UICC_transaction_event_user_data;
+
+	net_nfc_se_type_e						on_se_type;
 
 	nfc_activation_changed_cb	on_activation_changed_cb;
 	void *						on_activation_changed_user_data;

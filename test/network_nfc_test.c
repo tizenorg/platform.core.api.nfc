@@ -76,7 +76,7 @@ void print_ndef_message(nfc_ndef_message_h message){
 	unsigned char *type;
 	int type_size;
 	unsigned char *payload;
-	int payload_size;
+	uint32_t payload_size;
 	nfc_ndef_record_h record;
 	int ret;
 
@@ -133,7 +133,7 @@ void ndef_record_create_test(nfc_error_e error, void *user_data){
 	unsigned char *id;
 	int id_size;
 	unsigned char *payload;
-	int payload_size;
+	unsigned int payload_size;
 
 	char *strp = NULL;
 	char *strp2 = NULL;
@@ -394,6 +394,12 @@ void _target_discovered_for_connect_handover_cb(nfc_discovered_type_e type, nfc_
 		ecore_idler_add(handover_test, target);
 	}
 }
+void _card_emulation_changed_cb(nfc_se_event_e event , void *user_data){
+	if(NFC_SE_EVENT_SE_CARD_EMULATION_CHANGED == event)
+	{
+		printf("CARD_EMULATION_CHANGED arrived!!!!\n");
+	}
+}
 
 void send_ndef_to_peer(nfc_error_e error, void *user_data){
 
@@ -428,6 +434,27 @@ void connect_handover_to_peer(nfc_error_e error, void *user_data){
 	printf("Now, Bring the target closer. Will be tried to connect handover\n");
 	ecore_timer_add(1, timeout_handler, NULL);
 }
+
+
+void set_card_emulation_cb_test(nfc_error_e error, void *user_data){
+	int ret ;
+	success = 0;
+	timeout_counter =30;
+
+	ret = nfc_manager_set_se_event_cb(_card_emulation_changed_cb, NULL);
+	if(0 == ret)
+	{
+		printf("card emulation cb registered. Will be tried to card emulation change\n");
+
+	}
+
+	ret = nfc_se_enable_card_emulation();
+
+	printf("card emulation result is = %d\n", ret);
+	ecore_timer_add(1, timeout_handler, NULL);
+}
+
+
 
 void _p2p_recv_cb(nfc_p2p_target_h target , nfc_ndef_message_h message, void *user_data){
 
@@ -511,8 +538,7 @@ char *menu =
 
 	" g. ON nfc_manager_enable_system_handler\n"
 	" h. OFF nfc_manager_enable_system_handler\n"
-
-
+	" i. connect handover to peer\n"
 
 	"------------------\n"
 	">";
@@ -527,14 +553,14 @@ int main(int argc, char ** argv)
 {
 	elm_init(argc, argv);
 	is_terminate = 0;
-	char select[255];
+	char select;
 	int ret;
 
 
-	printf( menu );
-	gets(select);
+	printf("%s", menu );
+	ret = scanf("%c", &select);
 
-	switch(select[0]){
+	switch(select){
 
 		case '0':
 			ret =  nfc_manager_set_activation(0, set_activation_completed_cb, NULL);
@@ -631,7 +657,10 @@ int main(int argc, char ** argv)
 			elm_shutdown();
 			return 0;
 
-
+		case 'i':
+			ret = nfc_manager_initialize(set_card_emulation_cb_test,NULL);
+			print_result("nfc_manager_initialize", ret);
+			break;
 
 		default:
 			printf("wrong selection!\n");
