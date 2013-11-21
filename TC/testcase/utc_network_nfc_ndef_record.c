@@ -309,7 +309,7 @@ static void utc_nfc_ndef_record_get_id_n(void)
 static void utc_nfc_ndef_record_get_payload_p(void)
 {
 	int ret;
-	int size;
+	uint32_t size;
 	nfc_ndef_record_h record;
 	unsigned char *payload;
 

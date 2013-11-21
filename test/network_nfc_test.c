@@ -76,7 +76,7 @@ void print_ndef_message(nfc_ndef_message_h message){
 	unsigned char *type;
 	int type_size;
 	unsigned char *payload;
-	int payload_size;
+	uint32_t payload_size;
 	nfc_ndef_record_h record;
 	int ret;
 
@@ -133,7 +133,7 @@ void ndef_record_create_test(nfc_error_e error, void *user_data){
 	unsigned char *id;
 	int id_size;
 	unsigned char *payload;
-	int payload_size;
+	unsigned int payload_size;
 
 	char *strp = NULL;
 	char *strp2 = NULL;

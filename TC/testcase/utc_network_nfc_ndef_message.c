@@ -107,7 +107,7 @@ static void utc_nfc_ndef_message_create_from_rawdata_p(void)
 {
 	int ret;
 	unsigned char *buffer;
-	int size;
+	uint32_t int size;
 	nfc_ndef_message_h message;
 	nfc_ndef_message_h message2;
 	nfc_ndef_record_h record1;
@@ -183,7 +183,7 @@ static void utc_nfc_ndef_message_get_rawdata_p(void)
 {
 	int ret;
 	unsigned char *buffer;
-	int size;
+	uint32_t size;
 	nfc_ndef_message_h message;
 	nfc_ndef_record_h record1;
 

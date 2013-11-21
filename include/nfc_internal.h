@@ -43,6 +43,10 @@ typedef struct
 
 	nfc_se_transaction_event_cb on_se_transaction_event_cb;
 	void *on_se_transaction_event_user_data;
-}_nfc_context_s;
 
-#endif //__NFC_INTERNAL_H__
+	nfc_se_event_cb 			on_se_event_cb;
+	void				*on_se_event_user_data;
+}
+_nfc_context_s;
+
+#endif // _NFC_INTERNAL_H__
