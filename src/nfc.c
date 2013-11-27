@@ -21,8 +21,12 @@
 #include <vconf.h>
 #include <Ecore_X.h>
 #include <net_nfc_typedef_internal.h>
+#include "net_nfc_util_ndef_record.h"
 
 #include "nfc_internal.h"
+
+
+#define TIZEN_APP_RECORD_TYPE "tizen.org:app"
 
 #define LOG_TAG "CAPI_NETWORK_NFC"
 #include <dlog.h>
@@ -3122,4 +3126,39 @@ int nfc_mifare_restore(nfc_tag_h tag, int block_index,
 	}
 
 	return _convert_error_code(__func__, ret);
+}
+
+int net_nfc_create_tizen_app_launch_record(data_s* app_id,nfc_ndef_record_h* ndef_record)
+{
+
+	ndef_record_s* tizenAppRec = NULL;
+	data_s type_data ;
+	data_s payload_data;
+
+	if(app_id == NULL || app_id->buffer == NULL)
+		return _return_invalid_param(__func__);
+
+	type_data.buffer = (uint8_t*)TIZEN_APP_RECORD_TYPE;
+	type_data.length = strlen(TIZEN_APP_RECORD_TYPE);
+
+	payload_data.length = app_id->length;
+
+	payload_data.buffer = (uint8_t*)calloc(1,payload_data.length);
+
+	if (payload_data.buffer == NULL)
+	{
+		return NET_NFC_ALLOC_FAIL;
+	}
+
+	memcpy(payload_data.buffer,app_id->buffer,payload_data.length);
+
+	net_nfc_util_create_record(NET_NFC_RECORD_EXTERNAL_RTD,
+				&type_data,
+				NULL,
+				&payload_data,
+				&tizenAppRec);
+
+	ndef_record = &tizenAppRec;
+
+	return NET_NFC_OK;
 }
