@@ -28,6 +28,7 @@ typedef struct
 
 	net_nfc_target_info_s *current_tag;
 	net_nfc_target_handle_s *current_target;
+	nfc_phdc_target_h phdc_target;
 
 	nfc_tag_discovered_cb on_tag_discovered_cb;
 	void *on_tag_discovered_user_data;
@@ -46,6 +47,12 @@ typedef struct
 
 	nfc_se_event_cb 			on_se_event_cb;
 	void				*on_se_event_user_data;
+
+	nfc_phdc_transport_connect_indication_cb on_phdc_transport_connect_indication_cb;
+	void *on_phdc_transport_connect_user_data;
+
+	nfc_phdc_data_recived_cb on_phdc_recv_cb;
+	void *on_phdc_recv_user_data;
 }
 _nfc_context_s;
 

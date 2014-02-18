@@ -203,6 +203,16 @@ typedef enum {
 } nfc_snep_event_e;
 
 /**
+ * @brief Enumerations for PHDC event
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ */
+typedef enum {
+
+	NFC_PHDC_EVENT_REGISTERED = 0x01, /**< service registered */
+	NFC_PHDC_EVENT_UNREGISTERED = 0x02, /**< service unregistered */
+} nfc_phdc_event_e;
+
+/**
  * @brief Enumerations for SNEP request type
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
  */
@@ -232,6 +242,22 @@ typedef enum {
 	NFC_PRBS_RATE_212K = 0x02, /**< 212kbps */
 	NFC_PRBS_RATE_424K = 0x03, /**< 424kbps */
 } nfc_prbs_rate_e;
+
+/**
+ * @brief Enumerations for NFC PHDC  type
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ */
+typedef enum {
+	NFC_PHDC_TRANSPORT_CONNECT,	/**< connected, activated event*/
+	NFC_PHDC_TRANSPORT_DISCONNECT,	/**< disconnect, deactivated event*/
+} nfc_phdc_transport_type_e;
+
+typedef enum
+{
+	NFC_PHDC_UNKNOWN = 0x00,
+	NFC_PHDC_MANAGER ,
+	NFC_PHDC_AGENT,
+} nfc_phdc_role_e;
 
 /**
  * @brief The handle to the NDEF record
@@ -269,6 +295,13 @@ typedef struct _nfc_p2p_snep_s *nfc_p2p_snep_h;
  * @ingroup CAPI_NETWORK_NFC_TAG_MODULE
  */
 typedef void *nfc_se_h;
+
+/**
+ * @brief The handle to NFC phdc instance/context
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ */
+typedef void *nfc_phdc_target_h;
+
 
 /**
  * @brief The default factory key.
@@ -708,6 +741,62 @@ typedef void (*nfc_snep_event_cb)(nfc_p2p_snep_h handle,
 	nfc_ndef_message_h msg, void *user_data);
 
 /**
+ * @brief Called after net_nfc_phdc_register() has completed.
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] result The result of function call
+ * @param [in] event The PHDC event for which the callback is invoked
+ * @param [in] user_data The user data passed from nfc_phdc_register()
+ *
+ *
+ * @see nfc_phdc_register()
+ */
+typedef void (*nfc_phdc_event_cb)(nfc_error_e result, nfc_phdc_event_e event, void *user_data);
+
+
+/**
+ * @brief Called after nfc_phdc_send() has completed.
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] target The handle to phdc target
+ * @param [in] result The result of function call
+ * @param [in] user_data The user data passed from nfc_phdc_register()
+ *
+ * @see nfc_phdc_send()
+ */
+typedef void (*nfc_phdc_send_cb)(nfc_phdc_target_h target, nfc_error_e result, void *user_data);
+
+
+/**
+ * @brief Called when PHDC Manager/Agent connected or disconnected
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] type The transport type connected or disconnected
+ * @param [in] target The handle to PHDC Manager/Agent
+ * @param [in] user_data The user data passed from nfc_manager_set_phdc_transport_connect_indication_cb()
+ *
+ * @see nfc_manager_set_phdc_transport_connect_indication_cb()
+ * @see nfc_manager_unset_phdc_transport_connect_indication_cb()
+ */
+typedef void (*nfc_phdc_transport_connect_indication_cb)(nfc_phdc_transport_type_e type, nfc_phdc_target_h target, void *user_data);
+
+
+/**
+ * @brief Called when PHDC Manager/Agent receives data from remote PHDC Manager/Agent
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @remarks @a data will be automatically destroyed when the callback function returns. (Do not release @a data.)
+ *
+ * @param [in] data The received PHDC Data
+ * @param [in] data_size   The size of received PHDC data
+ * @param [in] user_data The user data passed from nfc_phdc_set_recv_cb()
+ *
+ * @see nfc_phdc_set_data_received_cb()
+ * @see nfc_phdc_unset_data_received_cb()
+ */
+typedef void (*nfc_phdc_data_recived_cb)( void* data,int data_size, void *user_data);
+
+/**
  * @brief Gets the value that indicates whether NFC is supported.
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
@@ -1114,6 +1203,30 @@ int nfc_manager_get_card_emulation_se_type(nfc_se_type_e* type);
  *
  */
 int nfc_manager_set_se_type(nfc_se_type_e type);
+/**
+ * @brief Registers a callback function for receiving NFC peer-to-peer target PHDC transport connect indication.
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @param [in] callback The callback function called when NFC peer-to-peer target is received PHDC transport connect indication.
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
+ *
+ * @see nfc_phdc_transport_indication_cb()
+ */
+int nfc_phdc_set_transport_indication_cb(nfc_phdc_transport_connect_indication_cb callback, void *user_data);
+
+/**
+ * @brief Unregisters the callback function.
+ * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
+ *
+ * @see nfc_manager_set_phdc_transport_connect_indication_cb()
+ * @see nfc_phdc_transport_connect_indication_cb()
+ */
+void nfc_phdc_unset_transport_indication_cb(void);
 
 /**
  * @brief Creates a record with given parameter value.
@@ -2152,8 +2265,6 @@ int nfc_p2p_send(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_se
 */
 int nfc_p2p_send_no_permission(nfc_p2p_target_h target, nfc_ndef_message_h message, nfc_p2p_send_completed_cb callback, void *user_data);
 
-
-
 /**
  * @brief NFC Connection handover between NFC peer-to-peer target
  * @ingroup CAPI_NETWORK_NFC_P2P_MODULE
@@ -2420,6 +2531,118 @@ int nfc_se_get_atr(nfc_se_h handle, unsigned char **atr, unsigned int *atr_len);
  * @see nfc_se_open_secure_element()
  */
 int nfc_se_close_secure_element(nfc_se_h handle);
+
+/**
+ * @brief Register peer-to-peer deivce as an IEEE Agent or Manager
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] role Enumeration specifying the mode of operation ofthe device (Agent or Manager)
+ * @param [in] san The name of service (service access name)
+ * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
+ * @retval #NFC_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #NFC_ERROR_DEVICE_BUSY Device is too busy to handle your request
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ *
+*/
+int nfc_phdc_register(nfc_phdc_role_e role, const char *san, nfc_phdc_event_cb callback, void *user_data);
+
+/**
+ * @brief Unregister phdc Agent or Manager
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] role Enumeration specifying the mode of operation ofthe device (Agent or Manager)
+ * @param [in] san The name of service (service access name)
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
+ * @retval #NFC_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ *
+ * @see nfc_phdc_register_cb()
+*/
+int nfc_phdc_unregister(nfc_phdc_role_e role, const char *san);
+
+/**
+ * @brief Registers a callback function for receiving data from PHDC  Manager/Agent.
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] target The handle to PHDC context
+ * @param [in] callback The callback function to invoke when PHDC data received
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
+ * @see nfc_phdc_unset_data_received_cb()
+ * @see nfc_phdc_data_recived_cb()
+ */
+int nfc_phdc_set_data_received_cb( nfc_phdc_target_h target, nfc_phdc_data_recived_cb callback, void *user_data);
+
+/**
+ * @brief Unregisters the callback function.
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_INVALID_PARAMETER	Invalid parameter
+ *
+ * @see nfc_phdc_set_data_received_cb()
+ * @see nfc_phdc_data_recived_cb()
+ */
+int nfc_phdc_unset_data_received_cb(void);
+
+/**
+ * @brief Sends PHDC data to PHDC Manager/Agent
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] target The handle to PHDC context
+ * @param [in] data The PHDC data to be sent
+ * @param [in] data_len The PHDC data length
+ * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NET_NFC_NOT_INITIALIZED not initialized
+ * @retval #NET_NFC_INVALID_STATE   Invalid state
+ * @retval #NET_NFC_ALLOC_FAIL   memory allocation failed
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ *
+ * @see nfc_phdc_send_completed_cb()
+*/
+int nfc_phdc_send(nfc_phdc_target_h target, void* data, int data_len,  nfc_phdc_send_cb callback, void *user_data);
+
+
+/**
+ * @brief Sends  PHDC data to PHDC Manager/Agent without permission check
+ * @ingroup CAPI_NETWORK_NFC_PHDC_MODULE
+ *
+ * @param [in] target The handle to PHDC context
+ * @param [in] data The PHDC data to be sent
+ * @param [in] data_len The PHDC data length
+ * @param [in] callback The callback function to invoke after this function has completed\n It can be null if notification is not required
+ * @param [in] user_data The user data to be passed to the callback function
+ *
+ * @return 0 on success, otherwise a negative error value.
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NET_NFC_NOT_INITIALIZED not initialized
+ * @retval #NET_NFC_INVALID_STATE   Invalid state
+ * @retval #NET_NFC_ALLOC_FAIL   memory allocation failed
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_SECURITY_RESTRICTED permission restricted
+ *
+ * @see nfc_phdc_send_completed_cb()
+*/
+int nfc_phdc_send_no_permission(nfc_phdc_target_h target, void* data, int data_len, nfc_phdc_send_cb callback, void *user_data);
 
 #ifdef __cplusplus
 }

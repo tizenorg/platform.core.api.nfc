@@ -3123,3 +3123,275 @@ int nfc_mifare_restore(nfc_tag_h tag, int block_index,
 
 	return _convert_error_code(__func__, ret);
 }
+
+/********************PHDC callback*******************/
+static void _nfc_phdc_event_cb(
+		net_nfc_error_e result,
+		net_nfc_llcp_state_t event, void *user_data)
+{
+	nfc_phdc_event_cb callback;
+	void *user_param;
+	nfc_phdc_event_e phdc_event;
+
+	if(event == NET_NFC_LLCP_START)
+		phdc_event = NFC_PHDC_EVENT_REGISTERED;
+	else if(event == NET_NFC_LLCP_UNREGISTERED)
+		phdc_event = NFC_PHDC_EVENT_UNREGISTERED;
+	else
+		return;
+
+	if (user_data == NULL)
+		return;
+
+
+	g_variant_get((GVariant*)user_data, "(uu)", (guint*)&callback, (guint*)&user_param);
+
+	if (callback != NULL)
+	{
+		callback(phdc_event,_convert_error_code(__func__, result), user_param);
+	}
+
+	if(phdc_event == NFC_PHDC_EVENT_UNREGISTERED)
+		g_variant_unref((GVariant *)user_data);
+
+}
+
+static void _nfc_phdc_transport_connect_indication_cb(
+		nfc_phdc_target_h target,
+		void *user_data)
+{
+
+	gdbus_nfc_context.phdc_target =target;
+
+	if (gdbus_nfc_context.on_phdc_transport_connect_indication_cb != NULL) {
+		gdbus_nfc_context.on_phdc_transport_connect_indication_cb(
+				NFC_PHDC_TRANSPORT_CONNECT,
+				gdbus_nfc_context.phdc_target,
+				gdbus_nfc_context.on_phdc_transport_connect_user_data);
+	}
+}
+
+static void _nfc_phdc_transport_disconnect_indication_cb(void *user_data)
+{
+
+	if (gdbus_nfc_context.on_phdc_transport_connect_indication_cb != NULL) {
+		gdbus_nfc_context.on_phdc_transport_connect_indication_cb(
+				NFC_PHDC_TRANSPORT_DISCONNECT,
+				gdbus_nfc_context.phdc_target,
+				gdbus_nfc_context.on_phdc_transport_connect_user_data);
+	}
+
+	gdbus_nfc_context.phdc_target = NULL;
+}
+
+static void _nfc_phdc_send_cb(net_nfc_error_e result, void *user_data)
+{
+	nfc_phdc_send_cb callback;
+	void *user_param;
+
+	if (user_data == NULL) {
+		return;
+	}
+
+	g_variant_get((GVariant*)user_data, "(uu)", (guint*)&callback, (guint*)&user_param);
+
+	if (callback != NULL) {
+		callback(gdbus_nfc_context.phdc_target,_convert_error_code(__func__, result),
+				user_param);
+	}
+
+	g_variant_unref((GVariant *)user_data);
+}
+
+static void _nfc_phdc_data_received_cb(data_s *data,
+		void *user_data)
+{
+
+	uint8_t *buffer = NULL;
+	int length = 0;
+	data_s* arg_data = data;
+
+	buffer = arg_data->buffer;
+	length = arg_data->length;
+
+	if (gdbus_nfc_context.on_phdc_recv_cb != NULL)
+	{
+		gdbus_nfc_context.on_phdc_recv_cb(
+				buffer, length, gdbus_nfc_context.on_phdc_recv_user_data);
+	}
+}
+
+/*********************************PHDC Functions*********************************/
+
+int nfc_phdc_register(nfc_phdc_role_e role, const char *san,
+		nfc_phdc_event_cb callback, void *user_data)
+{
+	net_nfc_error_e result;
+	GVariant *parameter;
+
+	if (san == NULL)
+	{
+		return _return_invalid_param(__func__);
+	}
+
+	parameter = g_variant_new("(uu)",
+			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
+	if (parameter != NULL)
+	{
+		result = net_nfc_client_phdc_register(role, san, _nfc_phdc_event_cb,
+				parameter);
+		if (result != NET_NFC_OK)
+		{
+			g_variant_unref(parameter);
+		}
+	}
+	else
+	{
+		result = NET_NFC_ALLOC_FAIL;
+	}
+
+	return _convert_error_code(__func__, result);
+}
+
+int nfc_phdc_unregister( nfc_phdc_role_e role, const char *san)
+{
+	net_nfc_error_e result;
+
+	result = net_nfc_client_phdc_unregister(role, san);
+
+	return _convert_error_code(__func__, result);
+}
+
+int nfc_phdc_set_transport_indication_cb(
+		nfc_phdc_transport_connect_indication_cb callback, void *user_data)
+{
+	if (callback == NULL)
+		return _return_invalid_param(__func__);
+
+	gdbus_nfc_context.on_phdc_transport_connect_indication_cb = callback;
+	gdbus_nfc_context.on_phdc_transport_connect_user_data = user_data;
+
+	net_nfc_client_phdc_set_transport_connect_indication(
+			_nfc_phdc_transport_connect_indication_cb,
+			NULL);
+
+	net_nfc_client_phdc_set_transport_disconnect_indication(
+			_nfc_phdc_transport_disconnect_indication_cb,
+			NULL);
+
+	return NFC_ERROR_NONE;
+}
+
+void nfc_phdc_unset_transport_indication_cb(void)
+{
+	gdbus_nfc_context.on_phdc_transport_connect_indication_cb = NULL;
+	gdbus_nfc_context.on_phdc_transport_connect_user_data = NULL;
+
+	net_nfc_client_phdc_unset_transport_connect_indication();
+	net_nfc_client_phdc_unset_transport_disconnect_indication();
+}
+
+int nfc_phdc_set_data_received_cb(nfc_phdc_target_h target,
+		nfc_phdc_data_recived_cb callback, void *user_data)
+{
+	if (target == NULL || callback == NULL)
+		return _return_invalid_param(__func__);
+
+	if (gdbus_nfc_context.phdc_target != target)
+		return _return_invalid_param(__func__);
+
+	gdbus_nfc_context.on_phdc_recv_cb = callback;
+	gdbus_nfc_context.on_phdc_recv_user_data = user_data;
+
+	net_nfc_client_phdc_set_data_received(
+			_nfc_phdc_data_received_cb,
+			NULL);
+
+	return NFC_ERROR_NONE;
+}
+
+int nfc_phdc_unset_data_received_cb(void)
+{
+	net_nfc_client_phdc_unset_data_received();
+
+	gdbus_nfc_context.on_phdc_recv_cb = NULL;
+	gdbus_nfc_context.on_phdc_recv_user_data = NULL;
+
+	return NFC_ERROR_NONE;
+}
+
+int nfc_phdc_send(nfc_phdc_target_h target, void* rawdata, int data_len,
+		nfc_phdc_send_cb callback, void *user_data)
+{
+	int ret;
+	data_s *data;
+	GVariant *parameter;
+
+	if (target == NULL || rawdata == NULL)
+		return _return_invalid_param(__func__);
+
+	if (!nfc_manager_is_activated())
+		return NFC_ERROR_NOT_ACTIVATED;
+
+	if (_check_app_permission() == false)
+	{
+		LOGE("permission check fail");
+
+		return NFC_ERROR_SECURITY_RESTRICTED;
+	}
+
+	net_nfc_create_data(&data, NULL, data_len);
+	data->buffer = user_data;
+	data->length = data_len;
+	parameter = g_variant_new("(uu)",
+			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
+	if (parameter != NULL) {
+		ret = net_nfc_client_phdc_send(target,
+				data,
+				_nfc_phdc_send_cb,
+				parameter);
+		if (ret != NET_NFC_OK) {
+			g_variant_unref(parameter);
+		}
+	} else {
+		ret = NET_NFC_ALLOC_FAIL;
+	}
+
+
+	return _convert_error_code(__func__, ret);
+}
+int nfc_phdc_send_no_permission(nfc_phdc_target_h target,
+		void* rawdata,int data_len, nfc_phdc_send_cb callback, void *user_data)
+{
+	int ret;
+	data_s *data;
+	GVariant *parameter;
+
+	if (target == NULL || rawdata == NULL)
+		return _return_invalid_param(__func__);
+
+	if (!nfc_manager_is_activated())
+		return NFC_ERROR_NOT_ACTIVATED;
+
+	/* skip check app permission */
+	net_nfc_create_data(&data, NULL, data_len);
+	data->buffer = rawdata;
+	data->length = data_len;
+
+
+	parameter = g_variant_new("(uu)",
+			GPOINTER_TO_UINT(callback), GPOINTER_TO_UINT(user_data));
+	if (parameter != NULL) {
+		ret = net_nfc_client_phdc_send(target,
+				data,
+				_nfc_phdc_send_cb,
+				parameter);
+		if (ret != NET_NFC_OK) {
+			g_variant_unref(parameter);
+		}
+	} else {
+		ret = NET_NFC_ALLOC_FAIL;
+	}
+
+	return _convert_error_code(__func__, ret);
+}
