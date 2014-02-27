@@ -24,8 +24,13 @@ PROJECT(${fw_name} C)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 INCLUDE(FindPkgConfig)
+IF(X11_SUPPORT)
 pkg_check_modules(pkgs REQUIRED dlog glib-2.0 gio-2.0 nfc-common nfc capi-base-common
 	vconf ecore-x)
+ELSE()
+pkg_check_modules(pkgs REQUIRED dlog glib-2.0 gio-2.0 nfc-common nfc capi-base-common
+	vconf)
+ENDIF(X11_SUPPORT)
 FOREACH(flag ${pkgs_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
@@ -37,6 +42,9 @@ IF("${ARCH}" STREQUAL "arm")
     ADD_DEFINITIONS("-DTARGET")
 ENDIF("${ARCH}" STREQUAL "arm")
 
+IF(X11_SUPPORT)
+    ADD_DEFINITIONS("-DHAVE_X11")
+ENDIF(X11_SUPPORT)
 ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIB_INSTALL_DIR}")

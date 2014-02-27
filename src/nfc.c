@@ -19,7 +19,9 @@
 #include <gio/gio.h>
 
 #include <vconf.h>
+#ifdef HAVE_X11
 #include <Ecore_X.h>
+#endif
 #include <net_nfc_typedef_internal.h>
 
 #include "nfc_internal.h"
@@ -93,6 +95,7 @@ static _nfc_context_s gdbus_nfc_context;
 
 static pid_t _get_focus_app_pid()
 {
+#ifdef HAVE_X11
 	Ecore_X_Window focus;
 	pid_t pid;
 
@@ -102,6 +105,7 @@ static pid_t _get_focus_app_pid()
 	if (ecore_x_netwm_pid_get(focus, &pid))
 		return pid;
 
+#endif
 	return -1;
 }
 

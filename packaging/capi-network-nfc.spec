@@ -1,3 +1,5 @@
+%bcond_with x
+
 Name:       capi-network-nfc
 Summary:    NFC Core API
 Version:    0.1.5
@@ -14,7 +16,9 @@ BuildRequires:  nfc-client-lib-devel
 BuildRequires:  nfc-common-devel
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
+%if %{with x}
 BuildRequires:  pkgconfig(ecore-x)
+%endif
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
@@ -37,7 +41,12 @@ cp %{SOURCE1001} .
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER} \
+%if %{with x}
+         -DX11_SUPPORT=On
+%else
+         -DX11_SUPPORT=Off
+%endif
 
 make %{?jobs:-j%jobs}
 
