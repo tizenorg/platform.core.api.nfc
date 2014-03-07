@@ -394,6 +394,12 @@ void _target_discovered_for_connect_handover_cb(nfc_discovered_type_e type, nfc_
 		ecore_idler_add(handover_test, target);
 	}
 }
+void _card_emulation_changed_cb(nfc_se_event_e event , void *user_data){
+	if(NFC_SE_EVENT_SE_CARD_EMULATION_CHANGED == event)
+	{
+		printf("CARD_EMULATION_CHANGED arrived!!!!\n");
+	}
+}
 
 void send_ndef_to_peer(nfc_error_e error, void *user_data){
 

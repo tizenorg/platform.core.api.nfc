@@ -1475,7 +1475,8 @@ int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message);
  * @see nfc_ndef_message_destroy()
  * @see nfc_ndef_message_get_rawdata()
  */
-int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message, const unsigned char *rawdata, unsigned int rawdata_size);
+int nfc_ndef_message_create_from_rawdata(nfc_ndef_message_h *ndef_message,
+		const unsigned char *rawdata, unsigned int rawdata_size);
 
 /**
  * @brief Destroys NDEF message handle
@@ -1525,7 +1526,8 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message, int *coun
  *
  * @see nfc_ndef_message_create_from_rawdata()
  */
-int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message, unsigned char **rawdata, unsigned int *rawdata_size);
+int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
+		unsigned char **rawdata, unsigned int *rawdata_size);
 
 /**
  * @brief Appends a record into NDEF message
