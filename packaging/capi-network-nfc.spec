@@ -12,8 +12,13 @@ BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
+%if %{with neard_nfc}
+BuildRequires:  nfc-client-lib-neard-devel
+BuildRequires:  nfc-common-neard-devel
+%else
 BuildRequires:  nfc-client-lib-devel
 BuildRequires:  nfc-common-devel
+%endif
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 %if %{with x}
