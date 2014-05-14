@@ -119,10 +119,14 @@ static bool _check_app_permission()
 	LOGD("[check app permission] focus_app_pid [%d], current_app_pid [%d]",
 			focus_app_pid, current_app_pid);
 
+#ifdef HAVE_X11
 	if (-1 == current_app_pid)
 		return false;
 	else
 		return (focus_app_pid == current_app_pid) ? true : false;
+#endif
+
+	return true;
 }
 
 static int _return_invalid_param(const char *func)
