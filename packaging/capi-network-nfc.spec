@@ -1,38 +1,27 @@
-%bcond_with x
-%bcond_with neard_nfc
-
 Name:       capi-network-nfc
-Summary:    NFC Core API
-Version:    0.1.5
+Summary:    A NFC library in Native API
+Version:    0.2.0
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
-Source1001: 	%{name}.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
-%if %{with neard_nfc}
-BuildRequires:  nfc-client-lib-neard-devel
-BuildRequires:  nfc-common-neard-devel
-%else
 BuildRequires:  nfc-client-lib-devel
-BuildRequires:  nfc-common-devel
-%endif
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
-%if %{with x}
-BuildRequires:  pkgconfig(ecore-x)
-%endif
+BuildRequires:  pkgconfig(capi-system-info)
+
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %description
-A library for Tizen NFC Core API.
+A library for Tizen NFC Native API.
 
 %package devel
-Summary:  NFC Core API (devel)
+Summary:  A NFC library in Native API (Development)
 Group:    Network & Connectivity/Development
 Requires: %{name} = %{version}-%{release}
 
@@ -42,21 +31,23 @@ This package contains the development files for %{name}.
 
 %prep
 %setup -q
-cp %{SOURCE1001} .
 
 
 %build
+export CFLAGS="$CFLAGS -DTIZEN_ENGINEER_MODE"
+export CXXFLAGS="$CXXFLAGS -DTIZEN_ENGINEER_MODE"
+export FFLAGS="$FFLAGS -DTIZEN_ENGINEER_MODE"
+
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER} \
-%if %{with x}
-         -DX11_SUPPORT=On
-%else
-         -DX11_SUPPORT=Off
-%endif
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER} -DCMAKE_LIB_DIR=%{_libdir}
 
 make %{?jobs:-j%jobs}
 
 %install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/license
+cp -af %{_builddir}/%{name}-%{version}/packaging/capi-network-nfc %{buildroot}/usr/share/license/
+
 %make_install
 
 %post -p /sbin/ldconfig
@@ -65,12 +56,11 @@ make %{?jobs:-j%jobs}
 
 
 %files
-%manifest %{name}.manifest
-%{_libdir}/libcapi-network-nfc.so.*
-%license LICENSE.APLv2
+%manifest capi-network-nfc.manifest
+%{_libdir}/libcapi-network-nfc.so*
+/usr/share/license/capi-network-nfc
 
 %files devel
-%manifest %{name}.manifest
 %{_includedir}/network/*.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-network-nfc.so

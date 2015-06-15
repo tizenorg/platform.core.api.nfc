@@ -1,3 +1,0 @@
-PKG_NAME=capi-network-nfc
-TET_INSTALL_HOST_PATH=/var/tmp/TETware
-TET_INSTALL_TARGET_PATH=/TETware
