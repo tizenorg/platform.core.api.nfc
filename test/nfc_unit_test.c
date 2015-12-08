@@ -18,58 +18,48 @@ typedef struct {
 } tc_table_t;
 
 tc_table_t tc_table[] = {
-	/* manage api*/
-	{"nfc_manager_initialize" ,1}, //OK
+	{"nfc_manager_initialize", 1},
 	{"nfc_snep_register_server", 2},
-
-    /* -----------*/
-    {"Finish"               , 0x00ff},
-    {NULL                   , 0x0000},
+	{"Finish"               , 0x00ff},
+	{NULL                   , 0x0000},
 };
 
 void tc_usage_print(void)
 {
 	int i = 0;
 
-	while (tc_table[i].tc_name)
-	{
+	while (tc_table[i].tc_name) {
 		if (tc_table[i].tc_code != 0x00ff)
-		{
 			TC_PRT("Key %d : usage %s", tc_table[i].tc_code, tc_table[i].tc_name);
-		}
 		else
-		{
-         TC_PRT("Key %d : usage %s\n\n", 0x00ff, tc_table[i].tc_name);
-		}
+			TC_PRT("Key %d : usage %s\n\n", 0x00ff, tc_table[i].tc_name);
 
 		i++;
 	}
 }
 
-
 void _nfc_snep_event_cb(nfc_p2p_snep_h handle, nfc_snep_event_e event, nfc_error_e result, nfc_ndef_message_h msg, void *user_data)
 {
 	TC_PRT("Inside _nfc_snep_event_cb");
-	switch(event)
-	{
-		case NFC_SNEP_EVENT_STOP:
-			TC_PRT("NFC_SNEP_EVENT_STOP");
-			break;
-		case NFC_SNEP_EVENT_START:
-			TC_PRT("NFC_SNEP_EVENT_START");
-			break;
-		case NFC_SNEP_EVENT_GET:
-			TC_PRT("NFC_SNEP_EVENT_GET");
-			break;
-		case NFC_SNEP_EVENT_PUT:
-			TC_PRT("NFC_SNEP_EVENT_PUT");
-			break;
-		case NFC_SNEP_EVENT_REGISTER:
-			TC_PRT("NFC_SNEP_EVENT_REGISTER");
-			break;
-		case NFC_SNEP_EVENT_UNREGISTER:
-			TC_PRT("NFC_SNEP_EVENT_UNREGISTER");
-			break;
+	switch (event) {
+	case NFC_SNEP_EVENT_STOP:
+		TC_PRT("NFC_SNEP_EVENT_STOP");
+		break;
+	case NFC_SNEP_EVENT_START:
+		TC_PRT("NFC_SNEP_EVENT_START");
+		break;
+	case NFC_SNEP_EVENT_GET:
+		TC_PRT("NFC_SNEP_EVENT_GET");
+		break;
+	case NFC_SNEP_EVENT_PUT:
+		TC_PRT("NFC_SNEP_EVENT_PUT");
+		break;
+	case NFC_SNEP_EVENT_REGISTER:
+		TC_PRT("NFC_SNEP_EVENT_REGISTER");
+		break;
+	case NFC_SNEP_EVENT_UNREGISTER:
+		TC_PRT("NFC_SNEP_EVENT_UNREGISTER");
+		break;
 	}
 }
 
@@ -94,34 +84,33 @@ int test_input_callback(void *data)
 		TC_PRT("Finished");
 		g_main_loop_quit(main_loop);
 		break;
-	case 1: //nfc_manager_initialize
+	case 1:
 		{
 			int ret;
 			ret = nfc_manager_initialize();
 
-			if(ret == NFC_ERROR_NONE)
+			if (ret == NFC_ERROR_NONE)
 				TC_PRT("nfc initialize success");
 			else
 				TC_PRT("nfc initialize failed");
 		}
 		break;
-	case 2: //TBT - snep behavior
+	case 2:
 		{
 			int ret;
 			ret = nfc_manager_initialize();
 
-			if(ret == NFC_ERROR_NONE)
-			{
+			if (ret == NFC_ERROR_NONE) {
 				TC_PRT("register cb");
 				nfc_manager_set_p2p_target_discovered_cb(_nfc_p2p_target_discovered_cb, NULL);
 			}
 		}
-	case 3: //nfc_snep_register_server
+	case 3:
 		{
 			int ret;
 			ret = nfc_snep_register_server("default", 4, NULL, NULL);
 
-			if(ret == NFC_ERROR_NONE)
+			if (ret == NFC_ERROR_NONE)
 				TC_PRT("success");
 			else
 				TC_PRT("failed");
@@ -130,12 +119,12 @@ int test_input_callback(void *data)
 		break;
 	}
 
-    return 0;
+	return 0;
 }
 
 static gboolean key_event_cb(GIOChannel *chan,
-                GIOCondition cond,
-                gpointer data)
+		GIOCondition cond,
+		gpointer data)
 {
 	char buf[BUFFER_LEN] = { 0 };
 
@@ -160,10 +149,6 @@ static gboolean key_event_cb(GIOChannel *chan,
 int main(int argc, char ** argv)
 {
 	GIOChannel *key_io;
-
-//#if !GLIB_CHECK_VERSION(2,35,0)
-//   g_type_init();
-//#endif
 
 	key_io = g_io_channel_unix_new(fileno(stdin));
 

@@ -23,18 +23,16 @@ static void _p2p_send_cb(net_nfc_error_e result, void *user_data)
 
 	LOG_BEGIN();
 
-	if (user_data == NULL) {
+	if (user_data == NULL)
 		return;
-	}
 
 	g_variant_get((GVariant *)user_data,
 		"(uu)",
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -66,9 +64,8 @@ int nfc_p2p_send(nfc_p2p_target_h target,
 			rawdata,
 			_p2p_send_cb,
 			parameter);
-		if (ret != NET_NFC_OK) {
+		if (ret != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 
 		net_nfc_free_data(rawdata);
 	} else {
@@ -107,9 +104,8 @@ int nfc_p2p_send_no_permission(
 			rawdata,
 			_p2p_send_cb,
 			parameter);
-		if (ret != NET_NFC_OK) {
+		if (ret != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 
 		net_nfc_free_data(rawdata);
 	} else {
@@ -123,8 +119,7 @@ static void _p2p_set_data_received_cb(data_h data, void *user_data)
 {
 	LOG_BEGIN();
 
-	if (gdbus_nfc_context.on_p2p_recv_cb != NULL)
-	{
+	if (gdbus_nfc_context.on_p2p_recv_cb != NULL) {
 		ndef_message_h ndef_message;
 
 		net_nfc_create_ndef_message_from_rawdata(&ndef_message, data);
@@ -201,28 +196,28 @@ static void _snep_start_server_cb(
 		nfc_snep_event_e snep_event;
 
 		switch ((int)event) {
-		case NET_NFC_SNEP_GET :
+		case NET_NFC_SNEP_GET:
 			snep_event = NFC_SNEP_EVENT_GET;
 			break;
 
-		case NET_NFC_SNEP_PUT :
+		case NET_NFC_SNEP_PUT:
 			snep_event = NFC_SNEP_EVENT_PUT;
 			break;
 
-		case NET_NFC_LLCP_REGISTERED :
+		case NET_NFC_LLCP_REGISTERED:
 			snep_event = NFC_SNEP_EVENT_REGISTER;
 			break;
 
-		case NET_NFC_LLCP_UNREGISTERED :
+		case NET_NFC_LLCP_UNREGISTERED:
 			snep_event = NFC_SNEP_EVENT_UNREGISTER;
 			break;
 
-		case NET_NFC_LLCP_START :
+		case NET_NFC_LLCP_START:
 			snep_event = NFC_SNEP_EVENT_START;
 			break;
 
-		case NET_NFC_LLCP_STOP :
-		default :
+		case NET_NFC_LLCP_STOP:
+		default:
 			snep_event = NFC_SNEP_EVENT_STOP;
 			break;
 		}
@@ -231,9 +226,8 @@ static void _snep_start_server_cb(
 			nfc_common_convert_error_code(__func__, result),
 			msg, user_param);
 
-		if (snep_event == NFC_SNEP_EVENT_STOP) {
+		if (snep_event == NFC_SNEP_EVENT_STOP)
 			g_variant_unref(user_data);
-		}
 	}
 }
 
@@ -262,9 +256,8 @@ int nfc_snep_start_server(nfc_p2p_target_h target,
 			(sap_t)sap,
 			_snep_start_server_cb,
 			parameter);
-		if (result != NET_NFC_OK) {
+		if (result != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 	} else {
 		result = NET_NFC_ALLOC_FAIL;
 	}
@@ -297,28 +290,28 @@ static void _snep_start_client_cb(net_nfc_snep_handle_h arg_handle,
 		nfc_snep_event_e snep_event;
 
 		switch ((int)event) {
-		case NET_NFC_SNEP_GET :
+		case NET_NFC_SNEP_GET:
 			snep_event = NFC_SNEP_EVENT_GET;
 			break;
 
-		case NET_NFC_SNEP_PUT :
+		case NET_NFC_SNEP_PUT:
 			snep_event = NFC_SNEP_EVENT_PUT;
 			break;
 
-		case NET_NFC_LLCP_REGISTERED :
+		case NET_NFC_LLCP_REGISTERED:
 			snep_event = NFC_SNEP_EVENT_REGISTER;
 			break;
 
-		case NET_NFC_LLCP_UNREGISTERED :
+		case NET_NFC_LLCP_UNREGISTERED:
 			snep_event = NFC_SNEP_EVENT_UNREGISTER;
 			break;
 
-		case NET_NFC_LLCP_START :
+		case NET_NFC_LLCP_START:
 			snep_event = NFC_SNEP_EVENT_START;
 			break;
 
-		case NET_NFC_LLCP_STOP :
-		default :
+		case NET_NFC_LLCP_STOP:
+		default:
 			snep_event = NFC_SNEP_EVENT_STOP;
 			break;
 		}
@@ -327,9 +320,8 @@ static void _snep_start_client_cb(net_nfc_snep_handle_h arg_handle,
 			nfc_common_convert_error_code(__func__, result),
 			msg, user_param);
 
-		if (snep_event == NFC_SNEP_EVENT_STOP) {
+		if (snep_event == NFC_SNEP_EVENT_STOP)
 			g_variant_unref(user_data);
-		}
 	}
 }
 
@@ -358,9 +350,8 @@ int nfc_snep_start_client(nfc_p2p_target_h target,
 			(sap_t)sap,
 			_snep_start_client_cb,
 			parameter);
-		if (result != NET_NFC_OK) {
+		if (result != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 	} else {
 		result = NET_NFC_ALLOC_FAIL;
 	}
@@ -423,9 +414,8 @@ int nfc_snep_send_client_request(nfc_p2p_snep_h handle,
 			msg,
 			_snep_send_request_cb,
 			parameter);
-		if (result != NET_NFC_OK) {
+		if (result != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 	} else {
 		result = NET_NFC_ALLOC_FAIL;
 	}
@@ -453,27 +443,27 @@ static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t eve
 
 	if (callback != NULL) {
 		switch ((int)event) {
-		case NET_NFC_SNEP_GET :
+		case NET_NFC_SNEP_GET:
 			event = NFC_SNEP_EVENT_GET;
 			break;
 
-		case NET_NFC_SNEP_PUT :
+		case NET_NFC_SNEP_PUT:
 			event = NFC_SNEP_EVENT_PUT;
 			break;
 
-		case NET_NFC_LLCP_REGISTERED :
+		case NET_NFC_LLCP_REGISTERED:
 			event = NFC_SNEP_EVENT_REGISTER;
 			break;
 
-		case NET_NFC_LLCP_UNREGISTERED :
+		case NET_NFC_LLCP_UNREGISTERED:
 			event = NFC_SNEP_EVENT_UNREGISTER;
 			break;
 
-		case NET_NFC_LLCP_START :
+		case NET_NFC_LLCP_START:
 			event = NFC_SNEP_EVENT_START;
 			break;
 
-		case NET_NFC_LLCP_STOP :
+		case NET_NFC_LLCP_STOP:
 			event = NFC_SNEP_EVENT_STOP;
 			break;
 		}
@@ -503,9 +493,8 @@ int nfc_snep_register_server(const char *san, int sap,
 	if (parameter != NULL) {
 		result = net_nfc_client_snep_register_server(san, (sap_t)sap,
 			_snep_event_cb, parameter);
-		if (result != NET_NFC_OK) {
+		if (result != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 	} else {
 		result = NET_NFC_ALLOC_FAIL;
 	}

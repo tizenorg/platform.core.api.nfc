@@ -38,13 +38,11 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record,
 
 	net_nfc_create_data(&type_data, type, type_size);
 
-	if (id != NULL && id_size > 0) {
+	if (id != NULL && id_size > 0)
 		net_nfc_create_data(&id_data, id, id_size);
-	}
 
-	if (payload != NULL && payload_size > 0) {
+	if (payload != NULL && payload_size > 0)
 		net_nfc_create_data(&payload_data, payload, payload_size);
-	}
 
 	ret = net_nfc_create_record(
 		(ndef_record_h *)record,
@@ -53,13 +51,11 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record,
 		id_data,
 		payload_data);
 
-	if (payload_data != NULL) {
+	if (payload_data != NULL)
 		net_nfc_free_data(payload_data);
-	}
 
-	if (id_data != NULL) {
+	if (id_data != NULL)
 		net_nfc_free_data(id_data);
-	}
 
 	net_nfc_free_data(type_data);
 
@@ -155,19 +151,17 @@ int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record,
 	CHECK_INVALID(mime_type == NULL);
 
 	if (nfc_ndef_record_get_tnf(record, &tnf) != NET_NFC_OK ||
-		tnf != NFC_RECORD_TNF_MIME_MEDIA)
-			{
+		tnf != NFC_RECORD_TNF_MIME_MEDIA) {
 		return NFC_ERROR_INVALID_RECORD_TYPE;
 	}
 
 	ret = nfc_ndef_record_get_type(record, &typename, &length);
 	if (ret == NET_NFC_OK) {
 		*mime_type = calloc(1, length + 1);
-		if (*mime_type != NULL) {
+		if (*mime_type != NULL)
 			memcpy(*mime_type, typename, length);
-		} else {
+		else
 			ret = NET_NFC_ALLOC_FAIL;
-		}
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
@@ -336,13 +330,10 @@ int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **buffer)
 	ret = nfc_ndef_record_get_type(record, &record_type, &type_size);
 
 	if (ret == NFC_ERROR_NONE && record_type != NULL && type_size != 0 &&
-				!strcmp((char*)record_type, "T"))
-	{
+				!strcmp((char*)record_type, "T")) {
 		LOG_ERR("record type is T");
 		ret = net_nfc_create_text_string_from_text_record(record, buffer);
-	}
-	else
-	{
+	} else {
 		LOG_ERR("record type is not T");
 		return NFC_ERROR_INVALID_RECORD_TYPE;
 	}

@@ -77,9 +77,8 @@ int nfc_tag_format_ndef(nfc_tag_h tag,
 					key_data,
 					_tag_format_ndef_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -146,9 +145,8 @@ int nfc_tag_read_ndef(nfc_tag_h tag,
 				handle,
 				_tag_read_ndef_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -177,9 +175,8 @@ static void _tag_write_ndef_cb(net_nfc_error_e result,
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -207,9 +204,8 @@ int nfc_tag_write_ndef(nfc_tag_h tag,
 		return nfc_common_convert_error_code(__func__, ret);;
 	}
 
-	if (state == NET_NFC_NDEF_CARD_READ_ONLY) {
+	if (state == NET_NFC_NDEF_CARD_READ_ONLY)
 		return NFC_ERROR_READ_ONLY_NDEF;
-	}
 
 	ret = net_nfc_get_tag_max_data_size((net_nfc_target_info_h)tag, &max_len);
 	if (ret != NET_NFC_OK) {
@@ -223,9 +219,8 @@ int nfc_tag_write_ndef(nfc_tag_h tag,
 		return nfc_common_convert_error_code(__func__, ret);;
 	}
 
-	if (max_len < byte_size) {
+	if (max_len < byte_size)
 		return NFC_ERROR_NO_SPACE_ON_NDEF;
-	}
 
 	ret = net_nfc_get_tag_handle((net_nfc_target_info_h)tag, &handle);
 	if (ret == NET_NFC_OK) {
@@ -240,9 +235,8 @@ int nfc_tag_write_ndef(nfc_tag_h tag,
 				msg,
 				_tag_write_ndef_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -261,9 +255,8 @@ static void _tag_transceive_data_cb(net_nfc_error_e result, data_h arg_data,
 
 	LOG_BEGIN();
 
-	if (user_data == NULL) {
+	if (user_data == NULL)
 		return;
-	}
 
 	g_variant_get((GVariant *)user_data,
 		"(uu)",
@@ -322,9 +315,8 @@ int nfc_tag_transceive(nfc_tag_h tag,
 					rawdata,
 					_tag_transceive_data_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -423,7 +415,7 @@ int nfc_tag_foreach_information(nfc_tag_h tag,
 	ret = net_nfc_get_tag_info_keys((net_nfc_target_info_h)tag,
 		&keys, &count);
 
-	if(ret != NET_NFC_OK)
+	if (ret != NET_NFC_OK)
 		return nfc_common_convert_error_code(__func__, ret);
 
 	for (i = 0; i < count; i++) {
@@ -461,9 +453,8 @@ static void _mifare_authenticate_with_keyA_cb(net_nfc_error_e result,
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -501,9 +492,8 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 					auth_key_data,
 					_mifare_authenticate_with_keyA_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -536,9 +526,8 @@ static void _mifare_authenticate_with_keyB_cb(net_nfc_error_e result,
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -578,9 +567,8 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 					auth_key_data,
 					_mifare_authenticate_with_keyB_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -658,9 +646,8 @@ int nfc_mifare_read_block(nfc_tag_h tag,
 				block_index,
 				_mifare_read_block_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -689,15 +676,8 @@ int nfc_mifare_read_page(nfc_tag_h tag,
 		GPOINTER_TO_UINT(callback),
 		GPOINTER_TO_UINT(user_data));
 	if (parameter != NULL) {
-		/* FIXME : not implemented */
-//		ret = net_nfc_client_mifare_read_block(tag,
-//			page_index,
-//			_mifare_read_page_cb,
-//			parameter);
-//		if (ret != NET_NFC_OK) {
-			g_variant_unref(parameter);
-			ret = NET_NFC_OK;
-//		}
+		g_variant_unref(parameter);
+		ret = NET_NFC_OK;
 	} else {
 		ret = NET_NFC_ALLOC_FAIL;
 	}
@@ -722,9 +702,8 @@ static void _mifare_write_block_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -767,9 +746,8 @@ int nfc_mifare_write_block(nfc_tag_h tag,
 					block_data,
 					_mifare_write_block_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -802,9 +780,8 @@ static void _mifare_write_page_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -846,9 +823,8 @@ int nfc_mifare_write_page(nfc_tag_h tag,
 					block_data,
 					_mifare_write_page_cb,
 					parameter);
-				if (ret != NET_NFC_OK) {
+				if (ret != NET_NFC_OK)
 					g_variant_unref(parameter);
-				}
 			} else {
 				ret = NET_NFC_ALLOC_FAIL;
 			}
@@ -881,9 +857,8 @@ static void _mifare_increment_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -918,9 +893,8 @@ int nfc_mifare_increment(nfc_tag_h tag,
 				value,
 				_mifare_increment_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -948,9 +922,8 @@ static void _mifare_decrement_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -985,9 +958,8 @@ int nfc_mifare_decrement(nfc_tag_h tag,
 				value,
 				_mifare_decrement_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -1015,9 +987,8 @@ static void _mifare_transfer_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -1050,9 +1021,8 @@ int nfc_mifare_transfer(nfc_tag_h tag,
 				block_index,
 				_mifare_transfer_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
@@ -1080,9 +1050,8 @@ static void _mifare_restore_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -1115,9 +1084,8 @@ int nfc_mifare_restore(nfc_tag_h tag,
 				block_index,
 				_mifare_restore_cb,
 				parameter);
-			if (ret != NET_NFC_OK) {
+			if (ret != NET_NFC_OK)
 				g_variant_unref(parameter);
-			}
 		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}

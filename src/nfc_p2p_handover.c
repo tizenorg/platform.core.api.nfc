@@ -24,9 +24,8 @@ static void _p2p_handover_cb(net_nfc_error_e result,
 
 	LOG_BEGIN();
 
-	if (user_data == NULL) {
+	if (user_data == NULL)
 		return;
-	}
 
 	g_variant_get((GVariant *)user_data,
 		"(uu)",
@@ -39,28 +38,28 @@ static void _p2p_handover_cb(net_nfc_error_e result,
 		int len = 0;
 
 		switch (carrier) {
-		case NET_NFC_CONN_HANDOVER_CARRIER_BT :
+		case NET_NFC_CONN_HANDOVER_CARRIER_BT:
 			carrior_type = NFC_AC_TYPE_BT;
 			buffer = nfc_common_get_bt_address_string(ac_data);
-			if(buffer != NULL)
+			if (buffer != NULL)
 				len = strlen(buffer);
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS :
+		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS:
 			carrior_type = NFC_AC_TYPE_WIFI;
 			buffer = nfc_common_get_bt_address_string(ac_data);
-			if(buffer != NULL)
+			if (buffer != NULL)
 				len = strlen(buffer);
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P :
+		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P:
 			carrior_type = NFC_AC_TYPE_WIFI_DIRECT;
 			buffer = nfc_common_get_bt_address_string(ac_data);
-			if(buffer != NULL)
+			if (buffer != NULL)
 				len = strlen(buffer);
 			break;
 
-		default :
+		default:
 			carrior_type = NFC_AC_TYPE_UNKNOWN;
 			buffer = NULL;
 			len = 0;
@@ -71,9 +70,8 @@ static void _p2p_handover_cb(net_nfc_error_e result,
 			carrior_type, (void *)buffer,
 			len, user_param);
 
-		if (buffer != NULL) {
+		if (buffer != NULL)
 			g_free(buffer);
-		}
 	}
 
 	g_variant_unref((GVariant *)user_data);
@@ -97,21 +95,20 @@ int nfc_p2p_connection_handover(nfc_p2p_target_h target,
 	CHECK_INVALID(type > NFC_AC_TYPE_UNKNOWN);
 	CHECK_ACTIVATED();
 
-	switch (type)
-	{
-	case NFC_AC_TYPE_BT :
+	switch (type) {
+	case NFC_AC_TYPE_BT:
 		net_ac_type = NET_NFC_CONN_HANDOVER_CARRIER_BT;
 		break;
 
-	case NFC_AC_TYPE_WIFI :
+	case NFC_AC_TYPE_WIFI:
 		net_ac_type = NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS;
 		break;
 
-	case NFC_AC_TYPE_WIFI_DIRECT :
+	case NFC_AC_TYPE_WIFI_DIRECT:
 		net_ac_type = NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P;
 		break;
 
-	case NFC_AC_TYPE_UNKNOWN :
+	case NFC_AC_TYPE_UNKNOWN:
 		net_ac_type = NET_NFC_CONN_HANDOVER_CARRIER_UNKNOWN;
 		break;
 
@@ -128,9 +125,8 @@ int nfc_p2p_connection_handover(nfc_p2p_target_h target,
 			net_ac_type,
 			_p2p_handover_cb,
 			parameter);
-		if (ret != NET_NFC_OK) {
+		if (ret != NET_NFC_OK)
 			g_variant_unref(parameter);
-		}
 	} else {
 		ret = NET_NFC_ALLOC_FAIL;
 	}
@@ -160,22 +156,22 @@ static void _connection_handover_event_cb(
 			address = NULL;
 		} else {
 			switch (carrier) {
-			case NET_NFC_CONN_HANDOVER_CARRIER_BT :
+			case NET_NFC_CONN_HANDOVER_CARRIER_BT:
 				type = NFC_AC_TYPE_BT;
 				address = nfc_common_get_bt_address_string(ac_data);
 				break;
 
-			case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS :
+			case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS:
 				type = NFC_AC_TYPE_WIFI;
 				address = nfc_common_get_bt_address_string(ac_data);
 				break;
 
-			case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P :
+			case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P:
 				type = NFC_AC_TYPE_WIFI_DIRECT;
 				address = nfc_common_get_bt_address_string(ac_data);
 				break;
 
-			default :
+			default:
 				type = NFC_AC_TYPE_UNKNOWN;
 				address = NULL;
 				break;
@@ -190,9 +186,8 @@ static void _connection_handover_event_cb(
 			message,
 			gdbus_nfc_context.on_handover_event_user_data);
 
-		if (address != NULL) {
+		if (address != NULL)
 			g_free(address);
-		}
 		net_nfc_free_ndef_message(message);
 	}
 
@@ -327,15 +322,15 @@ int nfc_handover_message_get_carrier_by_type(nfc_handover_message_h message, nfc
 	CHECK_INVALID(carrier == NULL);
 
 	switch (type) {
-	case NFC_AC_TYPE_BT :
+	case NFC_AC_TYPE_BT:
 		temp = NET_NFC_CONN_HANDOVER_CARRIER_BT;
 		break;
 
-	case NFC_AC_TYPE_WIFI :
+	case NFC_AC_TYPE_WIFI:
 		temp = NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS;
 		break;
 
-	case NFC_AC_TYPE_WIFI_DIRECT :
+	case NFC_AC_TYPE_WIFI_DIRECT:
 		temp = NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P;
 		break;
 
@@ -383,19 +378,19 @@ int nfc_handover_carrier_get_cps(nfc_handover_carrier_h carrier, nfc_ac_state_e 
 		(net_nfc_ch_carrier_h)carrier, &temp);
 	if (result == NET_NFC_OK) {
 		switch (temp) {
-		case NET_NFC_CONN_HANDOVER_CARRIER_INACTIVATE :
+		case NET_NFC_CONN_HANDOVER_CARRIER_INACTIVATE:
 			*cps = NFC_AC_STATE_INACTIVATE;
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_ACTIVATE :
+		case NET_NFC_CONN_HANDOVER_CARRIER_ACTIVATE:
 			*cps = NFC_AC_STATE_ACTIVATE;
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_ACTIVATING :
+		case NET_NFC_CONN_HANDOVER_CARRIER_ACTIVATING:
 			*cps = NFC_AC_STATE_ACTIVATING;
 			break;
 
-		default :
+		default:
 			*cps = NFC_AC_STATE_UNKNOWN;
 			break;
 		}
@@ -420,19 +415,19 @@ int nfc_handover_carrier_get_type(nfc_handover_carrier_h carrier, nfc_ac_type_e 
 		(net_nfc_ch_carrier_h)carrier, &temp);
 	if (result == NET_NFC_OK) {
 		switch (temp) {
-		case NET_NFC_CONN_HANDOVER_CARRIER_BT :
+		case NET_NFC_CONN_HANDOVER_CARRIER_BT:
 			*type = NFC_AC_TYPE_BT;
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS :
+		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_WPS:
 			*type = NFC_AC_TYPE_WIFI;
 			break;
 
-		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P :
+		case NET_NFC_CONN_HANDOVER_CARRIER_WIFI_P2P:
 			*type = NFC_AC_TYPE_WIFI_DIRECT;
 			break;
 
-		default :
+		default:
 			*type = NFC_AC_TYPE_UNKNOWN;
 			break;
 		}

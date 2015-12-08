@@ -24,7 +24,7 @@ bool nfc_manager_is_supported(void)
 
 	nfc_supported = nfc_common_is_supported(NFC_FEATURE);
 
-	if(nfc_supported == true)
+	if (nfc_supported == true)
 		set_last_result(NFC_ERROR_NONE);
 	else
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
@@ -39,7 +39,7 @@ static void _activation_changed_cb(net_nfc_error_e result, void *user_data)
 
 	LOG_BEGIN();
 
-	if(user_data == NULL) {
+	if (user_data == NULL) {
 		LOG_ERR("user_data is NULL");
 		return;
 	}
@@ -49,9 +49,8 @@ static void _activation_changed_cb(net_nfc_error_e result, void *user_data)
 		(guint *)&callback,
 		(guint *)&user_param);
 
-	if (callback != NULL) {
+	if (callback != NULL)
 		callback(nfc_common_convert_error_code(__func__, result), user_param);
-	}
 
 	g_variant_unref((GVariant *)user_data);
 }
@@ -67,38 +66,27 @@ int nfc_manager_set_activation(bool activation,
 	CHECK_SUPPORTED(NFC_FEATURE);
 	CHECK_INIT();
 
-	if(nfc_manager_is_activated() == activation)
-	{
+	if (nfc_manager_is_activated() == activation) {
 		if (activation)
-		{
 			ret = NFC_ERROR_ALREADY_ACTIVATED;
-		}
 		else
-		{
 			ret = NFC_ERROR_ALREADY_DEACTIVATED;
-		}
-	}
-	else
-	{
+	} else {
 		GVariant *parameter;
 
 		parameter = g_variant_new("(uu)",
 			callback,
 			user_data);
-		if (parameter != NULL)
-		{
+		if (parameter != NULL) {
 			ret = net_nfc_client_manager_set_active(activation,
 				_activation_changed_cb,
 				parameter);
-			if (ret != NET_NFC_OK)
-			{
+			if (ret != NET_NFC_OK) {
 				LOG_ERR("net_nfc_client_manager_set_active fail");
 
 				g_variant_unref(parameter);
 			}
-		}
-		else
-		{
+		} else {
 			ret = NET_NFC_ALLOC_FAIL;
 		}
 
@@ -115,15 +103,14 @@ bool nfc_manager_is_activated(void)
 
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_FEATURE) == false) {
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return false;
 	}
 
 	ret = net_nfc_client_get_nfc_state(&activated);
 
-	set_last_result(nfc_common_convert_error_code(__func__,ret));
+	set_last_result(nfc_common_convert_error_code(__func__, ret));
 
 	return (!!activated);
 }
@@ -146,15 +133,13 @@ void nfc_manager_unset_activation_changed_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
@@ -173,8 +158,7 @@ int nfc_manager_initialize(void)
 
 	CHECK_SUPPORTED(NFC_FEATURE);
 
-	if(!nfc_common_is_initialized())
-	{
+	if (!nfc_common_is_initialized()) {
 		ret = net_nfc_client_initialize();
 		if (ret != NET_NFC_OK)
 			return nfc_common_convert_error_code(__func__, ret);
@@ -187,7 +171,7 @@ int nfc_manager_initialize(void)
 	return nfc_common_convert_error_code(__func__, ret);
 }
 
-int nfc_manager_deinitialize (void)
+int nfc_manager_deinitialize(void)
 {
 	int ret = NET_NFC_OK;
 
@@ -195,8 +179,7 @@ int nfc_manager_deinitialize (void)
 
 	CHECK_SUPPORTED(NFC_FEATURE);
 
-	if(nfc_common_is_initialized())
-	{
+	if (nfc_common_is_initialized()) {
 		net_nfc_client_se_unset_event_cb();
 
 		net_nfc_client_p2p_unset_device_discovered();
@@ -219,7 +202,7 @@ static void _tag_discovered_cb(net_nfc_target_info_h info, void *user_data)
 
 	gdbus_nfc_context.current_tag = info;
 
-	if(gdbus_nfc_context.on_tag_discovered_cb != NULL) {
+	if (gdbus_nfc_context.on_tag_discovered_cb != NULL) {
 		gdbus_nfc_context.on_tag_discovered_cb(
 			NFC_DISCOVERED_TYPE_ATTACHED,
 			(nfc_tag_h)gdbus_nfc_context.current_tag,
@@ -227,8 +210,7 @@ static void _tag_discovered_cb(net_nfc_target_info_h info, void *user_data)
 	}
 
 	/* ndef discovered cb */
-	if(gdbus_nfc_context.on_ndef_discovered_cb)
-	{
+	if (gdbus_nfc_context.on_ndef_discovered_cb) {
 		ndef_message_h ndef_message = NULL;
 
 		if (net_nfc_get_tag_ndef_message((net_nfc_target_info_h)info,
@@ -245,7 +227,7 @@ static void _tag_detached_cb(void *user_data)
 {
 	LOG_BEGIN();
 
-	if(gdbus_nfc_context.on_tag_discovered_cb != NULL) {
+	if (gdbus_nfc_context.on_tag_discovered_cb != NULL) {
 		gdbus_nfc_context.on_tag_discovered_cb(
 			NFC_DISCOVERED_TYPE_DETACHED,
 			(nfc_tag_h)gdbus_nfc_context.current_tag,
@@ -274,19 +256,17 @@ int nfc_manager_set_ndef_discovered_cb(
 	return NFC_ERROR_NONE;
 }
 
-void nfc_manager_unset_ndef_discovered_cb( void )
+void nfc_manager_unset_ndef_discovered_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
@@ -302,22 +282,19 @@ void nfc_manager_set_tag_filter(int filter)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_TAG_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_TAG_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
 	}
 
-	if(filter < NET_NFC_ALL_DISABLE)
-	{
+	if (filter < NET_NFC_ALL_DISABLE) {
 		LOG_ERR("Invalid parameter");
 		set_last_result(NFC_ERROR_INVALID_PARAMETER);
 		return;
@@ -332,15 +309,13 @@ int nfc_manager_get_tag_filter(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_TAG_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_TAG_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return 0;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return 0;
@@ -368,11 +343,10 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 	net_nfc_client_tag_set_tag_detached(_tag_detached_cb, NULL);
 
 
-	if(gdbus_nfc_context.current_tag == NULL) {
+	if (gdbus_nfc_context.current_tag == NULL) {
 		ret = net_nfc_client_tag_get_current_tag_info_sync(&result);
-		if (ret == NET_NFC_OK) {
+		if (ret == NET_NFC_OK)
 			*tag = (nfc_tag_h)result;
-		}
 	} else {
 		/* FIXME ??? */
 		*tag = gdbus_nfc_context.current_tag;
@@ -399,7 +373,7 @@ int nfc_manager_get_connected_target(nfc_p2p_target_h *target)
 	net_nfc_client_tag_set_tag_discovered(_tag_discovered_cb, NULL);
 	net_nfc_client_tag_set_tag_detached(_tag_detached_cb, NULL);
 
-	if(gdbus_nfc_context.current_target == NULL) {
+	if (gdbus_nfc_context.current_target == NULL) {
 		ret = net_nfc_client_tag_get_current_target_handle_sync(&result);
 		if (ret == NET_NFC_OK) {
 			gdbus_nfc_context.current_target = result;
@@ -438,15 +412,13 @@ void nfc_manager_unset_tag_discovered_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_TAG_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_TAG_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
@@ -466,7 +438,7 @@ static void _p2p_discovered_cb(
 
 	gdbus_nfc_context.current_target = handle_info;
 
-	if(gdbus_nfc_context.on_p2p_target_discovered_cb != NULL) {
+	if (gdbus_nfc_context.on_p2p_target_discovered_cb != NULL) {
 		gdbus_nfc_context.on_p2p_target_discovered_cb(
 			NFC_DISCOVERED_TYPE_ATTACHED,
 			(nfc_p2p_target_h)gdbus_nfc_context.current_target,
@@ -481,7 +453,7 @@ static void _p2p_detached_cb(void *user_data)
 
 	LOG_BEGIN();
 
-	if(gdbus_nfc_context.on_p2p_target_discovered_cb != NULL) {
+	if (gdbus_nfc_context.on_p2p_target_discovered_cb != NULL) {
 		gdbus_nfc_context.on_p2p_target_discovered_cb(
 			NFC_DISCOVERED_TYPE_DETACHED,
 			handle,
@@ -517,15 +489,13 @@ void nfc_manager_unset_p2p_target_discovered_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_P2P_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_P2P_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
@@ -547,11 +517,10 @@ int nfc_manager_set_system_handler_enable(bool enable)
 	CHECK_SUPPORTED(NFC_FEATURE);
 	CHECK_INIT();
 
-	if (enable == true) {
+	if (enable == true)
 		state = 0;
-	} else {
+	else
 		state = 1;
-	}
 
 	ret = net_nfc_client_sys_handler_set_launch_popup_state(state);
 
@@ -568,11 +537,10 @@ int nfc_manager_set_system_handler_enable_force(bool enable)
 	CHECK_SUPPORTED(NFC_FEATURE);
 	CHECK_INIT();
 
-	if (enable == true) {
+	if (enable == true)
 		state = 0;
-	} else {
+	else
 		state = 1;
-	}
 
 	ret = net_nfc_client_sys_handler_set_launch_popup_state_force(state);
 
@@ -586,15 +554,13 @@ bool nfc_manager_is_system_handler_enabled(void)
 
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return false;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return false;
@@ -602,7 +568,7 @@ bool nfc_manager_is_system_handler_enabled(void)
 
 	ret = net_nfc_client_sys_handler_get_launch_popup_state(&state);
 
-	set_last_result(nfc_common_convert_error_code(__func__,ret));
+	set_last_result(nfc_common_convert_error_code(__func__, ret));
 
 	return (state == 0);
 }
@@ -627,16 +593,16 @@ static void _se_event_cb(net_nfc_message_e message, void *user_data)
 	LOG_BEGIN();
 
 	if (gdbus_nfc_context.on_se_event_cb != NULL) {
-		if(message == NET_NFC_MESSAGE_SE_CARD_EMULATION_CHANGED)
+		if (message == NET_NFC_MESSAGE_SE_CARD_EMULATION_CHANGED)
 			gdbus_nfc_context.on_se_event_cb(
 				NFC_SE_EVENT_CARD_EMULATION_CHANGED,
 				gdbus_nfc_context.on_se_event_user_data);
 
-		else if(message == NET_NFC_MESSAGE_SE_TYPE_CHANGED)
+		else if (message == NET_NFC_MESSAGE_SE_TYPE_CHANGED)
 			gdbus_nfc_context.on_se_event_cb(
 				NFC_SE_EVENT_SE_TYPE_CHANGED,
 				gdbus_nfc_context.on_se_event_user_data);
-		else if(message == NET_NFC_MESSAGE_SE_FIELD_ON)
+		else if (message == NET_NFC_MESSAGE_SE_FIELD_ON)
 			gdbus_nfc_context.on_se_event_cb(
 				NFC_SE_EVENT_FIELD_ON,
 				gdbus_nfc_context.on_se_event_user_data);
@@ -663,15 +629,13 @@ void nfc_manager_unset_se_event_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_CE_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_CE_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
@@ -715,22 +679,20 @@ int nfc_manager_set_se_transaction_event_cb(
 	gdbus_nfc_context.on_se_transaction_event_cb = callback;
 	gdbus_nfc_context.on_se_transaction_event_user_data = user_data;
 
-	switch(se_type)
-	{
-		case NFC_SE_TYPE_ESE:
-			type = NET_NFC_SE_TYPE_ESE;
-			break;
+	switch (se_type) {
+	case NFC_SE_TYPE_ESE:
+		type = NET_NFC_SE_TYPE_ESE;
+		break;
 
-		case NFC_SE_TYPE_UICC:
-			type = NET_NFC_SE_TYPE_UICC;
-			break;
-		case NET_NFC_SE_TYPE_HCE:
-			type = NET_NFC_SE_TYPE_HCE;
-			break;
-		default:
-			return NFC_ERROR_INVALID_PARAMETER;
-			break;
-
+	case NFC_SE_TYPE_UICC:
+		type = NET_NFC_SE_TYPE_UICC;
+		break;
+	case NET_NFC_SE_TYPE_HCE:
+		type = NET_NFC_SE_TYPE_HCE;
+		break;
+	default:
+		return NFC_ERROR_INVALID_PARAMETER;
+		break;
 	}
 
 	net_nfc_client_se_set_transaction_event_cb(type, _se_transaction_event_cb, user_data);
@@ -744,32 +706,29 @@ void nfc_manager_unset_se_transaction_event_cb(nfc_se_type_e se_type)
 
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_CE_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_CE_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;
 	}
 
-	switch(se_type)
-	{
-		case NFC_SE_TYPE_ESE:
-			type = NET_NFC_SE_TYPE_ESE;
-			break;
+	switch (se_type) {
+	case NFC_SE_TYPE_ESE:
+		type = NET_NFC_SE_TYPE_ESE;
+		break;
 
-		case NFC_SE_TYPE_UICC:
-			type = NET_NFC_SE_TYPE_UICC;
-			break;
-		default:
-			type = NET_NFC_SE_TYPE_NONE;
-			break;
+	case NFC_SE_TYPE_UICC:
+		type = NET_NFC_SE_TYPE_UICC;
+		break;
+	default:
+		type = NET_NFC_SE_TYPE_NONE;
+		break;
 	}
 
 	net_nfc_client_se_unset_transaction_event_cb(type);
@@ -815,18 +774,17 @@ int nfc_manager_set_se_type(nfc_se_type_e type)
 	CHECK_INVALID(type < NFC_SE_TYPE_DISABLE);
 	CHECK_INVALID(type > NFC_SE_TYPE_HCE);
 
-	switch (type)
-	{
-	case NFC_SE_TYPE_ESE :
+	switch (type) {
+	case NFC_SE_TYPE_ESE:
 		se_type = NET_NFC_SE_TYPE_ESE;
 		break;
-	case NFC_SE_TYPE_UICC :
+	case NFC_SE_TYPE_UICC:
 		se_type = NET_NFC_SE_TYPE_UICC;
 		break;
-	case NFC_SE_TYPE_HCE :
+	case NFC_SE_TYPE_HCE:
 		se_type = NET_NFC_SE_TYPE_HCE;
 		break;
-	default :
+	default:
 		se_type = NET_NFC_SE_TYPE_NONE;
 		break;
 	}
@@ -849,20 +807,19 @@ int nfc_manager_get_se_type(nfc_se_type_e *type)
 
 	ret = net_nfc_client_se_get_secure_element_type_sync(&se_type);
 
-	switch (se_type)
-	{
-		case NET_NFC_SE_TYPE_ESE :
-			*type = NFC_SE_TYPE_ESE;
-			break;
-		case NET_NFC_SE_TYPE_UICC :
-			*type = NFC_SE_TYPE_UICC;
-			break;
-		case NET_NFC_SE_TYPE_HCE :
-			*type = NFC_SE_TYPE_HCE;
-			break;
-		default:
-			*type = NFC_SE_TYPE_DISABLE;
-			break;
+	switch (se_type) {
+	case NET_NFC_SE_TYPE_ESE:
+		*type = NFC_SE_TYPE_ESE;
+		break;
+	case NET_NFC_SE_TYPE_UICC:
+		*type = NFC_SE_TYPE_UICC;
+		break;
+	case NET_NFC_SE_TYPE_HCE:
+		*type = NFC_SE_TYPE_HCE;
+		break;
+	default:
+		*type = NFC_SE_TYPE_DISABLE;
+		break;
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
@@ -904,15 +861,13 @@ void nfc_manager_unset_hce_event_cb(void)
 {
 	LOG_BEGIN();
 
-	if(nfc_common_is_supported(NFC_CE_HCE_FEATURE) == false)
-	{
+	if (nfc_common_is_supported(NFC_CE_HCE_FEATURE) == false) {
 		LOG_ERR("NFC not supported");
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
 		return;
 	}
 
-	if(nfc_common_is_initialized() == false)
-	{
+	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
 		return;

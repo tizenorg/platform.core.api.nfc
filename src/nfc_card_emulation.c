@@ -30,13 +30,12 @@ int nfc_se_open_secure_element_internal(
 	CHECK_INIT();
 	CHECK_INVALID(handle == NULL);
 
-	switch (se_type)
-	{
-	case NFC_SE_TYPE_ESE :
+	switch (se_type) {
+	case NFC_SE_TYPE_ESE:
 		type = NET_NFC_SE_TYPE_ESE;
 		break;
 
-	case NFC_SE_TYPE_UICC :
+	case NFC_SE_TYPE_UICC:
 		type = NET_NFC_SE_TYPE_UICC;
 		break;
 
@@ -48,9 +47,8 @@ int nfc_se_open_secure_element_internal(
 	result = net_nfc_client_se_open_internal_secure_element_sync(
 		type,
 		&temp);
-	if (result == NET_NFC_OK) {
+	if (result == NET_NFC_OK)
 		*handle = (nfc_se_h)temp;
-	}
 
 	return nfc_common_convert_error_code(__func__, result);
 }
@@ -222,13 +220,12 @@ int nfc_se_get_card_emulation_mode(nfc_se_card_emulation_mode_type_e *mode)
 
 	result = net_nfc_get_card_emulation_mode_sync(&se_mode);
 
-	switch(se_mode)
-	{
-	case NET_NFC_CARD_EMELATION_ENABLE :
+	switch (se_mode) {
+	case NET_NFC_CARD_EMELATION_ENABLE:
 		*mode = NFC_SE_CARD_EMULATION_MODE_ON;
 		break;
 
-	case NET_NFC_CARD_EMULATION_DISABLE :
+	case NET_NFC_CARD_EMULATION_DISABLE:
 		*mode = NFC_SE_CARD_EMULATION_MODE_OFF;
 		break;
 	}
@@ -252,8 +249,7 @@ int nfc_hce_send_apdu_response(nfc_se_h handle, unsigned char *resp, unsigned in
 	if (result == NET_NFC_OK) {
 		result = net_nfc_client_hce_response_apdu_sync(handle, data);
 		net_nfc_free_data(data);
-	}
-	else {
+	} else {
 		LOG_ERR("net_nfc_create_data failed, [%d]", result);
 	}
 
