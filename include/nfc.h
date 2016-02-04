@@ -743,7 +743,6 @@ typedef void (*nfc_se_registered_aid_cb)(nfc_se_type_e se_type,	const char *aid,
  * @exception #NFC_ERROR_NONE Success
  * @exception #NFC_ERROR_NOT_SUPPORTED Not supported NFC
  * @exception #NFC_ERROR_ILLEGAL_STATE Illegal state
- * @exception #NFC_ERROR_INVALID_PARAMETER Invalid parameter
  * @exception #NFC_ERROR_OPERATION_FAILED Operation fail
  */
 bool nfc_manager_is_supported(void);
@@ -826,7 +825,6 @@ int nfc_manager_set_activation(bool activation, nfc_activation_completed_cb call
  * @exception #NFC_ERROR_NONE Success
  * @exception #NFC_ERROR_NOT_SUPPORTED Not supported NFC
  * @exception #NFC_ERROR_ILLEGAL_STATE Illegal state
- * @exception #NFC_ERROR_INVALID_PARAMETER Invalid parameter
  * @exception #NFC_ERROR_OPERATION_FAILED Operation fail
  */
 bool nfc_manager_is_activated(void);
