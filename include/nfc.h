@@ -843,7 +843,7 @@ bool nfc_manager_is_activated(void);
  *
  * @see nfc_manager_deinitialize()
  */
-int nfc_manager_initialize();
+int nfc_manager_initialize(void);
 
 /**
  * @brief Releases all the resource of the NFC Manager and disconnect the session between an application and NFC Manager.
@@ -1117,7 +1117,7 @@ void nfc_manager_unset_hce_event_cb(void);
  * @see nfc_manager_disable_transaction_fg_dispatch()
  * @see nfc_manager_initialize()
  */
-int nfc_manager_enable_transaction_fg_dispatch();
+int nfc_manager_enable_transaction_fg_dispatch(void);
 
 /**
  * @brief disable foreground dispatch for "EVT_TRANSACTION" to the givin application.
@@ -1145,7 +1145,7 @@ int nfc_manager_enable_transaction_fg_dispatch();
  * @see nfc_manager_enable_transaction_fg_dispatch()
  * @see nfc_manager_initialize()
  */
-int nfc_manager_disable_transaction_fg_dispatch();
+int nfc_manager_disable_transaction_fg_dispatch(void);
 
 /**
  * @brief Gets NDEF message cached when the tag is detected or when data received from NFC peer-to-peer target.
@@ -2827,7 +2827,7 @@ int nfc_snep_unregister_server(const char *san, int sap);
  * @see nfc_se_disable_card_emulation()
  * @see nfc_manager_initialize()
  */
-int nfc_se_enable_card_emulation();
+int nfc_se_enable_card_emulation(void);
 
 /**
  * @brief Disable card emulation mode.
@@ -2855,7 +2855,7 @@ int nfc_se_enable_card_emulation();
  * @see nfc_se_enable_card_emulation()
  * @see nfc_manager_initialize()
  */
-int nfc_se_disable_card_emulation();
+int nfc_se_disable_card_emulation(void);
 
 /**
  * @brief Get the current card emulation mode.
@@ -3057,6 +3057,53 @@ int nfc_se_unregister_aid(nfc_se_type_e se_type, nfc_card_emulation_category_typ
  *
  */
 int nfc_se_foreach_registered_aids(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, nfc_se_registered_aid_cb callback, void *user_data);
+
+/**
+ * @brief Sets the application as a preferred handler.
+ * @since_tizen 3.0
+ * @details This api is possible to call when your application is in the foreground.\n
+ * We recommend that you call api when the app state is resume.
+ * @privlevel   public
+ * @privilege   %http://tizen.org/privilege/nfc.cardemulation
+ * @ingroup CAPI_NETWORK_NFC_SE_MODULE
+ *
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_NOT_SUPPORTED Not supported NFC
+ * @retval #NFC_ERROR_NOT_INITIALIZED Not initialized NFC
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
+ * @retval #NFC_ERROR_PERMISSION_DENIED Permission denied
+ *
+ * @see nfc_manager_initialize()
+ * @see nfc_se_unset_preferred_handler()
+ *
+ */
+int nfc_se_set_preferred_handler(void);
+
+
+/**
+ * @brief Unsets the application as a preferred handler.
+ * @since_tizen 3.0
+ * @details We recommend that you call api when the app state is pause.\n
+ * If you do not call the api, Tizen will initialize the preferred app properly.\n
+ * But there may be a problem with the performance, we recommend your explicit call.
+ *
+ * @privlevel   public
+ * @privilege   %http://tizen.org/privilege/nfc.cardemulation
+ * @ingroup CAPI_NETWORK_NFC_SE_MODULE
+ *
+ * @retval #NFC_ERROR_NONE Successful
+ * @retval #NFC_ERROR_NOT_SUPPORTED Not supported NFC
+ * @retval #NFC_ERROR_NOT_INITIALIZED Not initialized NFC
+ * @retval #NFC_ERROR_NOT_ACTIVATED NFC is not activated
+ * @retval #NFC_ERROR_OPERATION_FAILED Operation failed
+ * @retval #NFC_ERROR_PERMISSION_DENIED Permission denied
+ *
+ * @see nfc_manager_initialize()
+ * @see nfc_se_set_preferred_handler()
+ *
+ */
+int nfc_se_unset_preferred_handler(void);
 
 #ifdef __cplusplus
 }
