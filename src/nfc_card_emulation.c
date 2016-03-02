@@ -412,3 +412,33 @@ int nfc_se_remove_route_for_aid_internal(const char* pkg_name, const char *aid)
 
 	return nfc_common_convert_error_code(__func__, result);
 }
+
+int nfc_se_set_preferred_handler()
+{
+	net_nfc_error_e result;
+
+	LOG_BEGIN();
+
+	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_INIT();
+	CHECK_ACTIVATED();
+
+	result = net_nfc_client_se_set_preferred_handler_sync(true);
+
+	return nfc_common_convert_error_code(__func__, result);
+}
+
+int nfc_se_unset_preferred_handler()
+{
+	net_nfc_error_e result;
+
+	LOG_BEGIN();
+
+	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_INIT();
+	CHECK_ACTIVATED();
+
+	result = net_nfc_client_se_set_preferred_handler_sync(false);
+
+	return nfc_common_convert_error_code(__func__, result);
+}
