@@ -39,8 +39,8 @@
 #define COLOR_END		"\033[0;m"
 
 #define NFC_FEATURE "http://tizen.org/feature/network.nfc"
-#define NFC_TAG_FEATURE "http://tizen.org/feature/network.nfc"
-#define NFC_P2P_FEATURE "http://tizen.org/feature/network.nfc"
+#define NFC_TAG_FEATURE "http://tizen.org/feature/network.nfc.tag"
+#define NFC_P2P_FEATURE "http://tizen.org/feature/network.nfc.p2p"
 #define NFC_CE_FEATURE "http://tizen.org/feature/network.nfc.card_emulation"
 #define NFC_CE_HCE_FEATURE "http://tizen.org/feature/network.nfc.card_emulation.hce"
 
