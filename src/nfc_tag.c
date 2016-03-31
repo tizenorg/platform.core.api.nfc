@@ -16,6 +16,7 @@
 
 #include "nfc_common.h"
 
+/* LCOV_EXCL_START */
 static void _tag_format_ndef_cb(net_nfc_error_e result,
 	void *user_data)
 {
@@ -41,6 +42,7 @@ static void _tag_format_ndef_cb(net_nfc_error_e result,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_tag_format_ndef(nfc_tag_h tag,
 	unsigned char *key,
@@ -54,6 +56,8 @@ int nfc_tag_format_ndef(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -92,8 +96,10 @@ int nfc_tag_format_ndef(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _tag_read_ndef_cb(net_nfc_error_e result, ndef_message_h message,
 	void *user_data)
 {
@@ -120,6 +126,7 @@ static void _tag_read_ndef_cb(net_nfc_error_e result, ndef_message_h message,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_tag_read_ndef(nfc_tag_h tag,
 	nfc_tag_read_completed_cb callback,
@@ -129,6 +136,8 @@ int nfc_tag_read_ndef(nfc_tag_h tag,
 	net_nfc_target_handle_h handle = NULL;
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -155,8 +164,10 @@ int nfc_tag_read_ndef(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _tag_write_ndef_cb(net_nfc_error_e result,
 	void *user_data)
 {
@@ -180,6 +191,7 @@ static void _tag_write_ndef_cb(net_nfc_error_e result,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_tag_write_ndef(nfc_tag_h tag,
 	nfc_ndef_message_h msg,
@@ -193,6 +205,8 @@ int nfc_tag_write_ndef(nfc_tag_h tag,
 	net_nfc_ndef_card_state_e state = NET_NFC_NDEF_CARD_INVALID;
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -245,8 +259,10 @@ int nfc_tag_write_ndef(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _tag_transceive_data_cb(net_nfc_error_e result, data_h arg_data,
 	void *user_data)
 {
@@ -280,6 +296,7 @@ static void _tag_transceive_data_cb(net_nfc_error_e result, data_h arg_data,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_tag_transceive(nfc_tag_h tag,
 	unsigned char *buffer,
@@ -291,6 +308,8 @@ int nfc_tag_transceive(nfc_tag_h tag,
 	data_h rawdata = NULL;
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(buffer == NULL);
@@ -330,6 +349,7 @@ int nfc_tag_transceive(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_tag_get_type(nfc_tag_h tag, nfc_tag_type_e *type)
@@ -339,6 +359,8 @@ int nfc_tag_get_type(nfc_tag_h tag, nfc_tag_type_e *type)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(type == NULL);
@@ -346,6 +368,7 @@ int nfc_tag_get_type(nfc_tag_h tag, nfc_tag_type_e *type)
 	ret = net_nfc_get_tag_type(tag, (net_nfc_target_type_e *)type);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_tag_is_support_ndef(nfc_tag_h tag, bool *is_support)
@@ -355,6 +378,8 @@ int nfc_tag_is_support_ndef(nfc_tag_h tag, bool *is_support)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(is_support == NULL);
@@ -362,6 +387,7 @@ int nfc_tag_is_support_ndef(nfc_tag_h tag, bool *is_support)
 	ret = net_nfc_get_tag_ndef_support(tag, is_support);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_tag_get_maximum_ndef_size(nfc_tag_h tag, unsigned int *max_size)
@@ -370,6 +396,8 @@ int nfc_tag_get_maximum_ndef_size(nfc_tag_h tag, unsigned int *max_size)
 
 	LOG_BEGIN();
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(max_size == NULL);
@@ -377,6 +405,7 @@ int nfc_tag_get_maximum_ndef_size(nfc_tag_h tag, unsigned int *max_size)
 	ret = net_nfc_get_tag_max_data_size(tag, max_size);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_tag_get_ndef_size(nfc_tag_h tag, unsigned int *actual_data_size)
@@ -386,6 +415,8 @@ int nfc_tag_get_ndef_size(nfc_tag_h tag, unsigned int *actual_data_size)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(actual_data_size == NULL);
@@ -393,6 +424,7 @@ int nfc_tag_get_ndef_size(nfc_tag_h tag, unsigned int *actual_data_size)
 	ret = net_nfc_get_tag_actual_data_size(tag, actual_data_size);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_tag_foreach_information(nfc_tag_h tag,
@@ -408,6 +440,8 @@ int nfc_tag_foreach_information(nfc_tag_h tag,
 
 	LOG_BEGIN();
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(callback == NULL);
@@ -432,9 +466,11 @@ int nfc_tag_foreach_information(nfc_tag_h tag,
 	}
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 /* FIXME */
+/* LCOV_EXCL_START */
 static void _mifare_authenticate_with_keyA_cb(net_nfc_error_e result,
 	void *user_data)
 {
@@ -458,6 +494,7 @@ static void _mifare_authenticate_with_keyA_cb(net_nfc_error_e result,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 	int sector_index,
@@ -469,6 +506,8 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 	data_h auth_key_data = NULL;
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(auth_key == NULL);
@@ -507,9 +546,11 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 
+/* LCOV_EXCL_START */
 static void _mifare_authenticate_with_keyB_cb(net_nfc_error_e result,
 	void *user_data)
 {
@@ -531,6 +572,7 @@ static void _mifare_authenticate_with_keyB_cb(net_nfc_error_e result,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 	int sector_index,
@@ -544,6 +586,8 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(auth_key == NULL);
@@ -582,9 +626,11 @@ int nfc_mifare_authenticate_with_keyB(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 /* FIXME */
+/* LCOV_EXCL_START */
 static void _mifare_read_block_cb(net_nfc_error_e result, data_h data,
 	void *user_data)
 {
@@ -618,6 +664,7 @@ static void _mifare_read_block_cb(net_nfc_error_e result, data_h data,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_read_block(nfc_tag_h tag,
 	int block_index,
@@ -630,6 +677,8 @@ int nfc_mifare_read_block(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 
@@ -656,6 +705,7 @@ int nfc_mifare_read_block(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_mifare_read_page(nfc_tag_h tag,
@@ -669,6 +719,8 @@ int nfc_mifare_read_page(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 
@@ -683,8 +735,10 @@ int nfc_mifare_read_page(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_write_block_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_write_block_completed_cb callback;
@@ -707,6 +761,7 @@ static void _mifare_write_block_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_write_block(nfc_tag_h tag,
 	int block_index,
@@ -721,6 +776,8 @@ int nfc_mifare_write_block(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(buffer == NULL);
@@ -761,8 +818,10 @@ int nfc_mifare_write_block(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_write_page_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_write_page_completed_cb callback;
@@ -785,6 +844,7 @@ static void _mifare_write_page_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_write_page(nfc_tag_h tag,
 	int page_index,
@@ -798,6 +858,8 @@ int nfc_mifare_write_page(nfc_tag_h tag,
 
 	LOG_BEGIN();
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_INVALID(buffer == NULL);
@@ -838,8 +900,10 @@ int nfc_mifare_write_page(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_increment_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_increment_completed_cb callback;
@@ -862,6 +926,7 @@ static void _mifare_increment_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_increment(nfc_tag_h tag,
 	int block_index,
@@ -875,6 +940,8 @@ int nfc_mifare_increment(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -903,8 +970,10 @@ int nfc_mifare_increment(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_decrement_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_decrement_completed_cb callback;
@@ -927,6 +996,7 @@ static void _mifare_decrement_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_decrement(nfc_tag_h tag,
 	int block_index,
@@ -940,6 +1010,8 @@ int nfc_mifare_decrement(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -968,8 +1040,10 @@ int nfc_mifare_decrement(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_transfer_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_transfer_completed_cb callback;
@@ -992,6 +1066,7 @@ static void _mifare_transfer_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_transfer(nfc_tag_h tag,
 	int block_index,
@@ -1004,6 +1079,8 @@ int nfc_mifare_transfer(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -1031,8 +1108,10 @@ int nfc_mifare_transfer(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _mifare_restore_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_mifare_restore_completed_cb callback;
@@ -1055,6 +1134,7 @@ static void _mifare_restore_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_mifare_restore(nfc_tag_h tag,
 	int block_index,
@@ -1067,6 +1147,8 @@ int nfc_mifare_restore(nfc_tag_h tag,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 	CHECK_ACTIVATED();
@@ -1094,6 +1176,7 @@ int nfc_mifare_restore(nfc_tag_h tag,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_barcode_get_barcode(unsigned char **barcode, int *barcode_len)
@@ -1103,6 +1186,8 @@ int nfc_barcode_get_barcode(unsigned char **barcode, int *barcode_len)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(barcode == NULL);
 	CHECK_INVALID(barcode_len == NULL);
@@ -1112,4 +1197,5 @@ int nfc_barcode_get_barcode(unsigned char **barcode, int *barcode_len)
 	ret = net_nfc_client_barcode_get_barcode_sync(barcode, barcode_len);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }

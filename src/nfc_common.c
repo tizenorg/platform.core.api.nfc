@@ -16,6 +16,7 @@
 
 #include "nfc_common.h"
 
+/* LCOV_EXCL_START */
 pid_t nfc_common_get_focus_app_pid()
 {
 /*
@@ -211,4 +212,5 @@ int nfc_common_get_rawdata_size(nfc_ndef_message_h ndef_message,
 
 	return nfc_common_convert_error_code(__func__, ret);
 }
+/* LCOV_EXCL_STOP */
 

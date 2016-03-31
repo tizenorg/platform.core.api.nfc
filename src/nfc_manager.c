@@ -32,6 +32,7 @@ bool nfc_manager_is_supported(void)
 	return nfc_supported;
 }
 
+/* LCOV_EXCL_START */
 static void _activation_changed_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_activation_completed_cb callback;
@@ -54,6 +55,7 @@ static void _activation_changed_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_activation(bool activation,
 	nfc_activation_completed_cb callback,
@@ -64,6 +66,8 @@ int nfc_manager_set_activation(bool activation,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	if (nfc_manager_is_activated() == activation) {
@@ -94,6 +98,7 @@ int nfc_manager_set_activation(bool activation,
 	}
 
 	return ret;
+	/* LCOV_EXCL_STOP */
 }
 
 bool nfc_manager_is_activated(void)
@@ -108,11 +113,13 @@ bool nfc_manager_is_activated(void)
 		return false;
 	}
 
+	/* LCOV_EXCL_START */
 	ret = net_nfc_client_get_nfc_state(&activated);
 
 	set_last_result(nfc_common_convert_error_code(__func__, ret));
 
 	return (!!activated);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_set_activation_changed_cb(nfc_activation_changed_cb callback,
@@ -121,12 +128,15 @@ int nfc_manager_set_activation_changed_cb(nfc_activation_changed_cb callback,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
 	net_nfc_client_manager_set_activated(callback, user_data);
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_activation_changed_cb(void)
@@ -139,6 +149,7 @@ void nfc_manager_unset_activation_changed_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -148,6 +159,7 @@ void nfc_manager_unset_activation_changed_cb(void)
 	net_nfc_client_manager_unset_activated();
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_initialize(void)
@@ -158,6 +170,7 @@ int nfc_manager_initialize(void)
 
 	CHECK_SUPPORTED(NFC_FEATURE);
 
+	/* LCOV_EXCL_START */
 	if (!nfc_common_is_initialized()) {
 		ret = net_nfc_client_initialize();
 		if (ret != NET_NFC_OK)
@@ -169,6 +182,7 @@ int nfc_manager_initialize(void)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_deinitialize(void)
@@ -179,6 +193,7 @@ int nfc_manager_deinitialize(void)
 
 	CHECK_SUPPORTED(NFC_FEATURE);
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized()) {
 		net_nfc_client_se_unset_event_cb();
 
@@ -194,8 +209,10 @@ int nfc_manager_deinitialize(void)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _tag_discovered_cb(net_nfc_target_info_h info, void *user_data)
 {
 	LOG_BEGIN();
@@ -236,6 +253,7 @@ static void _tag_detached_cb(void *user_data)
 
 	gdbus_nfc_context.current_tag = NULL;
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_ndef_discovered_cb(
 	nfc_ndef_discovered_cb callback,
@@ -244,6 +262,8 @@ int nfc_manager_set_ndef_discovered_cb(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -254,6 +274,7 @@ int nfc_manager_set_ndef_discovered_cb(
 	gdbus_nfc_context.on_ndef_discovered_user_data = user_data;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_ndef_discovered_cb(void)
@@ -266,6 +287,7 @@ void nfc_manager_unset_ndef_discovered_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -276,6 +298,7 @@ void nfc_manager_unset_ndef_discovered_cb(void)
 	gdbus_nfc_context.on_ndef_discovered_user_data = NULL;
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_set_tag_filter(int filter)
@@ -288,6 +311,7 @@ void nfc_manager_set_tag_filter(int filter)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -303,6 +327,7 @@ void nfc_manager_set_tag_filter(int filter)
 	net_nfc_client_tag_set_filter(filter);
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_get_tag_filter(void)
@@ -315,6 +340,7 @@ int nfc_manager_get_tag_filter(void)
 		return 0;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -324,6 +350,7 @@ int nfc_manager_get_tag_filter(void)
 	set_last_result(NFC_ERROR_NONE);
 
 	return net_nfc_client_tag_get_filter();
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_get_connected_tag(nfc_tag_h *tag)
@@ -334,6 +361,8 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(tag == NULL);
 
@@ -355,6 +384,7 @@ int nfc_manager_get_connected_tag(nfc_tag_h *tag)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_get_connected_target(nfc_p2p_target_h *target)
@@ -365,6 +395,8 @@ int nfc_manager_get_connected_target(nfc_p2p_target_h *target)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 
@@ -388,6 +420,7 @@ int nfc_manager_get_connected_target(nfc_p2p_target_h *target)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_set_tag_discovered_cb(nfc_tag_discovered_cb callback,
@@ -396,6 +429,8 @@ int nfc_manager_set_tag_discovered_cb(nfc_tag_discovered_cb callback,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_TAG_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -406,6 +441,7 @@ int nfc_manager_set_tag_discovered_cb(nfc_tag_discovered_cb callback,
 	gdbus_nfc_context.on_tag_discovered_user_data = user_data;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_tag_discovered_cb(void)
@@ -418,6 +454,7 @@ void nfc_manager_unset_tag_discovered_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -428,8 +465,10 @@ void nfc_manager_unset_tag_discovered_cb(void)
 	gdbus_nfc_context.on_tag_discovered_user_data = NULL;
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _p2p_discovered_cb(
 	net_nfc_target_handle_h handle_info,
 	void *user_data)
@@ -465,6 +504,7 @@ static void _p2p_detached_cb(void *user_data)
 
 	gdbus_nfc_context.current_target = NULL;
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_p2p_target_discovered_cb(
 	nfc_p2p_target_discovered_cb callback,
@@ -473,6 +513,8 @@ int nfc_manager_set_p2p_target_discovered_cb(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -483,6 +525,7 @@ int nfc_manager_set_p2p_target_discovered_cb(
 	gdbus_nfc_context.on_p2p_target_discovered_user_data = user_data;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_p2p_target_discovered_cb(void)
@@ -495,6 +538,7 @@ void nfc_manager_unset_p2p_target_discovered_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -505,6 +549,7 @@ void nfc_manager_unset_p2p_target_discovered_cb(void)
 	gdbus_nfc_context.on_p2p_target_discovered_user_data = NULL;
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_set_system_handler_enable(bool enable)
@@ -515,6 +560,8 @@ int nfc_manager_set_system_handler_enable(bool enable)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	if (enable == true)
@@ -525,6 +572,7 @@ int nfc_manager_set_system_handler_enable(bool enable)
 	ret = net_nfc_client_sys_handler_set_launch_popup_state(state);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_set_system_handler_enable_force(bool enable)
@@ -535,6 +583,8 @@ int nfc_manager_set_system_handler_enable_force(bool enable)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	if (enable == true)
@@ -545,6 +595,7 @@ int nfc_manager_set_system_handler_enable_force(bool enable)
 	ret = net_nfc_client_sys_handler_set_launch_popup_state_force(state);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 bool nfc_manager_is_system_handler_enabled(void)
@@ -560,6 +611,7 @@ bool nfc_manager_is_system_handler_enabled(void)
 		return false;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -571,6 +623,7 @@ bool nfc_manager_is_system_handler_enabled(void)
 	set_last_result(nfc_common_convert_error_code(__func__, ret));
 
 	return (state == 0);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_get_cached_message(nfc_ndef_message_h *ndef_message)
@@ -580,14 +633,18 @@ int nfc_manager_get_cached_message(nfc_ndef_message_h *ndef_message)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 
 	ret = net_nfc_retrieve_current_ndef_message(ndef_message);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _se_event_cb(net_nfc_message_e message, void *user_data)
 {
 	LOG_BEGIN();
@@ -608,12 +665,15 @@ static void _se_event_cb(net_nfc_message_e message, void *user_data)
 				gdbus_nfc_context.on_se_event_user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_se_event_cb(nfc_se_event_cb callback, void *user_data)
 {
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -623,6 +683,7 @@ int nfc_manager_set_se_event_cb(nfc_se_event_cb callback, void *user_data)
 	gdbus_nfc_context.on_se_event_user_data = user_data;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_se_event_cb(void)
@@ -635,6 +696,7 @@ void nfc_manager_unset_se_event_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -645,8 +707,10 @@ void nfc_manager_unset_se_event_cb(void)
 	gdbus_nfc_context.on_se_event_user_data = NULL;
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _se_transaction_event_cb(net_nfc_se_type_e se_type, data_h aid,
 	data_h param, void *user_data)
 {
@@ -662,6 +726,7 @@ static void _se_transaction_event_cb(net_nfc_se_type_e se_type, data_h aid,
 			gdbus_nfc_context.on_se_transaction_event_user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_se_transaction_event_cb(
 	nfc_se_type_e se_type,
@@ -673,6 +738,8 @@ int nfc_manager_set_se_transaction_event_cb(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -698,6 +765,7 @@ int nfc_manager_set_se_transaction_event_cb(
 	net_nfc_client_se_set_transaction_event_cb(type, _se_transaction_event_cb, user_data);
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_se_transaction_event_cb(nfc_se_type_e se_type)
@@ -712,6 +780,7 @@ void nfc_manager_unset_se_transaction_event_cb(nfc_se_type_e se_type)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -734,6 +803,7 @@ void nfc_manager_unset_se_transaction_event_cb(nfc_se_type_e se_type)
 	net_nfc_client_se_unset_transaction_event_cb(type);
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_enable_transaction_fg_dispatch()
@@ -743,11 +813,14 @@ int nfc_manager_enable_transaction_fg_dispatch()
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_set_transaction_fg_dispatch(true);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_disable_transaction_fg_dispatch()
@@ -755,11 +828,14 @@ int nfc_manager_disable_transaction_fg_dispatch()
 	net_nfc_error_e result;
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_set_transaction_fg_dispatch(false);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_set_se_type(nfc_se_type_e type)
@@ -770,6 +846,8 @@ int nfc_manager_set_se_type(nfc_se_type_e type)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(type < NFC_SE_TYPE_DISABLE);
 	CHECK_INVALID(type > NFC_SE_TYPE_HCE);
@@ -792,6 +870,7 @@ int nfc_manager_set_se_type(nfc_se_type_e type)
 	ret = net_nfc_client_se_set_secure_element_type_sync(se_type);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_manager_get_se_type(nfc_se_type_e *type)
@@ -802,6 +881,8 @@ int nfc_manager_get_se_type(nfc_se_type_e *type)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(type == NULL);
 
@@ -823,8 +904,10 @@ int nfc_manager_get_se_type(nfc_se_type_e *type)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _hce_event_cb(net_nfc_target_handle_h handle,
 		net_nfc_hce_event_t event, data_h apdu, void *user_data)
 {
@@ -839,6 +922,7 @@ static void _hce_event_cb(net_nfc_target_handle_h handle,
 			gdbus_nfc_context.on_hce_event_user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_manager_set_hce_event_cb(nfc_hce_event_cb callback, void *user_data)
 {
@@ -846,6 +930,8 @@ int nfc_manager_set_hce_event_cb(nfc_hce_event_cb callback, void *user_data)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -855,6 +941,7 @@ int nfc_manager_set_hce_event_cb(nfc_hce_event_cb callback, void *user_data)
 	result = net_nfc_client_hce_set_event_received_cb(_hce_event_cb, user_data);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 void nfc_manager_unset_hce_event_cb(void)
@@ -867,6 +954,7 @@ void nfc_manager_unset_hce_event_cb(void)
 		return;
 	}
 
+	/* LCOV_EXCL_START */
 	if (nfc_common_is_initialized() == false) {
 		LOG_ERR("NFC not initialized");
 		set_last_result(NFC_ERROR_NOT_INITIALIZED);
@@ -876,5 +964,6 @@ void nfc_manager_unset_hce_event_cb(void)
 	net_nfc_client_hce_unset_event_received_cb();
 
 	set_last_result(NFC_ERROR_NONE);
+	/* LCOV_EXCL_STOP */
 }
 

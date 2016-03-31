@@ -33,6 +33,8 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 
@@ -60,6 +62,7 @@ int nfc_ndef_record_create(nfc_ndef_record_h *record,
 	net_nfc_free_data(type_data);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 
@@ -73,6 +76,8 @@ int nfc_ndef_record_create_text(nfc_ndef_record_h *record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(text == NULL);
@@ -85,6 +90,7 @@ int nfc_ndef_record_create_text(nfc_ndef_record_h *record,
 		encode);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_create_uri(nfc_ndef_record_h *record,
@@ -95,6 +101,8 @@ int nfc_ndef_record_create_uri(nfc_ndef_record_h *record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(uri == NULL);
@@ -105,6 +113,7 @@ int nfc_ndef_record_create_uri(nfc_ndef_record_h *record,
 		NET_NFC_SCHEMA_FULL_URI);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_create_mime(nfc_ndef_record_h *record,
@@ -117,6 +126,8 @@ int nfc_ndef_record_create_mime(nfc_ndef_record_h *record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(mime_type == NULL);
@@ -133,6 +144,7 @@ int nfc_ndef_record_create_mime(nfc_ndef_record_h *record,
 		data_size);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record,
@@ -146,6 +158,8 @@ int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(mime_type == NULL);
@@ -165,6 +179,7 @@ int nfc_ndef_record_get_mime_type(nfc_ndef_record_h record,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_destroy(nfc_ndef_record_h record)
@@ -174,12 +189,15 @@ int nfc_ndef_record_destroy(nfc_ndef_record_h record)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 
 	ret = net_nfc_free_record(record);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_set_id(nfc_ndef_record_h record,
@@ -192,6 +210,8 @@ int nfc_ndef_record_set_id(nfc_ndef_record_h record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(id == NULL);
@@ -206,6 +226,7 @@ int nfc_ndef_record_set_id(nfc_ndef_record_h record,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_payload(nfc_ndef_record_h record,
@@ -218,6 +239,8 @@ int nfc_ndef_record_get_payload(nfc_ndef_record_h record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(payload == NULL);
@@ -236,6 +259,7 @@ int nfc_ndef_record_get_payload(nfc_ndef_record_h record,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_type(nfc_ndef_record_h record,
@@ -248,6 +272,8 @@ int nfc_ndef_record_get_type(nfc_ndef_record_h record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(type == NULL);
@@ -266,6 +292,7 @@ int nfc_ndef_record_get_type(nfc_ndef_record_h record,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_id(nfc_ndef_record_h record,
@@ -278,6 +305,8 @@ int nfc_ndef_record_get_id(nfc_ndef_record_h record,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(id == NULL);
@@ -296,6 +325,7 @@ int nfc_ndef_record_get_id(nfc_ndef_record_h record,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_tnf(nfc_ndef_record_h record, nfc_record_tnf_e *tnf)
@@ -305,6 +335,8 @@ int nfc_ndef_record_get_tnf(nfc_ndef_record_h record, nfc_record_tnf_e *tnf)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(tnf == NULL);
@@ -312,6 +344,7 @@ int nfc_ndef_record_get_tnf(nfc_ndef_record_h record, nfc_record_tnf_e *tnf)
 	ret = net_nfc_get_record_tnf(record, (net_nfc_record_tnf_e *)tnf);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **buffer)
@@ -323,6 +356,8 @@ int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **buffer)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(buffer == NULL);
@@ -339,6 +374,7 @@ int nfc_ndef_record_get_text(nfc_ndef_record_h record, char **buffer)
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_langcode(nfc_ndef_record_h record, char **lang_code)
@@ -348,6 +384,8 @@ int nfc_ndef_record_get_langcode(nfc_ndef_record_h record, char **lang_code)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(lang_code == NULL);
@@ -355,6 +393,7 @@ int nfc_ndef_record_get_langcode(nfc_ndef_record_h record, char **lang_code)
 	ret = net_nfc_get_languange_code_string_from_text_record(record, lang_code);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_encode_type(
@@ -366,6 +405,8 @@ int nfc_ndef_record_get_encode_type(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(encode == NULL);
@@ -378,6 +419,7 @@ int nfc_ndef_record_get_encode_type(
 	 LOGE("%s reord type is not text type");*/
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_record_get_uri(nfc_ndef_record_h record, char **uri)
@@ -387,6 +429,8 @@ int nfc_ndef_record_get_uri(nfc_ndef_record_h record, char **uri)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(record == NULL);
 	CHECK_INVALID(uri == NULL);
@@ -394,6 +438,7 @@ int nfc_ndef_record_get_uri(nfc_ndef_record_h record, char **uri)
 	ret = net_nfc_create_uri_string_from_uri_record(record, uri);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message)
@@ -403,12 +448,15 @@ int nfc_ndef_message_create(nfc_ndef_message_h *ndef_message)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 
 	ret = net_nfc_create_ndef_message(ndef_message);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_create_from_rawdata(
@@ -422,6 +470,8 @@ int nfc_ndef_message_create_from_rawdata(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(rawdata == NULL);
@@ -439,6 +489,7 @@ int nfc_ndef_message_create_from_rawdata(
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_destroy(nfc_ndef_message_h ndef_message)
@@ -448,12 +499,15 @@ int nfc_ndef_message_destroy(nfc_ndef_message_h ndef_message)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 
 	ret = net_nfc_free_ndef_message(ndef_message);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message,
@@ -464,6 +518,8 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(count == NULL);
@@ -471,6 +527,7 @@ int nfc_ndef_message_get_record_count(nfc_ndef_message_h ndef_message,
 	ret = net_nfc_get_ndef_message_record_count(ndef_message, count);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
@@ -483,6 +540,8 @@ int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(rawdata == NULL);
@@ -512,6 +571,7 @@ int nfc_ndef_message_get_rawdata(nfc_ndef_message_h ndef_message,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_append_record(nfc_ndef_message_h ndef_message,
@@ -522,6 +582,8 @@ int nfc_ndef_message_append_record(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(record == NULL);
@@ -529,6 +591,7 @@ int nfc_ndef_message_append_record(nfc_ndef_message_h ndef_message,
 	ret = net_nfc_append_record_to_ndef_message(ndef_message, record);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_insert_record(nfc_ndef_message_h ndef_message,
@@ -540,6 +603,8 @@ int nfc_ndef_message_insert_record(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(record == NULL);
@@ -547,6 +612,7 @@ int nfc_ndef_message_insert_record(nfc_ndef_message_h ndef_message,
 	ret = net_nfc_append_record_by_index(ndef_message, index, record);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_remove_record(nfc_ndef_message_h ndef_message,
@@ -557,12 +623,15 @@ int nfc_ndef_message_remove_record(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 
 	ret = net_nfc_remove_record_by_index(ndef_message, index);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message,
@@ -574,6 +643,8 @@ int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(ndef_message == NULL);
 	CHECK_INVALID(record == NULL);
@@ -583,5 +654,6 @@ int nfc_ndef_message_get_record(nfc_ndef_message_h ndef_message,
 		(ndef_record_h*)record);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 

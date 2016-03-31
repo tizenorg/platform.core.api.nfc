@@ -16,6 +16,7 @@
 
 #include "nfc_common.h"
 
+/* LCOV_EXCL_START */
 static void _p2p_handover_cb(net_nfc_error_e result,
 	net_nfc_conn_handover_carrier_type_e carrier, data_h ac_data, void *user_data)
 {
@@ -76,6 +77,7 @@ static void _p2p_handover_cb(net_nfc_error_e result,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_p2p_connection_handover(nfc_p2p_target_h target,
 	nfc_ac_type_e type,
@@ -90,6 +92,8 @@ int nfc_p2p_connection_handover(nfc_p2p_target_h target,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 	CHECK_INVALID(type > NFC_AC_TYPE_UNKNOWN);
@@ -132,8 +136,10 @@ int nfc_p2p_connection_handover(nfc_p2p_target_h target,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _connection_handover_event_cb(
 	net_nfc_handover_event_e event,
 	net_nfc_error_e result,
@@ -193,12 +199,15 @@ static void _connection_handover_event_cb(
 
 	LOG_END();
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_connection_handover_set_event_cb(nfc_connection_handover_event_cb callback, void *user_data)
 {
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -208,6 +217,7 @@ int nfc_connection_handover_set_event_cb(nfc_connection_handover_event_cb callba
 	net_nfc_client_handover_set_handover_event_cb(_connection_handover_event_cb, NULL);
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_connection_handover_unset_event_cb(void)
@@ -215,6 +225,8 @@ int nfc_connection_handover_unset_event_cb(void)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	net_nfc_client_handover_unset_handover_event_cb();
@@ -223,6 +235,7 @@ int nfc_connection_handover_unset_event_cb(void)
 	gdbus_nfc_context.on_handover_event_user_data = NULL;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 bool nfc_p2p_is_supported_ac_type(nfc_ac_type_e carrier)
@@ -244,6 +257,8 @@ int nfc_handover_message_import_from_ndef_message(nfc_handover_message_h *result
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(msg == NULL);
 	CHECK_INVALID(result == NULL);
@@ -252,6 +267,7 @@ int nfc_handover_message_import_from_ndef_message(nfc_handover_message_h *result
 		(ndef_message_h)msg, (net_nfc_ch_message_h *)result);
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_message_get_random_number(nfc_handover_message_h message, unsigned short *random_number)
@@ -261,6 +277,8 @@ int nfc_handover_message_get_random_number(nfc_handover_message_h message, unsig
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 	CHECK_INVALID(random_number == NULL);
@@ -270,6 +288,7 @@ int nfc_handover_message_get_random_number(nfc_handover_message_h message, unsig
 		random_number);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_message_get_carrier_count(nfc_handover_message_h message, unsigned int *count)
@@ -279,6 +298,8 @@ int nfc_handover_message_get_carrier_count(nfc_handover_message_h message, unsig
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 	CHECK_INVALID(count == NULL);
@@ -288,6 +309,7 @@ int nfc_handover_message_get_carrier_count(nfc_handover_message_h message, unsig
 		count);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_message_get_carrier(nfc_handover_message_h message, int index, nfc_handover_carrier_h *carrier)
@@ -297,6 +319,8 @@ int nfc_handover_message_get_carrier(nfc_handover_message_h message, int index, 
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 	CHECK_INVALID(carrier == NULL);
@@ -307,6 +331,7 @@ int nfc_handover_message_get_carrier(nfc_handover_message_h message, int index, 
 		(net_nfc_ch_carrier_h *)carrier);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_message_get_carrier_by_type(nfc_handover_message_h message, nfc_ac_type_e type, nfc_handover_carrier_h *carrier)
@@ -317,6 +342,8 @@ int nfc_handover_message_get_carrier_by_type(nfc_handover_message_h message, nfc
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 	CHECK_INVALID(carrier == NULL);
@@ -344,6 +371,7 @@ int nfc_handover_message_get_carrier_by_type(nfc_handover_message_h message, nfc
 		(net_nfc_ch_carrier_h *)carrier);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_message_destroy(nfc_handover_message_h message)
@@ -353,12 +381,15 @@ int nfc_handover_message_destroy(nfc_handover_message_h message)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 
 	result = net_nfc_free_handover_message((net_nfc_ch_message_h)message);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 
@@ -370,6 +401,8 @@ int nfc_handover_carrier_get_cps(nfc_handover_carrier_h carrier, nfc_ac_state_e 
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(cps == NULL);
@@ -397,6 +430,7 @@ int nfc_handover_carrier_get_cps(nfc_handover_carrier_h carrier, nfc_ac_state_e 
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_get_type(nfc_handover_carrier_h carrier, nfc_ac_type_e *type)
@@ -407,6 +441,8 @@ int nfc_handover_carrier_get_type(nfc_handover_carrier_h carrier, nfc_ac_type_e 
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(type == NULL);
@@ -434,6 +470,7 @@ int nfc_handover_carrier_get_type(nfc_handover_carrier_h carrier, nfc_ac_type_e 
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_get_carrier_record(nfc_handover_carrier_h carrier, nfc_ndef_record_h *record)
@@ -443,6 +480,8 @@ int nfc_handover_carrier_get_carrier_record(nfc_handover_carrier_h carrier, nfc_
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(record == NULL);
@@ -451,6 +490,7 @@ int nfc_handover_carrier_get_carrier_record(nfc_handover_carrier_h carrier, nfc_
 		(net_nfc_ch_carrier_h)carrier, (ndef_record_h *)record);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_get_auxiliary_record_count(nfc_handover_carrier_h carrier, unsigned int *count)
@@ -460,6 +500,8 @@ int nfc_handover_carrier_get_auxiliary_record_count(nfc_handover_carrier_h carri
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(count == NULL);
@@ -468,6 +510,7 @@ int nfc_handover_carrier_get_auxiliary_record_count(nfc_handover_carrier_h carri
 		(net_nfc_ch_carrier_h)carrier, count);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_get_auxiliary_record(nfc_handover_carrier_h carrier, int index, nfc_ndef_record_h *record)
@@ -477,6 +520,8 @@ int nfc_handover_carrier_get_auxiliary_record(nfc_handover_carrier_h carrier, in
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(record == NULL);
@@ -486,6 +531,7 @@ int nfc_handover_carrier_get_auxiliary_record(nfc_handover_carrier_h carrier, in
 		index, (ndef_record_h *)record);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_get_handover_config(nfc_handover_carrier_h carrier, nfc_handover_config_h *config)
@@ -495,6 +541,8 @@ int nfc_handover_carrier_get_handover_config(nfc_handover_carrier_h carrier, nfc
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 	CHECK_INVALID(config == NULL);
@@ -504,6 +552,7 @@ int nfc_handover_carrier_get_handover_config(nfc_handover_carrier_h carrier, nfc
 		(net_nfc_ch_carrier_h)carrier);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_carrier_destroy(nfc_handover_carrier_h carrier)
@@ -513,12 +562,15 @@ int nfc_handover_carrier_destroy(nfc_handover_carrier_h carrier)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(carrier == NULL);
 
 	result = net_nfc_free_handover_carrier((net_nfc_ch_carrier_h)carrier);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 
@@ -529,6 +581,8 @@ int nfc_handover_config_get_property(nfc_handover_config_h config, unsigned shor
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(config == NULL);
 	CHECK_INVALID(size == NULL);
@@ -539,6 +593,7 @@ int nfc_handover_config_get_property(nfc_handover_config_h config, unsigned shor
 		attribute, size, data);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_handover_config_destroy(nfc_handover_config_h config)
@@ -548,11 +603,14 @@ int nfc_handover_config_destroy(nfc_handover_config_h config)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(config == NULL);
 
 	result = net_nfc_free_carrier_config((net_nfc_carrier_config_h)config);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 

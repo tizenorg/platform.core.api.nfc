@@ -16,6 +16,7 @@
 
 #include "nfc_common.h"
 
+/* LCOV_EXCL_START */
 static void _p2p_send_cb(net_nfc_error_e result, void *user_data)
 {
 	nfc_p2p_send_completed_cb callback;
@@ -36,6 +37,7 @@ static void _p2p_send_cb(net_nfc_error_e result, void *user_data)
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_p2p_send(nfc_p2p_target_h target,
 	nfc_ndef_message_h message,
@@ -49,6 +51,8 @@ int nfc_p2p_send(nfc_p2p_target_h target,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(message == NULL);
 	CHECK_INVALID(target == NULL);
@@ -73,6 +77,7 @@ int nfc_p2p_send(nfc_p2p_target_h target,
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_p2p_send_no_permission(
@@ -88,6 +93,8 @@ int nfc_p2p_send_no_permission(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 	CHECK_INVALID(message == NULL);
@@ -113,8 +120,10 @@ int nfc_p2p_send_no_permission(
 	}
 
 	return nfc_common_convert_error_code(__func__, ret);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _p2p_set_data_received_cb(data_h data, void *user_data)
 {
 	LOG_BEGIN();
@@ -132,6 +141,7 @@ static void _p2p_set_data_received_cb(data_h data, void *user_data)
 		net_nfc_free_ndef_message(ndef_message);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_p2p_set_data_received_cb(nfc_p2p_target_h target,
 	nfc_p2p_data_received_cb callback,
@@ -140,6 +150,8 @@ int nfc_p2p_set_data_received_cb(nfc_p2p_target_h target,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 	CHECK_INVALID(callback == NULL);
@@ -151,6 +163,7 @@ int nfc_p2p_set_data_received_cb(nfc_p2p_target_h target,
 	net_nfc_client_p2p_set_data_received(_p2p_set_data_received_cb, NULL);
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target)
@@ -158,6 +171,8 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 	CHECK_INVALID(gdbus_nfc_context.current_target != target);
@@ -168,8 +183,10 @@ int nfc_p2p_unset_data_received_cb(nfc_p2p_target_h target)
 	gdbus_nfc_context.on_p2p_recv_user_data = NULL;
 
 	return NFC_ERROR_NONE;
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _snep_start_server_cb(
 	net_nfc_snep_handle_h arg_handle,
 	net_nfc_snep_type_t event,
@@ -230,6 +247,7 @@ static void _snep_start_server_cb(
 			g_variant_unref(user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_snep_start_server(nfc_p2p_target_h target,
 	const char *san,
@@ -243,6 +261,8 @@ int nfc_snep_start_server(nfc_p2p_target_h target,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 
@@ -263,8 +283,10 @@ int nfc_snep_start_server(nfc_p2p_target_h target,
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _snep_start_client_cb(net_nfc_snep_handle_h arg_handle,
 	net_nfc_snep_type_t event,
 	net_nfc_error_e result,
@@ -324,6 +346,7 @@ static void _snep_start_client_cb(net_nfc_snep_handle_h arg_handle,
 			g_variant_unref(user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_snep_start_client(nfc_p2p_target_h target,
 	const char *san,
@@ -337,6 +360,8 @@ int nfc_snep_start_client(nfc_p2p_target_h target,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(target == NULL);
 
@@ -357,8 +382,10 @@ int nfc_snep_start_client(nfc_p2p_target_h target,
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _snep_send_request_cb(net_nfc_snep_handle_h target,
 	net_nfc_snep_type_t event, net_nfc_error_e result, ndef_message_h msg, void *user_data)
 {
@@ -387,6 +414,7 @@ static void _snep_send_request_cb(net_nfc_snep_handle_h target,
 
 	g_variant_unref((GVariant *)user_data);
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_snep_send_client_request(nfc_p2p_snep_h handle,
 	nfc_snep_type_e type,
@@ -400,6 +428,8 @@ int nfc_snep_send_client_request(nfc_p2p_snep_h handle,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(handle == NULL);
 	CHECK_INVALID(msg == NULL);
@@ -421,8 +451,10 @@ int nfc_snep_send_client_request(nfc_p2p_snep_h handle,
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t event,
 	net_nfc_error_e result, ndef_message_h msg, void *user_data)
 {
@@ -473,6 +505,7 @@ static void _snep_event_cb(net_nfc_snep_handle_h target, net_nfc_snep_type_t eve
 			(ndef_message_h)msg, user_param);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_snep_register_server(const char *san, int sap,
 	nfc_snep_event_cb callback, void *user_data)
@@ -483,6 +516,8 @@ int nfc_snep_register_server(const char *san, int sap,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(san == NULL);
 	CHECK_INVALID(sap == 0);
@@ -500,6 +535,7 @@ int nfc_snep_register_server(const char *san, int sap,
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_snep_unregister_server(const char *san, int sap)
@@ -509,11 +545,14 @@ int nfc_snep_unregister_server(const char *san, int sap)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_snep_unregister_server(san, (sap_t)sap);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_snep_stop_service(nfc_p2p_target_h target, nfc_p2p_snep_h clients)
@@ -523,10 +562,13 @@ int nfc_snep_stop_service(nfc_p2p_target_h target, nfc_p2p_snep_h clients)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_P2P_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_snep_stop_service_sync(target, clients);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 

@@ -27,6 +27,8 @@ int nfc_se_open_secure_element_internal(
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(handle == NULL);
 
@@ -51,6 +53,7 @@ int nfc_se_open_secure_element_internal(
 		*handle = (nfc_se_h)temp;
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 
@@ -66,6 +69,8 @@ int nfc_se_send_apdu_internal(nfc_se_h handle,
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(handle == NULL);
 	CHECK_INVALID(cmd == NULL);
@@ -117,6 +122,7 @@ int nfc_se_send_apdu_internal(nfc_se_h handle,
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 
@@ -128,6 +134,8 @@ int nfc_se_get_atr_internal(nfc_se_h handle, unsigned char **atr, unsigned int *
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(handle == NULL);
 	CHECK_INVALID(atr == NULL);
@@ -162,6 +170,7 @@ int nfc_se_get_atr_internal(nfc_se_h handle, unsigned char **atr, unsigned int *
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_close_secure_element_internal(nfc_se_h handle)
@@ -171,12 +180,15 @@ int nfc_se_close_secure_element_internal(nfc_se_h handle)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_close_internal_secure_element_sync(
 		(net_nfc_target_handle_h)handle);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_enable_card_emulation()
@@ -186,11 +198,14 @@ int nfc_se_enable_card_emulation()
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_set_card_emulation_mode_sync(NET_NFC_CARD_EMELATION_ENABLE);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_disable_card_emulation()
@@ -200,11 +215,14 @@ int nfc_se_disable_card_emulation()
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_set_card_emulation_mode_sync(NET_NFC_CARD_EMULATION_DISABLE);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_get_card_emulation_mode(nfc_se_card_emulation_mode_type_e *mode)
@@ -215,6 +233,8 @@ int nfc_se_get_card_emulation_mode(nfc_se_card_emulation_mode_type_e *mode)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(mode == NULL);
 
@@ -231,6 +251,7 @@ int nfc_se_get_card_emulation_mode(nfc_se_card_emulation_mode_type_e *mode)
 	}
 
 	return nfc_common_convert_error_code(__func__, result);;
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_hce_send_apdu_response(nfc_se_h handle, unsigned char *resp, unsigned int resp_len)
@@ -241,6 +262,8 @@ int nfc_hce_send_apdu_response(nfc_se_h handle, unsigned char *resp, unsigned in
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(resp == NULL);
 	CHECK_INVALID(resp_len == 0);
@@ -254,6 +277,7 @@ int nfc_hce_send_apdu_response(nfc_se_h handle, unsigned char *resp, unsigned in
 	}
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_set_default_route(nfc_se_type_e powered_on_status, nfc_se_type_e powered_off_status, nfc_se_type_e low_battery_status)
@@ -263,11 +287,14 @@ int nfc_se_set_default_route(nfc_se_type_e powered_on_status, nfc_se_type_e powe
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_set_default_route_sync(powered_on_status, powered_off_status, low_battery_status);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_is_activated_handler_for_aid(nfc_se_type_e se_type, const char *aid, bool *is_activated_handler)
@@ -277,6 +304,8 @@ int nfc_se_is_activated_handler_for_aid(nfc_se_type_e se_type, const char *aid, 
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(aid == NULL);
 	CHECK_INVALID(is_activated_handler == NULL);
@@ -284,6 +313,7 @@ int nfc_se_is_activated_handler_for_aid(nfc_se_type_e se_type, const char *aid, 
 	result = net_nfc_client_se_is_activated_aid_handler_sync((net_nfc_se_type_e)se_type, aid, is_activated_handler);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_is_activated_handler_for_category(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, bool *is_activated_handler)
@@ -293,12 +323,15 @@ int nfc_se_is_activated_handler_for_category(nfc_se_type_e se_type, nfc_card_emu
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(is_activated_handler == NULL);
 
 	result = net_nfc_client_se_is_activated_category_handler_sync((net_nfc_se_type_e)se_type, category, is_activated_handler);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_register_aid(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, const char *aid)
@@ -308,12 +341,15 @@ int nfc_se_register_aid(nfc_se_type_e se_type, nfc_card_emulation_category_type_
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(aid == NULL);
 
 	result = net_nfc_client_se_register_aids_sync((net_nfc_se_type_e)se_type, category, aid);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_unregister_aid(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, const char *aid)
@@ -323,12 +359,15 @@ int nfc_se_unregister_aid(nfc_se_type_e se_type, nfc_card_emulation_category_typ
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(aid == NULL);
 
 	result = net_nfc_client_se_unregister_aid_sync((net_nfc_se_type_e)se_type, category, aid);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, int *count)
@@ -338,6 +377,8 @@ int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_c
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(count == NULL);
 
@@ -347,8 +388,10 @@ int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_c
 			(size_t *)count);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
+/* LCOV_EXCL_START */
 static void _se_registered_aid_event_cb(net_nfc_se_type_e se_type,
 		const char *aid, bool readonly, void *user_data)
 {
@@ -362,6 +405,7 @@ static void _se_registered_aid_event_cb(net_nfc_se_type_e se_type,
 			gdbus_nfc_context.on_se_registered_aid_cb_user_data);
 	}
 }
+/* LCOV_EXCL_STOP */
 
 int nfc_se_foreach_registered_aids(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, nfc_se_registered_aid_cb callback, void *user_data)
 {
@@ -370,6 +414,8 @@ int nfc_se_foreach_registered_aids(nfc_se_type_e se_type, nfc_card_emulation_cat
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(callback == NULL);
 
@@ -382,6 +428,7 @@ int nfc_se_foreach_registered_aids(nfc_se_type_e se_type, nfc_card_emulation_cat
 		user_data);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_add_route_for_aid_internal(const char *aid, nfc_se_type_e se_type, const char* pkg_name, bool unlock_required,
@@ -392,11 +439,14 @@ int nfc_se_add_route_for_aid_internal(const char *aid, nfc_se_type_e se_type, co
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_add_route_aid_sync(pkg_name, se_type, category, aid, unlock_required, power);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_remove_route_for_aid_internal(const char* pkg_name, const char *aid)
@@ -406,11 +456,14 @@ int nfc_se_remove_route_for_aid_internal(const char* pkg_name, const char *aid)
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
 	result = net_nfc_client_se_remove_route_aid_sync(pkg_name, aid);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_set_preferred_handler()
@@ -420,12 +473,15 @@ int nfc_se_set_preferred_handler()
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_ACTIVATED();
 
 	result = net_nfc_client_se_set_preferred_handler_sync(true);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
 
 int nfc_se_unset_preferred_handler()
@@ -435,10 +491,13 @@ int nfc_se_unset_preferred_handler()
 	LOG_BEGIN();
 
 	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+
+	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_ACTIVATED();
 
 	result = net_nfc_client_se_set_preferred_handler_sync(false);
 
 	return nfc_common_convert_error_code(__func__, result);
+	/* LCOV_EXCL_STOP */
 }
