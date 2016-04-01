@@ -71,7 +71,7 @@ typedef enum {
 typedef enum {
 	NFC_RECORD_TNF_EMPTY = 0x00,	/**< Empty */
 	NFC_RECORD_TNF_WELL_KNOWN = 0x01,	/**< RTD(Record Type Definition) type format [NFC RTD] */
-	NFC_RECORD_TNF_MIME_MEDIA= 0x02,	/**< MIME Media types in RFC 2046 [RFC 2046] */
+	NFC_RECORD_TNF_MIME_MEDIA = 0x02,	/**< MIME Media types in RFC 2046 [RFC 2046] */
 	NFC_RECORD_TNF_URI = 0x03,	/**< Absolute URI as defined in RFC 3986 [RFC 3986] */
 	NFC_RECORD_TNF_EXTERNAL_RTD = 0x04,	/**< NFC Forum external type [NFC RTD] */
 	NFC_RECORD_TNF_UNKNOWN = 0x05,	/**< Unknown\n The payload type is unknown */
@@ -131,7 +131,7 @@ typedef enum {
 	NFC_TAG_FILTER_FELICA_ENABLE = 0x0008,	/**< FELICA enable */
 	NFC_TAG_FILTER_JEWEL_ENABLE = 0x0010,	/**< JEWEL enable */
 	NFC_TAG_FILTER_IP_ENABLE = 0x0020,	/**< IP enable */
-	NFC_TAG_FILTER_ALL_ENABLE= ~0,	/**< All enable */
+	NFC_TAG_FILTER_ALL_ENABLE = ~0,	/**< All enable */
 } nfc_tag_filter_e;
 
 /**
@@ -149,7 +149,7 @@ typedef enum {
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  */
-typedef enum{
+typedef enum {
 	NFC_SE_EVENT_START_TRANSACTION, /**< This event notifies the terminal host that it shall launch an application associated to an NFC application in a UICC(Universal Integrated Circuit Card) host. */
 	NFC_SE_EVENT_END_TRANSACTION,	/**< This event notifies the terminal host that current transaction in process was ended. */
 	NFC_SE_EVENT_CONNECTIVITY, /**< It's ready signal to communicate UICC(Universal Integrated Circuit Card) with terminal host. UICC(Universal Integrated Circuit Card) create pipe and open the pipe chanel. Then it sends the signal to terminal host or host controller. */
@@ -165,7 +165,7 @@ typedef enum{
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  */
-typedef enum{
+typedef enum {
 	NFC_SE_TYPE_DISABLE = 0x00, /**< Disable card emulation */
 	NFC_SE_TYPE_ESE = 0x01, /**< SmartMX type card emulation */
 	NFC_SE_TYPE_UICC = 0x02, /**< UICC type card emulation */
@@ -178,7 +178,7 @@ typedef enum{
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  */
-typedef enum{
+typedef enum {
 	NFC_SE_CARD_EMULATION_MODE_OFF = 0x00, /**< Card Emulation mode OFF */
 	NFC_SE_CARD_EMULATION_MODE_ON = 0x01, /**< Card Emulation mode ON */
 } nfc_se_card_emulation_mode_type_e;
@@ -212,7 +212,7 @@ typedef enum {
  * @since_tizen 2.3.1
  * @ingroup CAPI_NETWORK_NFC_SE_MODULE
  */
-typedef enum{
+typedef enum {
 	NFC_CARD_EMULATION_CATEGORY_PAYMENT = 0x01, /**< Category used for NFC payment services */
 	NFC_CARD_EMULATION_CATEGORY_OTHER = 0x02, /**< Category that can be used for all other card emulation services */
 } nfc_card_emulation_category_type_e;
@@ -222,7 +222,7 @@ typedef enum{
  * @since_tizen 2.3.1
  * @ingroup CAPI_NETWORK_NFC_SE_MODULE
  */
-typedef enum{
+typedef enum {
 	NFC_HCE_EVENT_DEACTIVATED = 0x00, /**< HCE Deactivated */
 	NFC_HCE_EVENT_ACTIVATED = 0x01, /**< HCE Activated */
 	NFC_HCE_EVENT_APDU_RECEIVED = 0x02, /**< HCE APDU Received */
@@ -350,7 +350,7 @@ extern const unsigned char NFC_RECORD_HANDOVER_SELECT_TYPE[2];
  *
  * @see nfc_manager_set_activation()
  */
-typedef void (* nfc_activation_completed_cb)(nfc_error_e error, void *user_data);
+typedef void (*nfc_activation_completed_cb)(nfc_error_e error, void *user_data);
 
 /**
  * @brief Called when nfc activation state is changed.
@@ -370,7 +370,7 @@ typedef void (*nfc_activation_changed_cb)(bool activated , void *user_data);
  * @ingroup CAPI_NETWORK_NFC_MANAGER_MODULE
  *
  * @remarks  The tag handle does not have detail target info when an NFC tag disappeared.\n
- * 	So then do not use tag functions which use tag handle.
+ *	So then do not use tag functions which use tag handle.
  *
  * @param [in] type The discovered type attached or detached
  * @param [in] tag The handle to NFC tag
@@ -380,7 +380,7 @@ typedef void (*nfc_activation_changed_cb)(bool activated , void *user_data);
  * @see nfc_manager_unset_tag_discovered_cb()
  * @see nfc_manager_set_tag_filter()
  */
-typedef void (* nfc_tag_discovered_cb)(nfc_discovered_type_e type, nfc_tag_h tag, void *user_data);
+typedef void (*nfc_tag_discovered_cb)(nfc_discovered_type_e type, nfc_tag_h tag, void *user_data);
 
 /**
  * @brief Called when an NDEF Message is discovered
@@ -395,7 +395,7 @@ typedef void (* nfc_tag_discovered_cb)(nfc_discovered_type_e type, nfc_tag_h tag
  * @see nfc_manager_set_ndef_discovered_cb()
  * @see nfc_manager_unset_ndef_discovered_cb()
  */
-typedef void (* nfc_ndef_discovered_cb)(nfc_ndef_message_h message, void *user_data);
+typedef void (*nfc_ndef_discovered_cb)(nfc_ndef_message_h message, void *user_data);
 
 
 /**
@@ -433,7 +433,7 @@ typedef bool (*nfc_tag_information_cb)(const char *key, const unsigned char *val
  *
  * @see nfc_tag_transceive()
  */
-typedef void (* nfc_tag_transceive_completed_cb)(nfc_error_e result, unsigned char *buffer, int buffer_size, void *user_data);
+typedef void (*nfc_tag_transceive_completed_cb)(nfc_error_e result, unsigned char *buffer, int buffer_size, void *user_data);
 
 /**
  * @brief Called after the nfc_tag_write_ndef() has completed.
@@ -445,7 +445,7 @@ typedef void (* nfc_tag_transceive_completed_cb)(nfc_error_e result, unsigned ch
  *
  * @see nfc_tag_write_ndef()
  */
-typedef void (* nfc_tag_write_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_tag_write_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after the nfc_tag_read_ndef() has completed.
@@ -460,7 +460,7 @@ typedef void (* nfc_tag_write_completed_cb)(nfc_error_e result, void *user_data)
  *
  * @see nfc_tag_read_ndef()
  */
-typedef void (* nfc_tag_read_completed_cb)(nfc_error_e result, nfc_ndef_message_h message, void *user_data);
+typedef void (*nfc_tag_read_completed_cb)(nfc_error_e result, nfc_ndef_message_h message, void *user_data);
 
 /**
  * @brief   Called after the nfc_tag_format_ndef() has completed.
@@ -472,7 +472,7 @@ typedef void (* nfc_tag_read_completed_cb)(nfc_error_e result, nfc_ndef_message_
  *
  * @see nfc_tag_format_ndef()
  */
-typedef void (* nfc_tag_format_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_tag_format_completed_cb)(nfc_error_e result, void *user_data);
 
 
 /**
@@ -485,7 +485,7 @@ typedef void (* nfc_tag_format_completed_cb)(nfc_error_e result, void *user_data
  *
  * @see nfc_mifare_authenticate_with_keyA()
  */
-typedef void (* nfc_mifare_authenticate_with_keyA_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_authenticate_with_keyA_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_authenticate_with_keyB() has completed
@@ -497,7 +497,7 @@ typedef void (* nfc_mifare_authenticate_with_keyA_completed_cb)(nfc_error_e resu
  *
  * @see nfc_mifare_authenticate_with_keyB()
  */
-typedef void (* nfc_mifare_authenticate_with_keyB_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_authenticate_with_keyB_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_write_block() has completed
@@ -509,7 +509,7 @@ typedef void (* nfc_mifare_authenticate_with_keyB_completed_cb)(nfc_error_e resu
  *
  * @see nfc_mifare_write_block()
  */
-typedef void (* nfc_mifare_write_block_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_write_block_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_write_page() has completed
@@ -521,7 +521,7 @@ typedef void (* nfc_mifare_write_block_completed_cb)(nfc_error_e result, void *u
  *
  * @see nfc_mifare_write_page()
  */
-typedef void (* nfc_mifare_write_page_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_write_page_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_read_block() has completed
@@ -537,7 +537,7 @@ typedef void (* nfc_mifare_write_page_completed_cb)(nfc_error_e result, void *us
  *
  * @see nfc_mifare_read_block()
  */
-typedef void (* nfc_mifare_read_block_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
+typedef void (*nfc_mifare_read_block_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_read_page() has completed
@@ -553,7 +553,7 @@ typedef void (* nfc_mifare_read_block_completed_cb)(nfc_error_e result, unsigned
  *
  * @see nfc_mifare_read_page()
  */
-typedef void (* nfc_mifare_read_page_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
+typedef void (*nfc_mifare_read_page_completed_cb)(nfc_error_e result, unsigned char *buffer, int bufer_size, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_increment() has completed
@@ -565,7 +565,7 @@ typedef void (* nfc_mifare_read_page_completed_cb)(nfc_error_e result, unsigned 
  *
  * @see nfc_mifare_increment()
  */
-typedef void (* nfc_mifare_increment_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_increment_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_decrement() has completed
@@ -577,7 +577,7 @@ typedef void (* nfc_mifare_increment_completed_cb)(nfc_error_e result, void *use
  *
  * @see nfc_mifare_decrement()
  */
-typedef void (* nfc_mifare_decrement_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_decrement_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_transfer() has completed
@@ -589,7 +589,7 @@ typedef void (* nfc_mifare_decrement_completed_cb)(nfc_error_e result, void *use
  *
  * @see nfc_mifare_transfer()
  */
-typedef void (* nfc_mifare_transfer_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_transfer_completed_cb)(nfc_error_e result, void *user_data);
 
 /**
  * @brief Called after nfc_mifare_restore() has completed
@@ -601,7 +601,7 @@ typedef void (* nfc_mifare_transfer_completed_cb)(nfc_error_e result, void *user
  *
  * @see nfc_mifare_restore()
  */
-typedef void (* nfc_mifare_restore_completed_cb)(nfc_error_e result, void *user_data);
+typedef void (*nfc_mifare_restore_completed_cb)(nfc_error_e result, void *user_data);
 
 
 
@@ -2243,7 +2243,7 @@ int nfc_mifare_authenticate_with_keyA(nfc_tag_h tag, int sector_index, unsigned 
  * @privilege %http://tizen.org/privilege/nfc
  * @remarks I/O operations(read / write / increment / decrement / transfer / restore) will be available after successful authentication.\n
  * This function is only available for MIFARE classic.\n
- * 	\n
+ *	\n
  *	MIFARE CLASSIC MINI\n
  *		=> 0 ~ 4 : 5 sector and 4 block with 16 bytes\n
  *	\n

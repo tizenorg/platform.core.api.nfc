@@ -29,8 +29,8 @@ extern "C" {
  * @ingroup CAPI_NETWORK_NFC_HANDOVER_MODULE
  */
 typedef enum {
-    NFC_HANDOVER_EVENT_START = 0x00, /**< handover started */
-    NFC_HANDOVER_EVENT_FINISH = 0x01, /**< handover finished */
+	NFC_HANDOVER_EVENT_START = 0x00, /**< handover started */
+	NFC_HANDOVER_EVENT_FINISH = 0x01, /**< handover finished */
 } nfc_handover_event_e;
 
 /**
@@ -53,9 +53,9 @@ typedef enum {
 	NFC_AC_STATE_ACTIVATE, /**<  activated */
 	NFC_AC_STATE_ACTIVATING,/**< now activating */
 	NFC_AC_STATE_UNKNOWN, /**< unknown */
-} nfc_ac_state_e ;
+} nfc_ac_state_e;
 
-typedef enum{
+typedef enum {
 	NFC_SE_POWER_MODE_SLEEP = 0x00, /**< sleep mode */
 	NFC_SE_POWER_MODE_ON = 0x01, /**< Power On */
 	NFC_SE_POWER_MODE_OFF = 0x02, /**< Power Off */

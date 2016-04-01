@@ -501,3 +501,4 @@ int nfc_se_unset_preferred_handler()
 	return nfc_common_convert_error_code(__func__, result);
 	/* LCOV_EXCL_STOP */
 }
+

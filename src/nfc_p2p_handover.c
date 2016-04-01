@@ -255,11 +255,10 @@ bool nfc_p2p_is_supported_ac_type(nfc_ac_type_e carrier)
 	if (carrier == NFC_AC_TYPE_BT)
 		_is_support_ac_type = true;
 
-	if (_is_support_ac_type) {
+	if (_is_support_ac_type)
 		set_last_result(NFC_ERROR_NONE);
-	} else {
+	else
 		set_last_result(NFC_ERROR_NOT_SUPPORTED);
-	}
 
 	return _is_support_ac_type;
 	/* LCOV_EXCL_STOP */

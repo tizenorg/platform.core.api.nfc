@@ -45,49 +45,44 @@
 #define NFC_CE_HCE_FEATURE "http://tizen.org/feature/network.nfc.card_emulation.hce"
 
 #define CHECK_INIT() \
-		do{\
-			if(nfc_common_is_initialized() == false) \
-			{ \
+		do { \
+			if (nfc_common_is_initialized() == false) { \
 				LOG_ERR("[ERROR][%s] NFC not initialized", __func__); \
 				return NFC_ERROR_NOT_INITIALIZED; \
 			} \
-		}while(0)
+		} while (0)
 
 #define CHECK_SUPPORTED(str) \
-		do{\
-			if(nfc_common_is_supported(str) == false) \
-			{ \
+		do { \
+			if (nfc_common_is_supported(str) == false) { \
 				LOG_ERR("[ERROR][%s] NFC not supported", __func__); \
 				return NFC_ERROR_NOT_SUPPORTED; \
 			} \
-		}while(0)
+		} while (0)
 
 #define CHECK_ACTIVATED() \
-		do{\
-			if (!nfc_manager_is_activated()) \
-			{ \
+		do { \
+			if (!nfc_manager_is_activated()) { \
 				LOG_ERR("[ERROR][%s] NFC not activated", __func__); \
 				return NFC_ERROR_NOT_ACTIVATED; \
 			} \
-		} while(0)
+		} while (0)
 
 #define CHECK_INVALID(expr) \
-		do{\
-			if (expr) \
-			{ \
+		do { \
+			if (expr) { \
 				LOG_ERR("[ERROR][%s] INVALID PARAMETER (%s)", __func__, #expr); \
 				return NFC_ERROR_INVALID_PARAMETER; \
 			} \
-		} while(0)
+		} while (0)
 
 #define CHECK_APP_PERMISSION() \
-		do{\
-			if (nfc_common_check_app_permission() == false) \
-			{ \
+		do {\
+			if (nfc_common_check_app_permission() == false) { \
 				LOG_ERR("[ERROR][%s] Permission check fail", __func__); \
 				return NFC_ERROR_SECURITY_RESTRICTED; \
 			} \
-		} while(0)
+		} while (0)
 
 #ifdef LOG_TAG
 #undef LOG_TAG
@@ -112,14 +107,12 @@
 		LOGD(COLOR_BLUE"END <<<<"COLOR_END); \
 	} while (0)
 
-typedef struct
-{
+typedef struct {
 	bool				initialized;
 	bool				on_activation_doing;
 
 	net_nfc_target_info_h		current_tag;
 
-	//net_nfc_target_handle_s	current_target;
 	net_nfc_target_handle_h		current_target;
 
 	nfc_tag_discovered_cb		on_tag_discovered_cb;
@@ -161,4 +154,4 @@ bool nfc_common_is_initialized();
 bool nfc_common_is_supported(char *str);
 int nfc_common_get_rawdata_size(nfc_ndef_message_h ndef_message, unsigned int *byte_size);
 
-#endif // __NFC_LOG_H__
+#endif /* __NFC_LOG_H__ */
