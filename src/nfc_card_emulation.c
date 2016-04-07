@@ -472,7 +472,7 @@ int nfc_se_set_preferred_handler()
 
 	LOG_BEGIN();
 
-	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_SUPPORTED(NFC_CE_FEATURE);
 
 	/* LCOV_EXCL_START */
 	CHECK_INIT();
@@ -490,7 +490,7 @@ int nfc_se_unset_preferred_handler()
 
 	LOG_BEGIN();
 
-	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_SUPPORTED(NFC_CE_FEATURE);
 
 	/* LCOV_EXCL_START */
 	CHECK_INIT();
