@@ -9,10 +9,10 @@ BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gobject-2.0)
-BuildRequires:  nfc-client-lib-devel
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(capi-system-info)
+BuildRequires:  pkgconfig(nfc-common-lib)
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
