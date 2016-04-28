@@ -318,7 +318,7 @@ void nfc_manager_set_tag_filter(int filter)
 		return;
 	}
 
-	if (filter < NET_NFC_ALL_DISABLE) {
+	if (filter < NET_NFC_ALL_ENABLE) {
 		LOG_ERR("Invalid parameter");
 		set_last_result(NFC_ERROR_INVALID_PARAMETER);
 		return;
