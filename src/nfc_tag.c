@@ -16,6 +16,27 @@
 
 #include "nfc_common.h"
 
+/**
+ * @brief The default factory key.
+ * @details The key is 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_DEFAULT[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+/**
+ * @brief The well-known key for tags formatted according to the MIFARE Application Directory (MAD) specification.
+ * @details The key is 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_APPLICATION_DIRECTORY[6] = {0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5};
+
+/**
+ * @brief The well-known key for tags formatted according to the NDEF on Mifare Classic specification.
+ * @details The key is 0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7
+ * @ingroup CAPI_NETWORK_NFC_TAG_MIFARE_MODULE
+ */
+const unsigned char NFC_TAG_MIFARE_KEY_NFC_FORUM[6] = {0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7};
+
 /* LCOV_EXCL_START */
 static void _tag_format_ndef_cb(net_nfc_error_e result,
 	void *user_data)

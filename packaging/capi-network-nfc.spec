@@ -1,6 +1,6 @@
 Name:       capi-network-nfc
 Summary:    A NFC library in Native API
-Version:    0.2.4
+Version:    0.2.5
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0

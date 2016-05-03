@@ -16,6 +16,43 @@
 
 #include "nfc_common.h"
 
+/**
+ * @brief RTD(Record type definition) Type - Smart Poster type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_SMART_POSTER_TYPE[2] = { 'S', 'p' };
+
+/**
+ * @brief  RTD(Record type definition) Type - Text type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_TEXT_TYPE[1] = { 'T' };
+/**
+ * @brief  RTD(Record type definition) Type - URI type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_URI_TYPE[1] = { 'U' };
+/**
+ * @brief  RTD(Record type definition) Type - Alternative Carrier type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_ALTERNATIVE_CARRIER_TYPE[2] = { 'a','c' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Carrier type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_CARRIER_TYPE[2] = { 'H','c' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Request type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_REQUEST_TYPE[2] = { 'H','r' };
+/**
+ * @brief  RTD(Record type definition) Type - Handover Select type.
+ * @ingroup CAPI_NETWORK_NFC_NDEF_RECORD_MODULE
+ */
+const unsigned char NFC_RECORD_HANDOVER_SELECT_TYPE[2] = { 'H','s' };
+
 int nfc_ndef_record_create(nfc_ndef_record_h *record,
 	nfc_record_tnf_e tnf,
 	const unsigned char *type,
