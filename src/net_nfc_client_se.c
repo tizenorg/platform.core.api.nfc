@@ -120,7 +120,7 @@ static void se_ese_detected(GObject *source_object,
 
 		net_nfc_util_gdbus_variant_to_data_s(arg_data, &buffer_data);
 
-		callback((net_nfc_target_handle_h)arg_handle,
+		callback((net_nfc_target_handle_h)GUINT_TO_POINTER(arg_handle),
 			arg_se_type, &buffer_data,
 			se_esedetecthandler.se_ese_detected_data);
 
@@ -314,7 +314,7 @@ static void open_secure_element(GObject *source_object,
 			(net_nfc_se_open_se_cb)func_data->se_callback;
 
 		se_callback(result,
-			(net_nfc_target_handle_h)out_handle,
+			(net_nfc_target_handle_h)GUINT_TO_POINTER(out_handle),
 			func_data->se_data);
 	}
 

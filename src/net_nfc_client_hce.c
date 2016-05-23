@@ -65,7 +65,7 @@ static void hce_event_received(GObject *source_object, guint arg_handle,
 
 		net_nfc_util_gdbus_variant_to_data_s(arg_apdu, &apdu);
 
-		hce_handler.hce_event_cb((net_nfc_target_handle_h)arg_handle,
+		hce_handler.hce_event_cb((net_nfc_target_handle_h)GUINT_TO_POINTER(arg_handle),
 			(net_nfc_hce_event_t)arg_event, &apdu,
 			hce_handler.hce_data);
 

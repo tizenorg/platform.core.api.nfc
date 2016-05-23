@@ -127,7 +127,7 @@ static bool __process_server_message()
 		temp.length = data.length - sizeof(net_nfc_hce_data_t);
 
 		net_nfc_client_hce_process_received_event(header->type,
-			(net_nfc_target_handle_h)header->handle, (data_h)&temp);
+			(net_nfc_target_handle_h)GUINT_TO_POINTER(header->handle), (data_h)&temp);
 
 		result = true;
 	} else {
@@ -172,7 +172,7 @@ bool net_nfc_server_hce_ipc_send_to_server(int type,
 		header = (net_nfc_hce_data_t *)(temp.buffer + sizeof(len));
 
 		header->type = type;
-		header->handle = (int)handle;
+		header->handle = GPOINTER_TO_UINT(handle);
 
 		if (data != NULL && data->length > 0) {
 			memcpy(header->data, data->buffer, data->length);
