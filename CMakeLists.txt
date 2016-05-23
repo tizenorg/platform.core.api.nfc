@@ -23,7 +23,7 @@ SET(service "network")
 SET(submodule "nfc")
 
 # for package file
-SET(dependents "dlog glib-2.0 gio-2.0 nfc capi-base-common vconf capi-system-info")
+SET(dependents "dlog glib-2.0 gio-2.0 nfc-common-lib capi-base-common vconf capi-system-info")
 SET(pc_dependents "capi-base-common")
 
 SET(fw_name "${project_prefix}-${service}-${submodule}")
@@ -56,13 +56,7 @@ ADD_DEFINITIONS("-DTIZEN_DEBUG")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${LIBDIR}")
 
-SET(SOURCES src/nfc_p2p.c
-			src/nfc_p2p_handover.c
-			src/nfc_tag.c
-			src/nfc_card_emulation.c
-			src/nfc_manager.c
-			src/nfc_common.c
-			src/nfc_ndef.c)
+AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCES)
 
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
 
