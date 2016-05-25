@@ -502,3 +502,18 @@ int nfc_se_unset_preferred_handler()
 	/* LCOV_EXCL_STOP */
 }
 
+int nfc_se_get_conflict_handlers_internal(const char *package,
+	nfc_card_emulation_category_type_e category, const char *aid, char ***handlers)
+{
+	net_nfc_error_e result;
+
+	LOG_BEGIN();
+
+	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_INIT();
+	CHECK_ACTIVATED();
+
+	result = net_nfc_client_se_get_conflict_handlers_sync(package, category, aid, handlers);
+
+	return nfc_common_convert_error_code(__func__, result);
+}

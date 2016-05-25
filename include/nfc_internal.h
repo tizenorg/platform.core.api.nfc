@@ -24,6 +24,8 @@
 extern "C" {
 #endif
 
+#define NFC_ERROR_DATA_CONFLICTED -100
+
 /**
  * @brief Enumerations for Handover event
  * @ingroup CAPI_NETWORK_NFC_HANDOVER_MODULE
@@ -554,6 +556,8 @@ int nfc_manager_initialize_sync(void);
  */
 int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, int *count);
 
+int nfc_se_get_conflict_handlers_internal(const char *package, nfc_card_emulation_category_type_e category,
+			const char *aid, char ***handlers);
 
 #ifdef __cplusplus
 }
