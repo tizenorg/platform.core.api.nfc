@@ -144,7 +144,7 @@ typedef struct {
 }
 _nfc_context_s;
 
-_nfc_context_s gdbus_nfc_context;
+extern _nfc_context_s gdbus_nfc_context;
 
 pid_t nfc_common_get_focus_app_pid();
 char * nfc_common_get_bt_address_string(data_h data);
