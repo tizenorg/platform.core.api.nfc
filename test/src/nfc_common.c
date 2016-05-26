@@ -16,6 +16,8 @@
 
 #include "nfc_common.h"
 
+_nfc_context_s gdbus_nfc_context;
+
 /* LCOV_EXCL_START */
 pid_t nfc_common_get_focus_app_pid()
 {
