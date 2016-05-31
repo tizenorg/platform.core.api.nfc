@@ -381,9 +381,10 @@ int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_c
 	/* LCOV_EXCL_START */
 	CHECK_INIT();
 	CHECK_INVALID(count == NULL);
+	CHECK_ACTIVATED();
 
 	result = net_nfc_client_se_get_registered_aids_count_sync(
-			(net_nfc_se_type_e)NFC_SE_TYPE_HCE,
+			(net_nfc_se_type_e)se_type,
 			(net_nfc_card_emulation_category_t)category,
 			(size_t *)count);
 
@@ -464,6 +465,24 @@ int nfc_se_remove_route_for_aid_internal(const char* pkg_name, const char *aid)
 
 	return nfc_common_convert_error_code(__func__, result);
 	/* LCOV_EXCL_STOP */
+}
+
+int nfc_se_foreach_registered_handlers(
+	nfc_card_emulation_category_type_e category,
+	nfc_se_registered_handler_cb callback, void *user_data)
+{
+	net_nfc_error_e result;
+
+	LOG_BEGIN();
+
+	CHECK_SUPPORTED(NFC_CE_HCE_FEATURE);
+	CHECK_INIT();
+	CHECK_INVALID(callback == NULL);
+
+	result = net_nfc_client_se_foreach_registered_handlers_sync(category,
+		callback, user_data);
+
+	return nfc_common_convert_error_code(__func__, result);
 }
 
 int nfc_se_set_preferred_handler()

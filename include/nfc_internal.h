@@ -119,6 +119,8 @@ typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc
  */
 typedef void (*nfc_connection_handover_event_cb)(nfc_error_e result, nfc_handover_event_e event, nfc_ac_type_e carrier, char *address, nfc_ndef_message_h msg, void *user_data);
 
+typedef bool (*nfc_se_registered_handler_cb)(const char *handler, int count,
+        void *user_data);
 
 /**
  * @brief NFC Connection handover between NFC peer-to-peer target
@@ -556,8 +558,9 @@ int nfc_manager_initialize_sync(void);
  */
 int nfc_se_get_registered_aids_count(nfc_se_type_e se_type, nfc_card_emulation_category_type_e category, int *count);
 
-int nfc_se_get_conflict_handlers_internal(const char *package, nfc_card_emulation_category_type_e category,
-			const char *aid, char ***handlers);
+int nfc_se_get_conflict_handlers_internal(const char *package, nfc_card_emulation_category_type_e category, const char *aid, char ***handlers);
+
+int nfc_se_foreach_registered_handlers(nfc_card_emulation_category_type_e category, nfc_se_registered_handler_cb callback, void *user_data);
 
 #ifdef __cplusplus
 }
