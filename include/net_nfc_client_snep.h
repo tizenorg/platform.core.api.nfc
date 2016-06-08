@@ -85,4 +85,4 @@ void net_nfc_client_snep_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_SNEP_H__
+#endif /* __NET_NFC_CLIENT_SNEP_H__ */

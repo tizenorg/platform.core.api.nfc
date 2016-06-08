@@ -64,4 +64,4 @@ void net_nfc_client_manager_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_MANAGER_H__
+#endif /* __NET_NFC_CLIENT_MANAGER_H__ */

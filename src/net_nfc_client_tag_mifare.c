@@ -97,11 +97,9 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info)
-	{
+	if (target_info) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE Classic TAG");
 			return NET_NFC_NOT_SUPPORTED;
 		}
@@ -109,14 +107,12 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 
 	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 					MIFARE_TAG_KEY,
-					&UID) != NET_NFC_OK)
-	{
+					&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
-	switch (target_info->devType)
-	{
-	case NET_NFC_MIFARE_MINI_PICC :
+	switch (target_info->devType) {
+	case NET_NFC_MIFARE_MINI_PICC:
 		{
 			/* 0 ~ 4 : 5 sector and 4 block with 16 bytes */
 			if (sector > MIFARE_MINI_SECTORS - 1)
@@ -125,7 +121,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 			sector_to_block = sector * MIFARE_BLOCK_4 + 3;
 		}
 		break;
-	case NET_NFC_MIFARE_1K_PICC :
+	case NET_NFC_MIFARE_1K_PICC:
 		{
 			/* 0 ~ 15 : 16 sector and 4 block with 16 bytes */
 			if (sector > MIFARE_1K_SECTORS)
@@ -134,7 +130,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 			sector_to_block = sector * MIFARE_BLOCK_4 + 3;
 		}
 		break;
-	case NET_NFC_MIFARE_4K_PICC :
+	case NET_NFC_MIFARE_4K_PICC:
 		{
 			/* 0 ~ 31 : 32 sector and 4 block with 16 bytes
 			 * 32 ~ 39 : 8 sector and 16 block with 16 bytes
@@ -144,15 +140,14 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 
 			if (sector < 32)
 				sector_to_block = sector * MIFARE_BLOCK_4 + 3;
-			else
-			{
+			else {
 				sector_to_block = (31 * MIFARE_BLOCK_4 + 3)
 						+ (sector - 32)
 						* MIFARE_BLOCK_16 + 15;
 			}
 		}
 		break;
-	default :
+	default:
 		break;
 	}
 
@@ -163,8 +158,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 
 	_net_nfc_util_alloc_mem(send_buffer,
 			send_buffer_length * sizeof(uint8_t));
-	if (send_buffer == NULL)
-	{
+	if (send_buffer == NULL) {
 		net_nfc_free_data(UID);
 		return NET_NFC_ALLOC_FAIL;
 	}
@@ -235,11 +229,9 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info != NULL)
-	{
+	if (target_info != NULL) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE Classic TAG");
 			return NET_NFC_NOT_SUPPORTED;
 		}
@@ -247,14 +239,12 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 
 	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 					MIFARE_TAG_KEY,
-					&UID) != NET_NFC_OK)
-	{
+					&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
-	switch (target_info->devType)
-	{
-	case NET_NFC_MIFARE_MINI_PICC :
+	switch (target_info->devType) {
+	case NET_NFC_MIFARE_MINI_PICC:
 		{
 			/* 0 ~ 4 : 5 sector and 4 block with 16 bytes */
 			if (sector > MIFARE_MINI_SECTORS)
@@ -263,7 +253,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 			sector_to_block = sector * MIFARE_BLOCK_4 + 3;
 		}
 		break;
-	case NET_NFC_MIFARE_1K_PICC :
+	case NET_NFC_MIFARE_1K_PICC:
 		{
 			/* 0 ~ 15 : 16 sector and 4 block with 16 bytes */
 			if (sector > MIFARE_1K_SECTORS)
@@ -272,7 +262,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 			sector_to_block = sector * MIFARE_BLOCK_4 + 3;
 		}
 		break;
-	case NET_NFC_MIFARE_4K_PICC :
+	case NET_NFC_MIFARE_4K_PICC:
 		{
 			/* 0 ~ 31 : 32 sector and 4 block with 16 bytes
 			 * 32 ~ 39 : 8 sector and 16 block with 16 bytes
@@ -282,15 +272,14 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 
 			if (sector < 32)
 				sector_to_block = sector * MIFARE_BLOCK_4 + 3;
-			else
-			{
+			else {
 				sector_to_block = (31 * MIFARE_BLOCK_4 + 3)
 						+ (sector - 32)
 						* MIFARE_BLOCK_16 + 15;
 			}
 		}
 		break;
-	default :
+	default:
 		break;
 	}
 
@@ -299,8 +288,7 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 
 	_net_nfc_util_alloc_mem(send_buffer, send_buffer_length
 				* sizeof(uint8_t));
-	if (send_buffer == NULL)
-	{
+	if (send_buffer == NULL) {
 		net_nfc_free_data(UID);
 		return NET_NFC_ALLOC_FAIL;
 	}
@@ -355,18 +343,15 @@ net_nfc_error_e net_nfc_client_mifare_read(net_nfc_target_handle_h handle,
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info != NULL)
-	{
+	if (target_info != NULL) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC)
-		{
+			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE TAG = [%d]",
 						target_info->devType);
 			return NET_NFC_NOT_SUPPORTED;
 		}
 
-		if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC)
-		{
+		if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC) {
 			if (addr > 7)
 				return NET_NFC_OUT_OF_BOUND;
 		}
@@ -416,23 +401,19 @@ net_nfc_error_e net_nfc_client_mifare_write_block(
 		return NET_NFC_NOT_INITIALIZED;
 
 	if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC)
-	{
+			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC) {
 		DEBUG_CLIENT_MSG("not a MIFARE TAG = [%d] ",
 					target_info->devType);
 		return NET_NFC_NOT_SUPPORTED;
 	}
 
-	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC)
-	{
+	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC) {
 		if (addr > 7)
 			return NET_NFC_OUT_OF_BOUND;
 	}
 
-	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC)
-	{
-		if (((data_s *)data)->length > MIFARE_PAGE_SIZE)
-		{
+	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC) {
+		if (((data_s *)data)->length > MIFARE_PAGE_SIZE) {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page */
@@ -455,9 +436,7 @@ net_nfc_error_e net_nfc_client_mifare_write_block(
 				((data_s*)data)->buffer,
 				MIFARE_PAGE_SIZE);
 
-		}
-		else
-		{
+		} else {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page */
@@ -482,12 +461,8 @@ net_nfc_error_e net_nfc_client_mifare_write_block(
 				((data_s*)data)->length);
 		}
 
-	}
-	else
-	{
-
-		if (((data_s*)data)->length > MIFARE_BLOCK_SIZE)
-		{
+	} else {
+		if (((data_s*)data)->length > MIFARE_BLOCK_SIZE) {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page*/
@@ -509,9 +484,7 @@ net_nfc_error_e net_nfc_client_mifare_write_block(
 			memcpy(temp,
 				((data_s*)data)->buffer,
 				MIFARE_BLOCK_SIZE);
-		}
-		else
-		{
+		} else {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page  */
@@ -577,23 +550,19 @@ net_nfc_error_e net_nfc_client_mifare_write_page(
 		return NET_NFC_NOT_INITIALIZED;
 
 	if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC)
-	{
+			target_info->devType > NET_NFC_MIFARE_ULTRA_PICC) {
 		DEBUG_CLIENT_MSG("not a MIFARE TAG = [%d] ",
 				target_info->devType);
 		return NET_NFC_NOT_SUPPORTED;
 	}
 
-	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC)
-	{
+	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC) {
 		if (addr > 7)
 			return NET_NFC_OUT_OF_BOUND;
 	}
 
-	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC)
-	{
-		if (((data_s*)data)->length > MIFARE_PAGE_SIZE)
-		{
+	if (target_info->devType == NET_NFC_MIFARE_ULTRA_PICC) {
+		if (((data_s*)data)->length > MIFARE_PAGE_SIZE) {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page  */
@@ -615,9 +584,7 @@ net_nfc_error_e net_nfc_client_mifare_write_page(
 			memcpy(temp,
 				((data_s*)data)->buffer,
 				MIFARE_PAGE_SIZE);
-		}
-		else
-		{
+		} else {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page */
@@ -641,11 +608,8 @@ net_nfc_error_e net_nfc_client_mifare_write_page(
 				((data_s*)data)->length);
 		}
 
-	}
-	else
-	{
-		if (((data_s*)data)->length > MIFARE_PAGE_SIZE)
-		{
+	} else {
+		if (((data_s*)data)->length > MIFARE_PAGE_SIZE) {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page */
@@ -668,9 +632,7 @@ net_nfc_error_e net_nfc_client_mifare_write_page(
 				((data_s*)data)->buffer,
 				MIFARE_PAGE_SIZE);
 
-		}
-		else
-		{
+		} else {
 			uint8_t* temp = NULL;
 
 			/* cmd + addr + page */
@@ -735,11 +697,9 @@ net_nfc_error_e net_nfc_client_mifare_increment(net_nfc_target_handle_h handle,
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info)
-	{
+	if (target_info) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG(
 					"not a MIFARE Classic TAG = [%d]",
 					target_info->devType);
@@ -788,12 +748,10 @@ net_nfc_error_e net_nfc_client_mifare_decrement(net_nfc_target_handle_h handle,
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info)
-	{
+	if (target_info) {
 
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE Classic TAG = [%d] ",
 					target_info->devType);
 			return NET_NFC_NOT_SUPPORTED;
@@ -841,11 +799,9 @@ net_nfc_error_e net_nfc_client_mifare_transfer(net_nfc_target_handle_h handle,
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info)
-	{
+	if (target_info) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE Classic TAG = [%d]",
 					target_info->devType);
 			return NET_NFC_NOT_SUPPORTED;
@@ -884,11 +840,9 @@ net_nfc_error_e net_nfc_client_mifare_restore(net_nfc_target_handle_h handle,
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 
-	if (target_info)
-	{
+	if (target_info) {
 		if (target_info->devType < NET_NFC_MIFARE_MINI_PICC ||
-				target_info->devType > NET_NFC_MIFARE_4K_PICC)
-		{
+				target_info->devType > NET_NFC_MIFARE_4K_PICC) {
 			DEBUG_CLIENT_MSG("not a MIFARE Classic TAG = [%d]",
 					target_info->devType);
 			return NET_NFC_NOT_SUPPORTED;

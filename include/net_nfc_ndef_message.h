@@ -30,9 +30,9 @@ extern "C" {
 @{
 	This document is for the APIs reference document
 
-        NFC Manager defines are defined in <nfc-manager-def.h>
+		NFC Manager defines are defined in <nfc-manager-def.h>
 
-        @li @c #net_nfc_initialize                  Initialize the nfc device.
+		@li @c #net_nfc_initialize					Initialize the nfc device.
 
 */
 
@@ -44,7 +44,7 @@ extern "C" {
 
 	@param[out]	ndef_message		instance of the ndef_message is retuened
 
-	@return 	return the result of the calling the function
+	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER		parameter(s) has(have) illigal NULL pointer(s)
 	@exception NET_NFC_ALLOC_FAIL			memory allocation is failed
@@ -80,8 +80,8 @@ net_nfc_error_e net_nfc_create_ndef_message(ndef_message_h *ndef_message);
 	\par Sync (or) Async: sync
 	This is a Synchronous API
 
-	@param[in]	ndef_message 	output structure to get the record
-	@param[out]	count			number of record count
+	@param[in]	ndef_message		output structure to get the record
+	@param[out]	count				number of record count
 
 
 	@return		return the result of the calling the function
@@ -120,8 +120,8 @@ net_nfc_error_e net_nfc_get_ndef_message_record_count(ndef_message_h ndef_messag
 	\par Sync (or) Async: sync
 	This is a Synchronous API
 
-	@param[in]	ndef_message 	output structure to get the record
-	@param[out]	rawdata			this is the raw data that will be formed into the
+	@param[in]	ndef_message		output structure to get the record
+	@param[out]	rawdata				this is the raw data that will be formed into the
 
 	@return		return the result of the calling the function
 
@@ -177,7 +177,7 @@ net_nfc_error_e net_nfc_create_rawdata_from_ndef_message(ndef_message_h ndef_mes
 	This is a Synchronous API
 
 	@param[out]	ndef_message		ndef message handler that will be returned
-	@param[in]	rawdata 			ndef message that formed in bytes array
+	@param[in]	rawdata				ndef message that formed in bytes array
 
 	@return		return the result of the calling the function
 
@@ -248,7 +248,7 @@ net_nfc_error_e net_nfc_get_ndef_message_byte_length(ndef_message_h ndef_message
 	This is a Synchronous API
 
 	@param[in]	ndef_message		NDEF message structure
-	@param[in]	record 			a record will be added into the ndef message
+	@param[in]	record				a record will be added into the ndef message
 
 	@return		return the result of the calling the function
 
@@ -297,10 +297,10 @@ net_nfc_error_e net_nfc_append_record_to_ndef_message(ndef_message_h ndef_messag
 	\par Sync (or) Async: sync
 	This is a Synchronous API
 
-	@param[in]	ndef_message 	the message wil be freed
-	@param[in]	index			index of record
+	@param[in]	ndef_message		the message wil be freed
+	@param[in]	index				index of record
 
-	@return 	return the result of the calling the function
+	@return	return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER		parameter(s) has(have) illigal NULL pointer(s)
 	@exception NET_NFC_OUT_OF_BOUND			index is out of bound
@@ -441,4 +441,4 @@ net_nfc_error_e net_nfc_retrieve_current_ndef_message(ndef_message_h *ndef_messa
 }
 #endif
 
-#endif //__NET_NFC_NDEF_MESSAGE_H__
+#endif /* __NET_NFC_NDEF_MESSAGE_H__ */

@@ -48,8 +48,6 @@ static GIOChannel *hce_client_channel = NULL;
 static guint hce_client_src_id = 0;
 
 /* static function */
-
-/////////////////////
 static void __set_non_block_socket(int socket)
 {
 	int flags;
@@ -57,9 +55,8 @@ static void __set_non_block_socket(int socket)
 	flags = fcntl(socket, F_GETFL);
 	flags |= O_NONBLOCK;
 
-	if (fcntl(socket, F_SETFL, flags) < 0) {
+	if (fcntl(socket, F_SETFL, flags) < 0)
 		DEBUG_ERR_MSG("fcntl, executing nonblock error");
-	}
 }
 
 static bool __receive_data_from_server(int socket, data_s *data)
@@ -89,9 +86,8 @@ static bool __receive_data_from_server(int socket, data_s *data)
 		/* second, receive buffer */
 		do {
 			ret = recv(socket, data->buffer + offset, data->length - offset, 0);
-			if (ret == -1) {
+			if (ret == -1)
 				break;
-			}
 
 			offset += ret;
 		} while (offset < len);
@@ -160,9 +156,8 @@ bool net_nfc_server_hce_ipc_send_to_server(int type,
 	data_s temp;
 	uint32_t len = sizeof(net_nfc_hce_data_t);
 
-	if (data != NULL && data->length > 0) {
+	if (data != NULL && data->length > 0)
 		len += data->length;
-	}
 
 	ret = net_nfc_util_init_data(&temp, len + sizeof(len));
 	if (ret == true) {
@@ -174,9 +169,8 @@ bool net_nfc_server_hce_ipc_send_to_server(int type,
 		header->type = type;
 		header->handle = GPOINTER_TO_UINT(handle);
 
-		if (data != NULL && data->length > 0) {
+		if (data != NULL && data->length > 0)
 			memcpy(header->data, data->buffer, data->length);
-		}
 
 		ret = __send_data_to_server(hce_client_socket, &temp);
 
@@ -249,7 +243,7 @@ static gboolean __on_io_event_cb(GIOChannel *channel, GIOCondition condition,
 
 		return FALSE;
 	} else if (G_IO_IN & condition) {
-		if(channel != hce_client_channel) {
+		if (channel != hce_client_channel) {
 			DEBUG_CLIENT_MSG("unknown channel");
 
 			return FALSE;
@@ -283,8 +277,7 @@ net_nfc_error_e net_nfc_client_hce_ipc_init()
 	socklen_t len_saddr = 0;
 	pthread_mutexattr_t attr;
 
-	if (net_nfc_client_hce_ipc_is_initialized() == true)
-	{
+	if (net_nfc_client_hce_ipc_is_initialized() == true) {
 		DEBUG_CLIENT_MSG("client is already initialized");
 
 		return NET_NFC_ALREADY_INITIALIZED;
@@ -299,8 +292,7 @@ net_nfc_error_e net_nfc_client_hce_ipc_init()
 	net_nfc_client_ipc_lock();
 
 	hce_client_socket = socket(AF_UNIX, SOCK_STREAM, 0);
-	if (hce_client_socket == -1)
-	{
+	if (hce_client_socket == -1) {
 		DEBUG_ERR_MSG("get socket is failed");
 
 		result = NET_NFC_IPC_FAIL;
@@ -346,7 +338,7 @@ net_nfc_error_e net_nfc_client_hce_ipc_init()
 
 	return NET_NFC_OK;
 
-ERROR :
+ERROR:
 	DEBUG_ERR_MSG("error while initializing client ipc");
 
 	net_nfc_client_ipc_unlock();
@@ -358,7 +350,6 @@ ERROR :
 
 void net_nfc_client_hce_ipc_deinit()
 {
-	if (net_nfc_client_hce_ipc_is_initialized() == true) {
+	if (net_nfc_client_hce_ipc_is_initialized() == true)
 		_finalize_client_socket();
-	}
 }

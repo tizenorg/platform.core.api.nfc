@@ -31,8 +31,7 @@
 
 typedef struct _ManagerFuncData ManagerFuncData;
 
-struct _ManagerFuncData
-{
+struct _ManagerFuncData {
 	gpointer callback;
 	gpointer user_data;
 	net_nfc_error_e result;
@@ -93,8 +92,7 @@ static void manager_call_set_active_callback(GObject *source_object,
 				NET_NFC_GDBUS_MANAGER(source_object),
 				&result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish call_set_active: %s",
 			error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -133,8 +131,7 @@ static void manager_call_get_server_state_callback(GObject *source_object,
 				&result,
 				&out_state,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish get_server_state: %s",
 			error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -142,8 +139,7 @@ static void manager_call_get_server_state_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_manager_get_server_state_completed callback =
 			(net_nfc_client_manager_get_server_state_completed)func_data->callback;
 
@@ -178,8 +174,7 @@ static void manager_activated(NetNfcGDbusManager *manager,
 	/* update current state */
 	is_activated = (int)activated;
 
-	if (activated_func_data.callback != NULL)
-	{
+	if (activated_func_data.callback != NULL) {
 		if (is_activated == false) {
 			/* FIXME : wait several times */
 			timeout_id[1] = g_timeout_add(DEACTIVATE_DELAY,
@@ -201,10 +196,8 @@ void net_nfc_client_manager_set_activated(
 	if (callback == NULL)
 		return;
 
-	if (manager_proxy == NULL)
-	{
-		if (net_nfc_client_manager_init() != NET_NFC_OK)
-		{
+	if (manager_proxy == NULL) {
+		if (net_nfc_client_manager_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("manager_proxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -240,8 +233,7 @@ net_nfc_error_e net_nfc_client_manager_set_active(int state,
 			"/org/tizen/NetNfcService/Manager",
 			NULL,
 			&error);
-		if (auto_start_proxy == NULL)
-		{
+		if (auto_start_proxy == NULL) {
 			DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 			g_error_free(error);
 
@@ -286,8 +278,7 @@ net_nfc_error_e net_nfc_client_manager_set_active_sync(int state)
 			"/org/tizen/NetNfcService/Manager",
 			NULL,
 			&error);
-		if (auto_start_proxy == NULL)
-		{
+		if (auto_start_proxy == NULL) {
 			DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 			g_error_free(error);
 
@@ -301,8 +292,7 @@ net_nfc_error_e net_nfc_client_manager_set_active_sync(int state)
 		(gboolean)state,
 		&out_result,
 		NULL,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SetActive: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -324,9 +314,8 @@ net_nfc_error_e net_nfc_client_manager_get_server_state(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -360,20 +349,16 @@ net_nfc_error_e net_nfc_client_manager_get_server_state_sync(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_manager_call_get_server_state_sync(manager_proxy,
 					&out_result,
 					&out_state,
 					NULL,
-					&error) == TRUE)
-	{
+					&error) == TRUE) {
 		*state = out_state;
-	}
-	else
-	{
+	} else {
 		DEBUG_ERR_MSG("can not call GetServerState: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -389,8 +374,7 @@ net_nfc_error_e net_nfc_client_manager_init(void)
 {
 	GError *error = NULL;
 
-	if (manager_proxy)
-	{
+	if (manager_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -403,8 +387,7 @@ net_nfc_error_e net_nfc_client_manager_init(void)
 		"/org/tizen/NetNfcService/Manager",
 		NULL,
 		&error);
-	if (manager_proxy == NULL)
-	{
+	if (manager_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -419,8 +402,7 @@ net_nfc_error_e net_nfc_client_manager_init(void)
 
 void net_nfc_client_manager_deinit(void)
 {
-	if (manager_proxy)
-	{
+	if (manager_proxy) {
 		int i;
 
 		for (i = 0; i < 2; i++) {
@@ -443,9 +425,8 @@ void net_nfc_client_manager_deinit(void)
 /* internal function */
 bool net_nfc_client_manager_is_activated()
 {
-	if (is_activated < 0) {
+	if (is_activated < 0)
 		net_nfc_client_get_nfc_state(&is_activated);
-	}
 
 	return is_activated;
 }

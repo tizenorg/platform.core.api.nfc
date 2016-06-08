@@ -76,4 +76,4 @@ void net_nfc_client_p2p_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_P2P_H__
+#endif /* __NET_NFC_CLIENT_P2P_H__ */

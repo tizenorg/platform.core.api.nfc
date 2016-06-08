@@ -35,8 +35,7 @@
 
 typedef struct _HceHandler HceHandler;
 
-struct _HceHandler
-{
+struct _HceHandler {
 	net_nfc_client_hce_event_cb hce_event_cb;
 	gpointer hce_data;
 };
@@ -94,15 +93,12 @@ net_nfc_error_e net_nfc_client_hce_set_event_received_cb(
 	net_nfc_error_e result = NET_NFC_OK;
 	GError *error = NULL;
 
-	if (callback == NULL) {
+	if (callback == NULL)
 		return net_nfc_client_hce_unset_event_received_cb();
-	}
 
-	if (hce_proxy == NULL)
-	{
+	if (hce_proxy == NULL) {
 		result = net_nfc_client_hce_init();
-		if (result != NET_NFC_OK)
-		{
+		if (result != NET_NFC_OK) {
 			DEBUG_ERR_MSG("net_nfc_client_hce_init failed, [%d]", result);
 
 			return result;
@@ -171,11 +167,9 @@ net_nfc_error_e net_nfc_client_hce_response_apdu_sync(
 
 	INFO_MSG(">>> net_nfc_client_hce_response_apdu_sync!!");
 
-	if (hce_proxy == NULL)
-	{
+	if (hce_proxy == NULL) {
 		result = net_nfc_client_hce_init();
-		if (result != NET_NFC_OK)
-		{
+		if (result != NET_NFC_OK) {
 			DEBUG_ERR_MSG("net_nfc_client_hce_init failed, [%d]", result);
 
 			return result;
@@ -183,8 +177,7 @@ net_nfc_error_e net_nfc_client_hce_response_apdu_sync(
 	}
 
 	arg_data = net_nfc_util_gdbus_data_to_variant((data_s *)resp_apdu_data);
-	if (arg_data == NULL)
-	{
+	if (arg_data == NULL) {
 
 		INFO_MSG(">>> resp_apdu_data is null !!");
 		return NET_NFC_INVALID_PARAM;
@@ -250,8 +243,7 @@ net_nfc_error_e net_nfc_client_hce_init(void)
 
 	DEBUG_CLIENT_MSG("net_nfc_client_hce_init call");
 
-	if (hce_proxy)
-	{
+	if (hce_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -265,8 +257,7 @@ net_nfc_error_e net_nfc_client_hce_init(void)
 				NULL,
 				&error);
 
-	if (hce_proxy == NULL)
-	{
+	if (hce_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 
 		g_error_free(error);
@@ -285,8 +276,7 @@ net_nfc_error_e net_nfc_client_hce_init(void)
 
 void net_nfc_client_hce_deinit(void)
 {
-	if (hce_proxy != NULL)
-	{
+	if (hce_proxy != NULL) {
 		net_nfc_client_hce_ipc_deinit();
 
 		g_object_unref(hce_proxy);

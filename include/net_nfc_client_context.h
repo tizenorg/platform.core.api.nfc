@@ -46,4 +46,4 @@ net_nfc_error_e net_nfc_client_get_nfc_state(int *state);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_CONTEXT_H__
+#endif /* __NET_NFC_CLIENT_CONTEXT_H__ */

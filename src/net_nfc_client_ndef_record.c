@@ -63,9 +63,7 @@ net_nfc_error_e net_nfc_get_record_payload(ndef_record_h record,
 	ndef_record_s *struct_record = (ndef_record_s *)record;
 
 	if (record == NULL || payload == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*payload = (data_h)&(struct_record->payload_s);
 
@@ -78,9 +76,7 @@ net_nfc_error_e net_nfc_get_record_type(ndef_record_h record, data_h *type)
 	ndef_record_s *struct_record = (ndef_record_s *)record;
 
 	if (record == NULL || type == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*type = (data_h)&(struct_record->type_s);
 
@@ -93,9 +89,7 @@ net_nfc_error_e net_nfc_get_record_id(ndef_record_h record, data_h *id)
 	ndef_record_s *struct_record = (ndef_record_s *)record;
 
 	if (record == NULL || id == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*id = (data_h)&(struct_record->id_s);
 
@@ -109,9 +103,7 @@ net_nfc_error_e net_nfc_get_record_tnf(ndef_record_h record,
 	ndef_record_s *struct_record = (ndef_record_s *)record;
 
 	if (record == NULL || TNF == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*TNF = (net_nfc_record_tnf_e)struct_record->TNF;
 
@@ -124,9 +116,7 @@ net_nfc_error_e net_nfc_set_record_id(ndef_record_h record, data_h id)
 	data_s *tmp_id = (data_s *)id;
 
 	if (record == NULL || tmp_id == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	return net_nfc_util_set_record_id((ndef_record_s *)record,
 		tmp_id->buffer, tmp_id->length);
@@ -138,9 +128,7 @@ net_nfc_error_e net_nfc_get_record_flags(ndef_record_h record, uint8_t *flag)
 	ndef_record_s *struct_record = (ndef_record_s *)record;
 
 	if (record == NULL || flag == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*flag = struct_record->MB;
 	*flag <<= 1;
@@ -204,22 +192,18 @@ net_nfc_error_e net_nfc_create_text_string_from_text_record(
 	data_h payload;
 
 	if (record == NULL || buffer == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*buffer = NULL;
 
-	if (_is_text_record(record) == false)
-	{
+	if (_is_text_record(record) == false) {
 		DEBUG_ERR_MSG("record type is not matched");
 
 		return NET_NFC_NDEF_RECORD_IS_NOT_EXPECTED_TYPE;
 	}
 
 	result = net_nfc_get_record_payload(record, &payload);
-	if (result == NET_NFC_OK)
-	{
+	if (result == NET_NFC_OK) {
 		uint8_t *buffer_temp = net_nfc_get_data_buffer(payload);
 		uint32_t buffer_length = net_nfc_get_data_length(payload);
 
@@ -231,16 +215,13 @@ net_nfc_error_e net_nfc_create_text_string_from_text_record(
 		char *temp = NULL;
 
 		_net_nfc_util_alloc_mem(temp, text_length + 1);
-		if (temp != NULL)
-		{
+		if (temp != NULL) {
 			memcpy(temp, &(buffer_temp[index]), text_length);
 
 			DEBUG_CLIENT_MSG("text = [%s]", temp);
 
 			*buffer = temp;
-		}
-		else
-		{
+		} else {
 			result = NET_NFC_ALLOC_FAIL;
 		}
 	}
@@ -256,22 +237,18 @@ net_nfc_error_e net_nfc_get_languange_code_string_from_text_record(
 	data_h payload;
 
 	if (record == NULL || lang_code_str == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*lang_code_str = NULL;
 
-	if (_is_text_record(record) == false)
-	{
+	if (_is_text_record(record) == false) {
 		DEBUG_ERR_MSG("record type is not matched");
 
 		return NET_NFC_NDEF_RECORD_IS_NOT_EXPECTED_TYPE;
 	}
 
 	result = net_nfc_get_record_payload(record, &payload);
-	if (result == NET_NFC_OK)
-	{
+	if (result == NET_NFC_OK) {
 		uint8_t *buffer_temp = net_nfc_get_data_buffer(payload);
 		char *buffer = NULL;
 
@@ -280,16 +257,13 @@ net_nfc_error_e net_nfc_get_languange_code_string_from_text_record(
 		int index = 1;
 
 		_net_nfc_util_alloc_mem(buffer, lang_code_length + 1);
-		if (buffer != NULL)
-		{
+		if (buffer != NULL) {
 			memcpy(buffer, &(buffer_temp[index]), lang_code_length);
 
 			DEBUG_CLIENT_MSG("language code = [%s]", buffer);
 
 			*lang_code_str = buffer;
-		}
-		else
-		{
+		} else {
 			result = NET_NFC_ALLOC_FAIL;
 		}
 	}
@@ -305,30 +279,24 @@ net_nfc_error_e net_nfc_get_encoding_type_from_text_record(ndef_record_h record,
 	data_h payload;
 
 	if (record == NULL || encoding == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*encoding = NET_NFC_ENCODE_UTF_8;
 
-	if (_is_text_record(record) == false)
-	{
+	if (_is_text_record(record) == false) {
 		DEBUG_ERR_MSG("record type is not matched");
 
 		return NET_NFC_NDEF_RECORD_IS_NOT_EXPECTED_TYPE;
 	}
 
 	result = net_nfc_get_record_payload(record, &payload);
-	if (result == NET_NFC_OK)
-	{
+	if (result == NET_NFC_OK) {
 		uint8_t *buffer_temp = net_nfc_get_data_buffer(payload);
 
 		int controllbyte = buffer_temp[0];
 
 		if ((controllbyte & 0x80) == 0x80)
-		{
 			*encoding = NET_NFC_ENCODE_UTF_16;
-		}
 	}
 
 	return result;

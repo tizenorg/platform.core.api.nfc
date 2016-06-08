@@ -31,8 +31,7 @@
 
 typedef struct _P2p_SignalHandler P2pSignalHandler;
 
-struct _P2p_SignalHandler
-{
+struct _P2p_SignalHandler {
 	net_nfc_client_p2p_device_discovered p2p_device_discovered_cb;
 	net_nfc_client_p2p_device_detached p2p_device_detached_cb;
 	net_nfc_client_p2p_data_received p2p_data_received_cb;
@@ -68,8 +67,7 @@ static void p2p_device_detached(GObject *source_object,
 	/*llcp client function to set/unset the current target id needs to be implemented*/
 	/*net_nfc_client_llcp_current_target_id(NULL);*/
 
-	if (p2p_signal_handler.p2p_device_detached_cb)
-	{
+	if (p2p_signal_handler.p2p_device_detached_cb) {
 		p2p_signal_handler.p2p_device_detached_cb(
 			p2p_signal_handler.p2p_device_detached_data);
 	}
@@ -88,8 +86,7 @@ static void p2p_device_discovered(GObject *source_object,
 
 	handle_info = GUINT_TO_POINTER(arg_handle);
 
-	if (p2p_signal_handler.p2p_device_discovered_cb)
-	{
+	if (p2p_signal_handler.p2p_device_discovered_cb) {
 		p2p_signal_handler.p2p_device_discovered_cb(handle_info,
 				p2p_signal_handler.p2p_device_discovered_data);
 	}
@@ -101,8 +98,7 @@ static void p2p_device_data_received(GObject *source_object,
 {
 	INFO_MSG(">>> SIGNAL arrived");
 
-	if (p2p_signal_handler.p2p_data_received_cb)
-	{
+	if (p2p_signal_handler.p2p_data_received_cb) {
 		data_s p2p_data = { NULL, };
 
 		net_nfc_util_gdbus_variant_to_data_s(arg_data, &p2p_data);
@@ -128,16 +124,14 @@ static void p2p_call_send(GObject *source_object,
 		NET_NFC_GDBUS_P2P(source_object),
 		(gint *)&out_result,
 		res,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish p2p send: %s", error->message);
 		out_result = NET_NFC_IPC_FAIL;
 
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_p2p_send_completed callback =
 			(net_nfc_client_p2p_send_completed)func_data->callback;
 
@@ -157,22 +151,19 @@ net_nfc_error_e net_nfc_client_p2p_send(net_nfc_target_handle_h handle,
 	GVariant *arg_data;
 	NetNfcCallback *func_data;
 
-	if (p2p_proxy == NULL)
-	{
+	if (p2p_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not get P2pProxy");
 
 		return NET_NFC_NOT_INITIALIZED;
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -200,17 +191,15 @@ net_nfc_error_e net_nfc_client_p2p_send_sync(net_nfc_target_handle_h handle,
 
 	net_nfc_error_e out_result;
 
-	if (p2p_proxy == NULL)
-	{
+	if (p2p_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not get P2pProxy");
 
 		return NET_NFC_NOT_INITIALIZED;
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	arg_data = net_nfc_util_gdbus_data_to_variant(data);
 
@@ -220,8 +209,7 @@ net_nfc_error_e net_nfc_client_p2p_send_sync(net_nfc_target_handle_h handle,
 		GPOINTER_TO_UINT(handle),
 		(gint *)&out_result,
 		NULL,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("p2p send (sync call) failed: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -241,10 +229,8 @@ void net_nfc_client_p2p_set_device_discovered(
 	if (callback == NULL)
 		return;
 
-	if (p2p_proxy == NULL)
-	{
-		if (net_nfc_client_p2p_init() != NET_NFC_OK)
-		{
+	if (p2p_proxy == NULL) {
+		if (net_nfc_client_p2p_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("P2pProxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -264,10 +250,8 @@ void net_nfc_client_p2p_set_device_detached(
 	if (callback == NULL)
 		return;
 
-	if (p2p_proxy == NULL)
-	{
-		if (net_nfc_client_p2p_init() != NET_NFC_OK)
-		{
+	if (p2p_proxy == NULL) {
+		if (net_nfc_client_p2p_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("P2pProxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -287,10 +271,8 @@ void net_nfc_client_p2p_set_data_received(
 	if (callback == NULL)
 		return;
 
-	if (p2p_proxy == NULL)
-	{
-		if (net_nfc_client_p2p_init() != NET_NFC_OK)
-		{
+	if (p2p_proxy == NULL) {
+		if (net_nfc_client_p2p_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("P2pProxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -329,8 +311,7 @@ net_nfc_error_e net_nfc_client_p2p_init(void)
 {
 	GError *error = NULL;
 
-	if (p2p_proxy)
-	{
+	if (p2p_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -343,8 +324,7 @@ net_nfc_error_e net_nfc_client_p2p_init(void)
 		"/org/tizen/NetNfcService/P2p",
 		NULL,
 		&error);
-	if (p2p_proxy == NULL)
-	{
+	if (p2p_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -368,8 +348,7 @@ net_nfc_error_e net_nfc_client_p2p_init(void)
 
 void net_nfc_client_p2p_deinit(void)
 {
-	if (p2p_proxy)
-	{
+	if (p2p_proxy) {
 		g_object_unref(p2p_proxy);
 		p2p_proxy = NULL;
 	}

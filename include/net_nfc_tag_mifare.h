@@ -44,14 +44,14 @@ extern "C" {
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	sector		sector to authenticate with key A
-	@param[in] 	auth_key	6 byte key to authenticate the sector
+	@param[in]	handle		target handle of detected tag
+	@param[in]	sector		sector to authenticate with key A
+	@param[in]	auth_key	6 byte key to authenticate the sector
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -90,14 +90,14 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyA(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	sector		sector to authenticate with key B
-	@param[in] 	auth_key	6 byte key to authenticate the sector
+	@param[in]	handle		target handle of detected tag
+	@param[in]	sector		sector to authenticate with key B
+	@param[in]	auth_key	6 byte key to authenticate the sector
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -127,13 +127,13 @@ net_nfc_error_e net_nfc_client_mifare_authenticate_with_keyB(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block or starting page number
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block or starting page number
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -160,14 +160,14 @@ net_nfc_error_e net_nfc_client_mifare_read(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block or starting page number
-	@param[in] 	data		data to write
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block or starting page number
+	@param[in]	data		data to write
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -196,14 +196,14 @@ net_nfc_error_e net_nfc_client_mifare_write_block(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block or starting page number
-	@param[in] 	data		data to write
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block or starting page number
+	@param[in]	data		data to write
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -233,14 +233,14 @@ net_nfc_error_e net_nfc_client_mifare_write_page(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block
-	@param[in] 	value		index of block to increase, starting from 0
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block
+	@param[in]	value		index of block to increase, starting from 0
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -268,14 +268,14 @@ net_nfc_error_e net_nfc_client_mifare_increment(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block
-	@param[in] 	value		index of block to decrease, starting from 0
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block
+	@param[in]	value		index of block to decrease, starting from 0
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -302,14 +302,14 @@ net_nfc_error_e net_nfc_client_mifare_decrement(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block
-	@param[in] 	value		index of block to decrease, starting from 0
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block
+	@param[in]	value		index of block to decrease, starting from 0
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -335,14 +335,14 @@ net_nfc_error_e net_nfc_client_mifare_transfer(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	addr		block
-	@param[in] 	value		index of block to decrease, starting from 0
+	@param[in]	handle		target handle of detected tag
+	@param[in]	addr		block
+	@param[in]	value		index of block to decrease, starting from 0
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the
@@ -367,7 +367,7 @@ net_nfc_error_e net_nfc_client_mifare_restore(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	key			the handle to create key
+	@param[in]	key			the handle to create key
 
 	@return		return the result of the calling the function
 
@@ -384,7 +384,7 @@ net_nfc_error_e net_nfc_client_mifare_create_default_key(data_h* key);
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	key			the handle to create key
+	@param[in]	key			the handle to create key
 
 	@return		return the result of the calling the function
 
@@ -402,7 +402,7 @@ net_nfc_error_e net_nfc_client_mifare_create_application_directory_key(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	key			the handle to create key
+	@param[in]	key			the handle to create key
 
 	@return		return the result of the calling the function
 
@@ -420,4 +420,4 @@ net_nfc_error_e net_nfc_client_mifare_create_net_nfc_forum_key(data_h* key);
 }
 #endif
 
-#endif //__NET_NFC_TAG_MIFARE_H__
+#endif /* __NET_NFC_TAG_MIFARE_H__ */

@@ -25,8 +25,8 @@ extern "C" {
 /**
 	This function create carrier configure handler instance.
 
-	@param[out] 	config 			instance handler
-	@param[in] 	type 			Carrier types. It would be BT or WPS or etc.
+	@param[out]	config			instance handler
+	@param[in]	type			Carrier types. It would be BT or WPS or etc.
 
 	@return		return the result of the calling the function
 
@@ -126,7 +126,7 @@ net_nfc_error_e net_nfc_get_carrier_config_group(net_nfc_carrier_config_h config
 /**
 	free the configure handle
 
-	@param[in] 	config 			instance handler
+	@param[in]	config			instance handler
 
 	@return		return the result of the calling the function
 
@@ -174,7 +174,7 @@ net_nfc_error_e net_nfc_add_carrier_config_group_property(net_nfc_property_group
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER		parameter(s) has(have) illegal NULL pointer(s)
-  	@exception NET_NFC_NO_DATA_FOUND		the attribute does not exist in the group
+	@exception NET_NFC_NO_DATA_FOUND		the attribute does not exist in the group
 */
 net_nfc_error_e net_nfc_get_carrier_config_group_property(net_nfc_property_group_h group, uint16_t attribute, uint16_t *size, uint8_t **data);
 
@@ -187,7 +187,7 @@ net_nfc_error_e net_nfc_get_carrier_config_group_property(net_nfc_property_group
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER		parameter(s) has(have) illegal NULL pointer(s)
-  	@exception NET_NFC_NO_DATA_FOUND		the attribute does not exist in the group
+	@exception NET_NFC_NO_DATA_FOUND		the attribute does not exist in the group
 */
 net_nfc_error_e net_nfc_remove_carrier_config_group_property(net_nfc_property_group_h group, uint16_t attribute);
 
@@ -328,4 +328,4 @@ net_nfc_error_e net_nfc_create_handover_error_record(ndef_record_h * record, uin
 #endif
 
 
-#endif //__NET_NFC_NDEF_MESSAGE_HANDOVER_H__
+#endif /* __NET_NFC_NDEF_MESSAGE_HANDOVER_H__ */

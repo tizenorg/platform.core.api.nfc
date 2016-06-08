@@ -56,29 +56,25 @@ net_nfc_error_e net_nfc_create_rawdata_from_ndef_message(
 	net_nfc_error_e result;
 	data_h data;
 
-	if (ndef_message == NULL || rawdata == NULL) {
+	if (ndef_message == NULL || rawdata == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*rawdata = NULL;
 
 	result = net_nfc_get_ndef_message_byte_length(ndef_message, &count);
-	if (result != NET_NFC_OK) {
+	if (result != NET_NFC_OK)
 		return result;
-	}
 
-	result = net_nfc_create_data(&data ,NULL, count);
-	if (result != NET_NFC_OK) {
+	result = net_nfc_create_data(&data, NULL, count);
+	if (result != NET_NFC_OK)
 		return result;
-	}
 
 	result = net_nfc_util_convert_ndef_message_to_rawdata(
 		(ndef_message_s *)ndef_message, (data_s *)data);
-	if (result == NET_NFC_OK) {
+	if (result == NET_NFC_OK)
 		*rawdata = data;
-	} else {
+	else
 		net_nfc_free_data(data);
-	}
 
 	return result;
 }
@@ -90,24 +86,21 @@ net_nfc_error_e net_nfc_create_ndef_message_from_rawdata(
 	net_nfc_error_e result;
 	ndef_message_h msg;
 
-	if (ndef_message == NULL || rawdata == NULL) {
+	if (ndef_message == NULL || rawdata == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*ndef_message = NULL;
 
 	result = net_nfc_create_ndef_message(&msg);
-	if (result != NET_NFC_OK) {
+	if (result != NET_NFC_OK)
 		return result;
-	}
 
 	result = net_nfc_util_convert_rawdata_to_ndef_message(
 		(data_s *)rawdata, (ndef_message_s *)msg);
-	if (result == NET_NFC_OK) {
+	if (result == NET_NFC_OK)
 		*ndef_message = msg;
-	} else {
+	else
 		net_nfc_free_ndef_message(msg);
-	}
 
 	return result;
 }
@@ -118,17 +111,15 @@ net_nfc_error_e net_nfc_get_ndef_message_byte_length(
 {
 	net_nfc_error_e result;
 
-	if (ndef_message == NULL || length == NULL){
+	if (ndef_message == NULL || length == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*length = net_nfc_util_get_ndef_message_length(
 		(ndef_message_s *)ndef_message);
-	if (*length > 0) {
+	if (*length > 0)
 		result = NET_NFC_OK;
-	} else {
+	else
 		result = NET_NFC_INVALID_PARAM;
-	}
 
 	return result;
 }
@@ -137,9 +128,8 @@ NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_append_record_to_ndef_message(
 	ndef_message_h ndef_message, ndef_record_h record)
 {
-	if (ndef_message == NULL || record == NULL) {
+	if (ndef_message == NULL || record == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	return net_nfc_util_append_record((ndef_message_s *)ndef_message,
 		(ndef_record_s *)record);
@@ -148,9 +138,8 @@ net_nfc_error_e net_nfc_append_record_to_ndef_message(
 NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_free_ndef_message(ndef_message_h ndef_message)
 {
-	if (ndef_message == NULL) {
+	if (ndef_message == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	return net_nfc_util_free_ndef_message((ndef_message_s *)ndef_message);
 }
@@ -161,9 +150,8 @@ net_nfc_error_e net_nfc_get_ndef_message_record_count(
 {
 	ndef_message_s *msg = (ndef_message_s *)ndef_message;
 
-	if (ndef_message == NULL || count == NULL) {
+	if (ndef_message == NULL || count == NULL)
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*count = msg->recordCount;
 
@@ -220,17 +208,14 @@ net_nfc_error_e net_nfc_retrieve_current_ndef_message(
 	FILE *fp = NULL;
 
 	if (ndef_message == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	snprintf(file_path, sizeof(file_path), "%s/%s/%s",
 		NET_NFC_MANAGER_DATA_PATH,
 		NET_NFC_MANAGER_DATA_PATH_MESSAGE,
 		NET_NFC_MANAGER_NDEF_FILE_NAME);
 
-	if ((fp = fopen(file_path, "r")) != NULL)
-	{
+	if ((fp = fopen(file_path, "r")) != NULL) {
 		long int size = 0;
 
 		/* rewind to start of file */
@@ -240,12 +225,10 @@ net_nfc_error_e net_nfc_retrieve_current_ndef_message(
 
 		DEBUG_CLIENT_MSG("message length = [%ld]", size);
 
-		if (size > 0)
-		{
+		if (size > 0) {
 			data_s data = { NULL, 0 };
 
-			if (net_nfc_util_init_data(&data, size) == true)
-			{
+			if (net_nfc_util_init_data(&data, size) == true) {
 				int current;
 				size_t offset = 0;
 
@@ -259,28 +242,21 @@ net_nfc_error_e net_nfc_retrieve_current_ndef_message(
 						break;
 				} while (offset < data.length);
 
-				if (offset == data.length) {
+				if (offset == data.length)
 					result = net_nfc_create_ndef_message_from_rawdata(ndef_message, &data);
-				} else {
+				else
 					DEBUG_ERR_MSG("failed to read ndef message");
-				}
 
 				net_nfc_util_clear_data(&data);
-			}
-			else
-			{
+			} else {
 				result = NET_NFC_ALLOC_FAIL;
 			}
-		}
-		else
-		{
+		} else {
 			result = NET_NFC_NO_NDEF_MESSAGE;
 		}
 
 		fclose(fp);
-	}
-	else
-	{
+	} else {
 		result = NET_NFC_NO_NDEF_MESSAGE;
 	}
 

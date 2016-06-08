@@ -96,4 +96,4 @@ void net_nfc_client_tag_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_TAG_H__
+#endif /* __NET_NFC_CLIENT_TAG_H__ */

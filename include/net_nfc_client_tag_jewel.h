@@ -33,12 +33,12 @@ extern "C" {
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
+	@param[in]	handle		target handle of detected tag
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -60,14 +60,14 @@ net_nfc_error_e net_nfc_client_jewel_read_id(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	block		block number. (block 0 ~ block E)
-	@param[in] 	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
+	@param[in]	handle		target handle of detected tag
+	@param[in]	block		block number. (block 0 ~ block E)
+	@param[in]	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -91,12 +91,12 @@ net_nfc_error_e net_nfc_client_jewel_read_byte(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
+	@param[in]	handle		target handle of detected tag
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -121,15 +121,15 @@ net_nfc_error_e net_nfc_client_jewel_read_all(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	block		block number. (block 0 ~ block E)
-	@param[in] 	data			the data to write
-	@param[in] 	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
+	@param[in]	handle		target handle of detected tag
+	@param[in]	block		block number. (block 0 ~ block E)
+	@param[in]	data			the data to write
+	@param[in]	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -161,15 +161,15 @@ net_nfc_error_e net_nfc_client_jewel_write_with_erase(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	block		block number. (block 0 ~ block E)
-	@param[in] 	data			the data to write
-	@param[in] 	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
+	@param[in]	handle		target handle of detected tag
+	@param[in]	block		block number. (block 0 ~ block E)
+	@param[in]	data			the data to write
+	@param[in]	byte			byte number. Each block has 8 bytes. (byte 0 ~ byte 7)
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -199,4 +199,4 @@ net_nfc_error_e net_nfc_client_jewel_write_with_no_erase(
 #endif
 
 
-#endif //__NET_NFC_CLIENT_TAG_JEWEL_H__
+#endif /* __NET_NFC_CLIENT_TAG_JEWEL_H__ */

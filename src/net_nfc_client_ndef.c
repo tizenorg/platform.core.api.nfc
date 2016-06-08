@@ -57,27 +57,25 @@ static gboolean ndef_is_supported_tag(void)
 	net_nfc_target_info_s *target_info = NULL;
 
 	target_info = net_nfc_client_tag_get_client_target_info();
-	if (target_info == NULL)
-	{
+	if (target_info == NULL) {
 		DEBUG_ERR_MSG("target_info does not exist");
 
 		return FALSE;
 	}
 
-	switch (target_info->devType)
-	{
-		case NET_NFC_ISO14443_A_PICC :
-		case NET_NFC_MIFARE_MINI_PICC :
-		case NET_NFC_MIFARE_1K_PICC :
-		case NET_NFC_MIFARE_4K_PICC :
-		case NET_NFC_MIFARE_ULTRA_PICC :
-		case NET_NFC_JEWEL_PICC :
-			return TRUE;
-			break;
-		default:
-			DEBUG_CLIENT_MSG(
-				"not supported tag for read only tag");
-			return FALSE;
+	switch (target_info->devType) {
+	case NET_NFC_ISO14443_A_PICC:
+	case NET_NFC_MIFARE_MINI_PICC:
+	case NET_NFC_MIFARE_1K_PICC:
+	case NET_NFC_MIFARE_4K_PICC:
+	case NET_NFC_MIFARE_ULTRA_PICC:
+	case NET_NFC_JEWEL_PICC:
+		return TRUE;
+		break;
+	default:
+		DEBUG_CLIENT_MSG(
+			"not supported tag for read only tag");
+		return FALSE;
 	}
 }
 
@@ -97,16 +95,14 @@ static void ndef_call_read(GObject *source_object,
 				(gint *)&out_result,
 				&out_data,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish read: %s", error->message);
 		out_result = NET_NFC_IPC_FAIL;
 
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_ndef_read_completed callback =
 			(net_nfc_client_ndef_read_completed)func_data->callback;
 		ndef_message_h message;
@@ -135,16 +131,14 @@ static void ndef_call_write(GObject *source_object,
 				NET_NFC_GDBUS_NDEF(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish write: %s", error->message);
 		out_result = NET_NFC_IPC_FAIL;
 
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_ndef_write_completed callback =
 			(net_nfc_client_ndef_write_completed)func_data->callback;
 
@@ -168,8 +162,7 @@ static void ndef_call_make_read_only(GObject *source_object,
 				NET_NFC_GDBUS_NDEF(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish make read only: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -177,8 +170,7 @@ static void ndef_call_make_read_only(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_ndef_make_read_only_completed callback =
 			(net_nfc_client_ndef_make_read_only_completed)func_data->callback;
 
@@ -202,16 +194,14 @@ static void ndef_call_format(GObject *source_object,
 				NET_NFC_GDBUS_NDEF(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish format: %s", error->message);
 		out_result = NET_NFC_IPC_FAIL;
 
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_ndef_format_completed callback =
 			(net_nfc_client_ndef_format_completed)func_data->callback;
 
@@ -231,19 +221,16 @@ net_nfc_error_e net_nfc_client_ndef_read(net_nfc_target_handle_h handle,
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -251,9 +238,8 @@ net_nfc_error_e net_nfc_client_ndef_read(net_nfc_target_handle_h handle,
 	DEBUG_CLIENT_MSG("send request :: read ndef = [%p]", handle);
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -278,19 +264,16 @@ net_nfc_error_e net_nfc_client_ndef_read_sync(net_nfc_target_handle_h handle,
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -327,27 +310,23 @@ net_nfc_error_e net_nfc_client_ndef_write(net_nfc_target_handle_h handle,
 	if (handle == NULL || message == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -375,19 +354,16 @@ net_nfc_error_e net_nfc_client_ndef_write_sync(net_nfc_target_handle_h handle,
 	if (handle == NULL || message == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -399,8 +375,7 @@ net_nfc_error_e net_nfc_client_ndef_write_sync(net_nfc_target_handle_h handle,
 					arg_data,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call write: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -422,19 +397,16 @@ net_nfc_error_e net_nfc_client_ndef_make_read_only(
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -443,9 +415,8 @@ net_nfc_error_e net_nfc_client_ndef_make_read_only(
 		return NET_NFC_NOT_SUPPORTED;
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -469,19 +440,16 @@ net_nfc_error_e net_nfc_client_ndef_make_read_only_sync(
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -493,8 +461,7 @@ net_nfc_error_e net_nfc_client_ndef_make_read_only_sync(
 					GPOINTER_TO_UINT(handle),
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not make read only: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -517,27 +484,23 @@ net_nfc_error_e net_nfc_client_ndef_format(net_nfc_target_handle_h handle,
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -566,19 +529,16 @@ net_nfc_error_e net_nfc_client_ndef_format_sync(
 	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if (ndef_proxy == NULL)
-	{
-		if(net_nfc_client_ndef_init() != NET_NFC_OK)
-		{
+	if (ndef_proxy == NULL) {
+		if (net_nfc_client_ndef_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_NOT_CONNECTED;
@@ -590,8 +550,7 @@ net_nfc_error_e net_nfc_client_ndef_format_sync(
 					arg_data,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call format: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -606,8 +565,7 @@ net_nfc_error_e net_nfc_client_ndef_init(void)
 {
 	GError *error = NULL;
 
-	if (ndef_proxy)
-	{
+	if (ndef_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -620,8 +578,7 @@ net_nfc_error_e net_nfc_client_ndef_init(void)
 				"/org/tizen/NetNfcService/Ndef",
 				NULL,
 				&error);
-	if (ndef_proxy == NULL)
-	{
+	if (ndef_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -633,8 +590,7 @@ net_nfc_error_e net_nfc_client_ndef_init(void)
 
 void net_nfc_client_ndef_deinit(void)
 {
-	if (ndef_proxy)
-	{
+	if (ndef_proxy) {
 		g_object_unref(ndef_proxy);
 		ndef_proxy = NULL;
 	}

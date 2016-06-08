@@ -49,14 +49,14 @@ extern "C" {
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle		target handle of detected tag
-	@param[in] 	req_code		request code with this command
-	@param[in] 	time_slot		time slot value
+	@param[in]	handle		target handle of detected tag
+	@param[in]	req_code		request code with this command
+	@param[in]	time_slot		time slot value
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -82,14 +82,14 @@ net_nfc_error_e net_nfc_client_felica_poll(net_nfc_target_handle_h handle,
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle						target handle of detected tag
-	@param[in] 	number_of_area_service		the number of specified Area / Service list
-	@param[in] 	area_service_list				specified Area / Service list
+	@param[in]	handle						target handle of detected tag
+	@param[in]	number_of_area_service		the number of specified Area / Service list
+	@param[in]	area_service_list				specified Area / Service list
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -124,12 +124,12 @@ net_nfc_error_e net_nfc_client_felica_request_service(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle						target handle of detected tag
+	@param[in]	handle						target handle of detected tag
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -153,16 +153,16 @@ net_nfc_error_e net_nfc_client_felica_request_response(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle					target handle of detected tag
-	@param[in] 	number_of_service			the number of service list to read
-	@param[in] 	service_list				specified Service list to read
-	@param[in] 	number_of_blocks			the number of blocks to read
-	@param[in] 	block_list					the blocks to read
+	@param[in]	handle					target handle of detected tag
+	@param[in]	number_of_service			the number of service list to read
+	@param[in]	service_list				specified Service list to read
+	@param[in]	number_of_blocks			the number of blocks to read
+	@param[in]	block_list					the blocks to read
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -190,17 +190,17 @@ net_nfc_error_e net_nfc_client_felica_read_without_encryption(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle					target handle of detected tag
-	@param[in] 	number_of_service			the number of service list to write
-	@param[in] 	service_list				specified Service list to write
-	@param[in] 	number_of_blocks			the number of blocks to write
-	@param[in] 	block_list					the blocks to write
-	@param[in] 	data						the data to write
+	@param[in]	handle					target handle of detected tag
+	@param[in]	number_of_service			the number of service list to write
+	@param[in]	service_list				specified Service list to write
+	@param[in]	number_of_blocks			the number of blocks to write
+	@param[in]	block_list					the blocks to write
+	@param[in]	data						the data to write
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -230,12 +230,12 @@ net_nfc_error_e net_nfc_client_felica_write_without_encryption(
 	\par Sync (or) Async: Sync
 	This is a Asynchronous API
 
-	@param[in] 	handle					target handle of detected tag
+	@param[in]	handle					target handle of detected tag
 
 	@return		return the result of the calling the function
 
 	@exception NET_NFC_NULL_PARAMETER	parameter has illigal NULL pointer
-	@exception NET_NFC_ALLOC_FAIL 	memory allocation is failed
+	@exception NET_NFC_ALLOC_FAIL	memory allocation is failed
 	@exception NET_NFC_NOT_INITIALIZED	Try to operate without initialization
 	@exception NET_NFC_BUSY		Device is too busy to handle your request
 	@exception NET_NFC_OPERATION_FAIL	Operation is failed because of the internal oal error
@@ -263,4 +263,4 @@ net_nfc_error_e net_nfc_client_felica_request_system_code(
 #endif
 
 
-#endif //__NET_NFC_CLIENT_TAG_FELICA_H__
+#endif /* __NET_NFC_CLIENT_TAG_FELICA_H__ */

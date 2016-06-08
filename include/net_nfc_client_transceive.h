@@ -57,4 +57,4 @@ void net_nfc_client_transceive_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_TRANSCEIVE_H__
+#endif /* __NET_NFC_CLIENT_TRANSCEIVE_H__ */

@@ -51,19 +51,12 @@ net_nfc_error_e net_nfc_client_is_nfc_supported(int *state)
 {
 	net_nfc_error_e ret;
 
-	if (state != NULL)
-	{
+	if (state != NULL) {
 		if (vconf_get_bool(VCONFKEY_NFC_FEATURE, state) == 0)
-		{
 			ret = NET_NFC_OK;
-		}
 		else
-		{
 			ret = NET_NFC_INVALID_STATE;
-		}
-	}
-	else
-	{
+	} else {
 		ret = NET_NFC_NULL_PARAMETER;
 	}
 
@@ -76,19 +69,12 @@ net_nfc_error_e net_nfc_client_get_nfc_state(int *state)
 {
 	net_nfc_error_e ret;
 
-	if (state != NULL)
-	{
+	if (state != NULL) {
 		if (vconf_get_bool(VCONFKEY_NFC_STATE, state) == 0)
-		{
 			ret = NET_NFC_OK;
-		}
 		else
-		{
 			ret = NET_NFC_INVALID_STATE;
-		}
-	}
-	else
-	{
+	} else {
 		ret = NET_NFC_NULL_PARAMETER;
 	}
 

@@ -52,4 +52,4 @@ void net_nfc_client_hce_process_received_event(int event,
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_HCE_H__
+#endif /* __NET_NFC_CLIENT_HCE_H__ */

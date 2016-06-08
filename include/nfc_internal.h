@@ -119,8 +119,7 @@ typedef void (*nfc_p2p_connection_handover_completed_cb)(nfc_error_e result, nfc
  */
 typedef void (*nfc_connection_handover_event_cb)(nfc_error_e result, nfc_handover_event_e event, nfc_ac_type_e carrier, char *address, nfc_ndef_message_h msg, void *user_data);
 
-typedef bool (*nfc_se_registered_handler_cb)(const char *handler, int count,
-        void *user_data);
+typedef bool (*nfc_se_registered_handler_cb)(const char *handler, int count, void *user_data);
 
 /**
  * @brief NFC Connection handover between NFC peer-to-peer target

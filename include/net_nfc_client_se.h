@@ -223,7 +223,7 @@ net_nfc_error_e net_nfc_client_se_get_conflict_handlers_sync(
 
 net_nfc_error_e net_nfc_client_se_set_preferred_handler_sync(bool state);
 
-//net_nfc_error_e net_nfc_client_hce_get_route_table_sync(data_h arg_aid);
+/*net_nfc_error_e net_nfc_client_hce_get_route_table_sync(data_h arg_aid);*/
 
 
 /* TODO : move to internal header */
@@ -237,4 +237,4 @@ void net_nfc_client_se_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_SE_H__
+#endif /* __NET_NFC_CLIENT_SE_H__ */

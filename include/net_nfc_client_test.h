@@ -94,4 +94,4 @@ net_nfc_error_e net_nfc_client_test_set_listen_tech_mask_sync(uint32_t tech);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_TEST_H__
+#endif /* __NET_NFC_CLIENT_TEST_H__ */

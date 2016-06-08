@@ -22,8 +22,7 @@
 extern "C" {
 #endif
 
-typedef enum
-{
+typedef enum {
 	NET_NFC_HANDOVER_START,
 	NET_NFC_HANDOVER_FINISH,
 }
@@ -87,4 +86,4 @@ void net_nfc_client_handover_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_HANDOVER_H__
+#endif /* __NET_NFC_CLIENT_HANDOVER_H__ */

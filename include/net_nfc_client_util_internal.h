@@ -21,8 +21,7 @@
 extern "C" {
 #endif
 
-typedef struct _NetNfcCallback
-{
+typedef struct _NetNfcCallback {
 	void *callback;
 	void *user_data;
 }
@@ -32,4 +31,4 @@ NetNfcCallback;
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_UTIL_INTERNAL_H__
+#endif /* __NET_NFC_CLIENT_UTIL_INTERNAL_H__ */

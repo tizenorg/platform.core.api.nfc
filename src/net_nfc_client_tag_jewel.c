@@ -51,18 +51,17 @@ net_nfc_error_e net_nfc_client_jewel_read_id(net_nfc_target_handle_h handle,
 
 	uint8_t send_buffer[9] = {0x00, };
 
-	if(handle == NULL)
+	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if(net_nfc_client_tag_is_connected() == FALSE)
+	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_OPERATION_FAIL;
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 	if (target_info == NULL)
 		return NET_NFC_NO_DATA_FOUND;
 
-	if(target_info->devType != NET_NFC_JEWEL_PICC)
-	{
+	if (target_info->devType != NET_NFC_JEWEL_PICC) {
 		DEBUG_CLIENT_MSG("only Jewel tag is available");
 		return NET_NFC_NOT_ALLOWED_OPERATION;
 	}
@@ -97,34 +96,32 @@ net_nfc_error_e net_nfc_client_jewel_read_byte(net_nfc_target_handle_h handle,
 
 	uint8_t send_buffer[9] = {0x00, };
 
-	if(handle == NULL)
+	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if(block > 0xE || byte > 0x7 )
+	if (block > 0xE || byte > 0x7)
 		return NET_NFC_OUT_OF_BOUND;
 
-	if(net_nfc_client_tag_is_connected() == FALSE)
+	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_OPERATION_FAIL;
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 	if (target_info == NULL)
 		return NET_NFC_NO_DATA_FOUND;
 
-	if(target_info->devType != NET_NFC_JEWEL_PICC)
-	{
+	if (target_info->devType != NET_NFC_JEWEL_PICC) {
 		DEBUG_CLIENT_MSG("only Jewel tag is available");
 		return NET_NFC_NOT_ALLOWED_OPERATION;
 	}
 
-	if(net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
+	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 				JEWEL_TAG_KEY,
-				&UID) != NET_NFC_OK)
-	{
+				&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
 
-	if(((data_s*)UID)->length != 4)
+	if (((data_s*)UID)->length != 4)
 		return NET_NFC_OUT_OF_BOUND;
 
 	/* command */
@@ -167,30 +164,28 @@ net_nfc_error_e net_nfc_client_jewel_read_all(net_nfc_target_handle_h handle,
 
 	uint8_t send_buffer[9] = {0x00, };
 
-	if(handle == NULL )
+	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if(net_nfc_client_tag_is_connected() == FALSE)
+	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_OPERATION_FAIL;
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 	if (target_info == NULL)
 		return NET_NFC_NO_DATA_FOUND;
 
-	if(target_info->devType != NET_NFC_JEWEL_PICC)
-	{
+	if (target_info->devType != NET_NFC_JEWEL_PICC) {
 		DEBUG_CLIENT_MSG("only Jewel tag is available");
 		return NET_NFC_NOT_ALLOWED_OPERATION;
 	}
 
-	if(net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
+	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 				JEWEL_TAG_KEY,
-				&UID) != NET_NFC_OK)
-	{
+				&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
-	if(((data_s*)UID)->length != 4)
+	if (((data_s*)UID)->length != 4)
 		return NET_NFC_OUT_OF_BOUND;
 
 	/* command */
@@ -237,28 +232,26 @@ net_nfc_error_e net_nfc_client_jewel_write_with_erase(
 
 	uint8_t send_buffer[9] = {0x00, };
 
-	if(handle == NULL)
+	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if(block > 0xE || byte > 0x7 )
+	if (block > 0xE || byte > 0x7)
 		return NET_NFC_OUT_OF_BOUND;
 
-	if(net_nfc_client_tag_is_connected() == FALSE)
+	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_OPERATION_FAIL;
-
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 	if (target_info == NULL)
 		return NET_NFC_NO_DATA_FOUND;
 
-	if(net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
+	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 				JEWEL_TAG_KEY,
-				&UID) != NET_NFC_OK)
-	{
+				&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
-	if(((data_s*)UID)->length != 4)
+	if (((data_s*)UID)->length != 4)
 		return NET_NFC_OUT_OF_BOUND;
 
 	/* command */
@@ -306,33 +299,31 @@ net_nfc_error_e net_nfc_client_jewel_write_with_no_erase(
 
 	uint8_t send_buffer[9] = {0x00, };
 
-	if(handle == NULL)
+	if (handle == NULL)
 		return NET_NFC_NULL_PARAMETER;
 
-	if(block > 0xE || byte > 0x7 )
+	if (block > 0xE || byte > 0x7)
 		return NET_NFC_OUT_OF_BOUND;
 
-	if(net_nfc_client_tag_is_connected() == FALSE)
+	if (net_nfc_client_tag_is_connected() == FALSE)
 		return NET_NFC_OPERATION_FAIL;
 
 	target_info = net_nfc_client_tag_get_client_target_info();
 	if (target_info == NULL)
 		return NET_NFC_NO_DATA_FOUND;
 
-	if(target_info->devType != NET_NFC_JEWEL_PICC)
-	{
+	if (target_info->devType != NET_NFC_JEWEL_PICC) {
 		DEBUG_CLIENT_MSG("only Jewel tag is available");
 		return NET_NFC_NOT_ALLOWED_OPERATION;
 	}
 
-	if(net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
+	if (net_nfc_get_tag_info_value((net_nfc_target_info_h)target_info,
 				JEWEL_TAG_KEY,
-				&UID) != NET_NFC_OK)
-	{
+				&UID) != NET_NFC_OK) {
 		return NET_NFC_NO_DATA_FOUND;
 	}
 
-	if(((data_s*)UID)->length != 4)
+	if (((data_s*)UID)->length != 4)
 		return NET_NFC_OUT_OF_BOUND;
 
 	/* command */

@@ -30,7 +30,7 @@ extern "C" {
 @{
 	This document is for the APIs reference document
 
-        NFC Manager defines are defined in <nfc-typedef.h>
+		NFC Manager defines are defined in <nfc-typedef.h>
 
 */
 
@@ -38,8 +38,8 @@ extern "C" {
 /**
 	This define gives you Message Begin from the flag byte
 
-	@param[in] 	flag		flag that comes from "net_nfc_get_record_flags" function
-	@return 		the mb flag
+	@param[in]	flag		flag that comes from "net_nfc_get_record_flags" function
+	@return		the mb flag
 
 	@exception NONE
 */
@@ -47,8 +47,8 @@ uint8_t net_nfc_get_record_mb(uint8_t flag);
 /**
 	This define gives you Message end from the flag byte
 
-	@param[in] 	flag		flag that comes from "net_nfc_get_record_flags" function
-	@return 		the me flag
+	@param[in]	flag		flag that comes from "net_nfc_get_record_flags" function
+	@return		the me flag
 
 	@exception NONE
 */
@@ -56,8 +56,8 @@ uint8_t net_nfc_get_record_me(uint8_t flag);
 /**
 	This define gives you Chun Flag  that indicate that either the first record chunk or a middle record chunk of a chunked payload
 
-	@param[in] 	flag		flag that comes from "net_nfc_get_record_flags" function
-	@return 		the chunk flag
+	@param[in]	flag		flag that comes from "net_nfc_get_record_flags" function
+	@return		the chunk flag
 
 	@exception NONE
 */
@@ -65,8 +65,8 @@ uint8_t net_nfc_get_record_cf(uint8_t flag);
 /**
 	This define gives you ID length present flag
 
-	@param[in] 	flag		flag that comes from "net_nfc_get_record_flags" function
-	@return 		the  il (id length flag) flag
+	@param[in]	flag		flag that comes from "net_nfc_get_record_flags" function
+	@return		the  il (id length flag) flag
 
 	@exception NONE
 
@@ -76,7 +76,7 @@ uint8_t net_nfc_get_record_il(uint8_t flag);
 	This define gives you short record flag. This flag indicates that the payload length filed is a single octet
 
 	@param[in]	flag		flag that comes from "net_nfc_get_record_flags" function
-	@return 		the short record flag
+	@return		the short record flag
 
 	@exception NONE
 */
@@ -89,9 +89,9 @@ uint8_t net_nfc_get_record_sr(uint8_t flag);
 
 	@param[out]	record			Record handler
 	@param[in]	tnf				record type (TNF value) empty, well known, mime type, URI, external, or unchanged
-	@param[in]	typeName 		specify type name ex) Sp, U, or Hr ...
-	@param[in]	id 				record id
-	@param[in]	payload 			payload of this record
+	@param[in]	typeName		specify type name ex) Sp, U, or Hr ...
+	@param[in]	id				record id
+	@param[in]	payload			payload of this record
 
 	@return		return the result of the calling the function
 
@@ -185,8 +185,8 @@ net_nfc_error_e net_nfc_create_uri_type_record(ndef_record_h *record, const char
 	this function gives you  the pointer of pyaload that is contained by record.
 	Do not free the payload. it will be freed when the record is freed
 
-	@param[in] 	record 		Record handler
-	@param[out] 	payload		data_h type payload pointer (it gives you the pointer of payload; not copied)
+	@param[in]	record		Record handler
+	@param[out]	payload		data_h type payload pointer (it gives you the pointer of payload; not copied)
 
 	@return		return the result of the calling the function
 
@@ -200,8 +200,8 @@ net_nfc_error_e net_nfc_get_record_payload(ndef_record_h record, data_h *payload
 	this function gives you  the pointer of record type that is contained by record.
 	Do not free the type. it will be freed when the record is freed
 
-	@param[in] 	record 		Record handler
-	@param[out] 	type			dat_h type pointer (it gives you the pointer of type; not copied)
+	@param[in]	record		Record handler
+	@param[out]	type			dat_h type pointer (it gives you the pointer of type; not copied)
 
 	@return		return the result of the calling the function
 
@@ -216,8 +216,8 @@ net_nfc_error_e net_nfc_get_record_type(ndef_record_h record, data_h *type);
 	it may return NULL pointer if the ID is not exist
 	Do not free the type. it will be freed when the record is freed.
 
-	@param[in] 	record 		Record handler
-	@param[out] 	id			dat_h type ID pointer (it gives you the pointer of payload not copied)
+	@param[in]	record		Record handler
+	@param[out]	id			dat_h type ID pointer (it gives you the pointer of payload not copied)
 
 	@return		return the result of the calling the function
 
@@ -228,8 +228,8 @@ net_nfc_error_e net_nfc_get_record_id(ndef_record_h record, data_h *id);
 /**
 	this function is getter of record TNF value.
 
-	@param[in] 	record 		Record handler
-	@param[out] 	tnf			TNF value
+	@param[in]	record		Record handler
+	@param[out]	tnf			TNF value
 
 	@return		return the result of the calling the function
 
@@ -243,8 +243,8 @@ net_nfc_error_e net_nfc_get_record_tnf(ndef_record_h record, net_nfc_record_tnf_
 	this function is getter of record flags.
 	you can get the each flag value by using defines "RECORD_GET_XX"
 
-	@param[in] 	record 		Record handler
-	@param[out] 	flag			flag value (it gives you the pointer of payload not copied)
+	@param[in]	record		Record handler
+	@param[out]	flag			flag value (it gives you the pointer of payload not copied)
 
 	@return		return the result of the calling the function
 
@@ -275,7 +275,7 @@ net_nfc_error_e net_nfc_get_record_flags(ndef_record_h record, uint8_t *flag);
 /**
 	you can set record ID with this function
 
-	@param[in] 	record 		Record handler
+	@param[in]	record		Record handler
 	@param[in]	id			Record ID
 
 	@return		return the result of the calling the function
@@ -288,7 +288,7 @@ net_nfc_error_e net_nfc_set_record_id(ndef_record_h record, data_h id);
 /**
 	this function free the record handler. do not use this function after appending the ndef message
 
-	@param[in] 	record 		Record handler
+	@param[in]	record		Record handler
 
 	@return		return the result of the calling the function
 
@@ -301,8 +301,8 @@ net_nfc_error_e net_nfc_free_record(ndef_record_h record);
 /**
 	this function get text from text record. it allocate buffer char and store the text string. you should free this string.
 
-	@param[in] 	record 		Record handler
-	@param[out] 	buffer 		text string
+	@param[in]	record		Record handler
+	@param[out]	buffer		text string
 
 	@return		return the result of the calling the function
 
@@ -317,8 +317,8 @@ net_nfc_error_e net_nfc_create_text_string_from_text_record(ndef_record_h record
 /**
 	this function get language code from text record. (ex: US-en)
 
-	@param[in] 	record 			Record handler
-	@param[out] 	lang_code_str 	lang code string value followed by IANA
+	@param[in]	record			Record handler
+	@param[out]	lang_code_str		lang code string value followed by IANA
 
 	@return		return the result of the calling the function
 
@@ -333,8 +333,8 @@ net_nfc_error_e net_nfc_get_languange_code_string_from_text_record(ndef_record_h
 /**
 	this function get encoding type from text record (ex: UTF-8)
 
-	@param[in] 	record 		Record handler
-	@param[out] 	encoding 	encoding type
+	@param[in]	record		Record handler
+	@param[out]	encoding		encoding type
 
 	@return		return the result of the calling the function
 
@@ -349,8 +349,8 @@ net_nfc_error_e net_nfc_get_encoding_type_from_text_record(ndef_record_h record,
 /**
 	this function get URI from uri record. you should free the uri string.
 
-	@param[in] 	record 		Record handler
-	@param[out] 	uri 			uri text string
+	@param[in]	record		Record handler
+	@param[out]	uri			uri text string
 
 	@return		return the result of the calling the function
 
@@ -366,4 +366,4 @@ net_nfc_error_e net_nfc_create_uri_string_from_uri_record(ndef_record_h record, 
 #endif
 
 
-#endif //__NET_NFC_NDEF_RECORD_H__
+#endif /* __NET_NFC_NDEF_RECORD_H__ */

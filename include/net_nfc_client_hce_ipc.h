@@ -35,4 +35,4 @@ bool net_nfc_server_hce_ipc_send_to_server(int type,
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_HCE_IPC_H__
+#endif /* __NET_NFC_CLIENT_HCE_IPC_H__ */

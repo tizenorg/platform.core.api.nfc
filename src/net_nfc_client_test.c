@@ -63,8 +63,7 @@ static void test_call_sim_test_callback(GObject *source_object,
 				NET_NFC_GDBUS_TEST(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish sim_test: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -72,8 +71,7 @@ static void test_call_sim_test_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_test_sim_test_completed callback =
 			(net_nfc_client_test_sim_test_completed)func_data->callback;
 
@@ -97,8 +95,7 @@ static void test_call_prbs_test_callback(GObject *source_object,
 				NET_NFC_GDBUS_TEST(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish prbs test: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -106,8 +103,7 @@ static void test_call_prbs_test_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_test_prbs_test_completed callback =
 			(net_nfc_client_test_prbs_test_completed)func_data->callback;
 
@@ -133,8 +129,7 @@ static void test_call_get_firmware_version_callback(GObject *source_object,
 				(gint *)&out_result,
 				&out_version,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish get_firmware_version: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -142,8 +137,7 @@ static void test_call_get_firmware_version_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_test_get_firmware_version_completed callback =
 			(net_nfc_client_test_get_firmware_version_completed)func_data->callback;
 
@@ -168,8 +162,7 @@ static void test_call_set_ee_data_callback(GObject *source_object,
 				NET_NFC_GDBUS_TEST(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish set_ee_data: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -177,8 +170,7 @@ static void test_call_set_ee_data_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_test_set_ee_data_completed callback =
 			(net_nfc_client_test_set_ee_data_completed)func_data->callback;
 
@@ -202,8 +194,7 @@ static void test_call_ese_test_callback(GObject *source_object,
 				NET_NFC_GDBUS_TEST(source_object),
 				(gint *)&out_result,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish sim_test: %s",
 			error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -211,8 +202,7 @@ static void test_call_ese_test_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_test_ese_test_completed callback =
 			(net_nfc_client_test_ese_test_completed)func_data->callback;
 
@@ -230,19 +220,16 @@ net_nfc_error_e net_nfc_client_test_sim_test(
 {
 	NetNfcCallback *func_data;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -265,25 +252,21 @@ net_nfc_error_e net_nfc_client_test_sim_test_sync(void)
 	net_nfc_error_e out_result = NET_NFC_OK;
 	GError *error = NULL;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_sim_test_sync(test_proxy,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SimTest: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -302,19 +285,16 @@ net_nfc_error_e net_nfc_client_test_prbs_test(uint32_t tech,
 {
 	NetNfcCallback *func_data;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -340,27 +320,23 @@ net_nfc_error_e net_nfc_client_test_prbs_test_sync(uint32_t tech,
 	net_nfc_error_e out_result = NET_NFC_OK;
 	GError *error = NULL;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_prbs_test_sync(test_proxy,
 					tech,
 					rate,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call PrbsTest: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -378,19 +354,16 @@ net_nfc_error_e net_nfc_client_test_get_firmware_version(
 {
 	NetNfcCallback *func_data;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -419,30 +392,24 @@ net_nfc_error_e net_nfc_client_test_get_firmware_version_sync(char **version)
 
 	*version = NULL;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_get_firmware_version_sync(test_proxy,
 					(gint *)&out_result,
 					&out_version,
 					NULL,
-					&error) == TRUE)
-	{
+					&error) == TRUE) {
 		*version = out_version;
-	}
-	else
-	{
+	} else {
 		DEBUG_ERR_MSG("can not call Get Firmware version: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -463,24 +430,20 @@ net_nfc_error_e net_nfc_client_test_set_ee_data(int mode,
 	NetNfcCallback *func_data;
 	GVariant *variant;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL) {
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	func_data->callback = (gpointer)callback;
 	func_data->user_data = user_data;
@@ -507,19 +470,16 @@ net_nfc_error_e net_nfc_client_test_set_ee_data_sync(int mode,
 	GVariant *variant = NULL;
 	GError *error = NULL;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	variant = net_nfc_util_gdbus_data_to_variant((data_s *)data);
 
@@ -529,8 +489,7 @@ net_nfc_error_e net_nfc_client_test_set_ee_data_sync(int mode,
 					variant,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SetEeTest: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -550,19 +509,16 @@ net_nfc_error_e net_nfc_client_test_ese_test(
 
 	DEBUG_CLIENT_MSG("NFC ESE Test!!!!");
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -587,25 +543,21 @@ net_nfc_error_e net_nfc_client_test_ese_test_sync(void)
 
 	DEBUG_CLIENT_MSG("NFC ESE Test SYNC!!!!");
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_ese_test_sync(test_proxy,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call ESE Test: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -623,27 +575,23 @@ net_nfc_error_e net_nfc_client_test_set_se_tech_type_sync(
 	net_nfc_error_e out_result = NET_NFC_OK;
 	GError *error = NULL;
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_set_se_tech_type_sync(test_proxy,
 					(guint32)type,
 					(guint32)tech,
 					(gint *)&out_result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SetSeTechType: %s",
 				error->message);
 		out_result = NET_NFC_IPC_FAIL;
@@ -662,26 +610,22 @@ net_nfc_error_e net_nfc_client_test_set_listen_tech_mask_sync(uint32_t tech)
 
 	DEBUG_CLIENT_MSG("net_nfc_client_test_set_listen_tech_mask_sync start");
 
-	if (test_proxy == NULL)
-	{
-		if(net_nfc_client_test_init() != NET_NFC_OK)
-		{
+	if (test_proxy == NULL) {
+		if (net_nfc_client_test_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("test_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_test_call_set_listen_tech_mask_sync(test_proxy,
 					tech,
 					&result,
 					NULL,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call listen tech mask: %s",
 				error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -697,8 +641,7 @@ net_nfc_error_e net_nfc_client_test_init(void)
 {
 	GError *error = NULL;
 
-	if (test_proxy)
-	{
+	if (test_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -711,8 +654,7 @@ net_nfc_error_e net_nfc_client_test_init(void)
 					"/org/tizen/NetNfcService/Test",
 					NULL,
 					&error);
-	if (test_proxy == NULL)
-	{
+	if (test_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -724,8 +666,7 @@ net_nfc_error_e net_nfc_client_test_init(void)
 
 void net_nfc_client_test_deinit(void)
 {
-	if (test_proxy)
-	{
+	if (test_proxy) {
 		g_object_unref(test_proxy);
 		test_proxy = NULL;
 	}

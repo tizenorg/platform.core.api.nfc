@@ -95,25 +95,16 @@ static gboolean tag_check_filter(net_nfc_target_type_e type)
 	DEBUG_CLIENT_MSG("client filter =  %d", client_filter);
 
 	if (type >= NET_NFC_ISO14443_A_PICC &&
-		type <= NET_NFC_MIFARE_DESFIRE_PICC)
-	{
+		type <= NET_NFC_MIFARE_DESFIRE_PICC) {
 		converted = NET_NFC_ISO14443A_ENABLE;
-	}
-	else if (type >= NET_NFC_ISO14443_B_PICC &&
-		type <= NET_NFC_ISO14443_BPRIME_PICC)
-	{
+	} else if (type >= NET_NFC_ISO14443_B_PICC &&
+		type <= NET_NFC_ISO14443_BPRIME_PICC) {
 		converted = NET_NFC_ISO14443B_ENABLE;
-	}
-	else if (type == NET_NFC_FELICA_PICC)
-	{
+	} else if (type == NET_NFC_FELICA_PICC)	{
 		converted = NET_NFC_FELICA_ENABLE;
-	}
-	else if (type == NET_NFC_JEWEL_PICC)
-	{
+	} else if (type == NET_NFC_JEWEL_PICC) {
 		converted = NET_NFC_FELICA_ENABLE;
-	}
-	else if (type == NET_NFC_ISO15693_PICC)
-	{
+	} else if (type == NET_NFC_ISO15693_PICC) {
 		converted = NET_NFC_ISO15693_ENABLE;
 	}
 
@@ -141,8 +132,7 @@ static void tag_get_info_list(guint8 *buffer,
 	tmp_list = g_new0(net_nfc_tag_info_s, number_of_keys);
 	current = tmp_list;
 
-	while (i < number_of_keys)
-	{
+	while (i < number_of_keys) {
 		gchar *str = NULL;
 		data_h value = NULL;
 
@@ -164,8 +154,7 @@ static void tag_get_info_list(guint8 *buffer,
 		pos++;
 
 		value = NULL;
-		if (length > 0)
-		{
+		if (length > 0) {
 			net_nfc_create_data(&value, pos, length);
 			pos += length;
 		}
@@ -237,8 +226,7 @@ static void tag_is_tag_connected(GObject *source_object,
 				&out_is_connected,
 				(gint32 *)&out_dev_type,
 				res,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish is_tag_connected: %s",
 				error->message);
 		g_error_free(error);
@@ -246,8 +234,7 @@ static void tag_is_tag_connected(GObject *source_object,
 		out_result = NET_NFC_IPC_FAIL;
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_tag_is_tag_connected_completed callback =
 			(net_nfc_client_tag_is_tag_connected_completed)func_data->callback;
 
@@ -282,7 +269,7 @@ static void tag_get_current_tag_info(GObject *source_object,
 
 	g_assert(user_data != NULL);
 
-	if (net_nfc_gdbus_tag_call_get_current_tag_info_finish (
+	if (net_nfc_gdbus_tag_call_get_current_tag_info_finish(
 					NET_NFC_GDBUS_TAG(source_object),
 					&out_result,
 					&out_is_connected,
@@ -296,8 +283,7 @@ static void tag_get_current_tag_info(GObject *source_object,
 					&out_target_info_values,
 					&out_raw_data,
 					res,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		out_result = NET_NFC_IPC_FAIL;
 
 		DEBUG_ERR_MSG("Can not finish get_current_tag_info: %s",
@@ -327,8 +313,7 @@ static void tag_get_current_tag_info(GObject *source_object,
 		}
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_tag_get_current_tag_info_completed callback =
 			(net_nfc_client_tag_get_current_tag_info_completed)func_data->callback;
 
@@ -361,8 +346,7 @@ static void tag_get_current_target_handle(GObject *source_object,
 					(guint *)&out_handle,
 					(gint *)&out_dev_type,
 					res,
-					&error) == FALSE)
-	{
+					&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish get_current_target_handle: %s",
 				error->message);
 		g_error_free(error);
@@ -370,8 +354,7 @@ static void tag_get_current_target_handle(GObject *source_object,
 		out_result = NET_NFC_IPC_FAIL;
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_tag_get_current_target_handle_completed callback =
 			(net_nfc_client_tag_get_current_target_handle_completed)func_data->callback;
 
@@ -482,9 +465,8 @@ net_nfc_error_e net_nfc_client_tag_is_tag_connected_sync(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	info = net_nfc_client_tag_get_client_target_info();
 	if (info == NULL) {
@@ -494,8 +476,7 @@ net_nfc_error_e net_nfc_client_tag_is_tag_connected_sync(
 					&out_is_connected,
 					(gint *)&out_dev_type,
 					NULL,
-					&error) == FALSE)
-		{
+					&error) == FALSE) {
 			DEBUG_ERR_MSG("Can not get is_tag_connected result: %s",
 					error->message);
 			result = NET_NFC_IPC_FAIL;
@@ -515,9 +496,8 @@ net_nfc_error_e net_nfc_client_tag_is_tag_connected_sync(
 		}
 	} else {
 		/* target was connected */
-		if (dev_type != NULL) {
+		if (dev_type != NULL)
 			*dev_type = info->devType;
-		}
 
 		result = NET_NFC_OK;
 	}
@@ -538,16 +518,14 @@ net_nfc_error_e net_nfc_client_barcode_get_barcode_sync(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_tag_call_get_barcode_sync(tag_proxy,
 				&result,
 				&out_barcode,
 				NULL,
-				&error) == FALSE)
-	{
+				&error) == FALSE) {
 		DEBUG_ERR_MSG("Can no get barcode result: %s", error->message);
 		result = NET_NFC_IPC_FAIL;
 
@@ -556,22 +534,20 @@ net_nfc_error_e net_nfc_client_barcode_get_barcode_sync(
 		return result;
 	}
 
-	if(result == NET_NFC_OK)
-	{
+	if (result == NET_NFC_OK) {
 		data = g_new0(data_s, 1);
 		net_nfc_util_gdbus_variant_to_data_s(out_barcode, data);
 
-		if(data == NULL || data->buffer == NULL || data->length == 0)
+		if (data == NULL || data->buffer == NULL || data->length == 0)
 			return NET_NFC_OPERATION_FAIL;
 
-		//alloc barcode
+		/* alloc barcode */
 		*barcode_len = data->length;
 		*barcode = (unsigned char *)calloc(*barcode_len, sizeof(unsigned char));
 		memcpy(*barcode, data->buffer, *barcode_len);
 
-		if (data != NULL) {
+		if (data != NULL)
 			net_nfc_util_free_data(data);
-		}
 	}
 
 	return result;
@@ -598,9 +574,8 @@ net_nfc_error_e net_nfc_client_tag_get_current_tag_info_sync(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_client_tag_get_client_target_info() == NULL) {
 		/* try to request target information from server */
@@ -617,8 +592,7 @@ net_nfc_error_e net_nfc_client_tag_get_current_tag_info_sync(
 					&out_target_info_values,
 					&out_raw_data,
 					NULL,
-					&error) == FALSE)
-		{
+					&error) == FALSE) {
 			DEBUG_ERR_MSG("Can no get current_tag_info result: %s",
 					error->message);
 			result = NET_NFC_IPC_FAIL;
@@ -656,9 +630,8 @@ net_nfc_error_e net_nfc_client_tag_get_current_tag_info_sync(
 		result = NET_NFC_OK;
 	}
 
-	if (result == NET_NFC_OK && info != NULL) {
+	if (result == NET_NFC_OK && info != NULL)
 		*info = client_target_info;
-	}
 
 	return result;
 }
@@ -678,9 +651,8 @@ net_nfc_error_e net_nfc_client_tag_get_current_target_handle_sync(
 		return NET_NFC_NOT_INITIALIZED;
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	info = net_nfc_client_tag_get_client_target_info();
 	if (info == NULL) {
@@ -691,8 +663,7 @@ net_nfc_error_e net_nfc_client_tag_get_current_target_handle_sync(
 			&out_handle,
 			(gint *)&out_dev_type,
 			NULL,
-			&error) == FALSE)
-		{
+			&error) == FALSE) {
 			DEBUG_ERR_MSG("Can no get current_target_handle result: %s",
 					error->message);
 			result = NET_NFC_IPC_FAIL;
@@ -733,10 +704,8 @@ void net_nfc_client_tag_set_tag_discovered(
 	if (callback == NULL)
 		return;
 
-	if (tag_proxy == NULL)
-	{
-		if (net_nfc_client_tag_init() != NET_NFC_OK)
-		{
+	if (tag_proxy == NULL) {
+		if (net_nfc_client_tag_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -762,10 +731,8 @@ void net_nfc_client_tag_set_tag_detached(
 	if (callback == NULL)
 		return;
 
-	if (tag_proxy == NULL)
-	{
-		if (net_nfc_client_tag_init() != NET_NFC_OK)
-		{
+	if (tag_proxy == NULL) {
+		if (net_nfc_client_tag_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("tag_proxy fail");
 			/* FIXME : return result of this error */
 			return;
@@ -799,15 +766,13 @@ net_nfc_error_e net_nfc_client_tag_init(void)
 {
 	GError *error = NULL;
 
-	if (tag_proxy)
-	{
+	if (tag_proxy) {
 		DEBUG_CLIENT_MSG("Alrady initialized");
 
 		return NET_NFC_OK;
 	}
 
-	if (client_target_info)
-	{
+	if (client_target_info) {
 		net_nfc_release_tag_info(
 				(net_nfc_target_info_h)client_target_info);
 		client_target_info = NULL;
@@ -822,8 +787,7 @@ net_nfc_error_e net_nfc_client_tag_init(void)
 				"/org/tizen/NetNfcService/Tag",
 				NULL,
 				&error);
-	if (tag_proxy == NULL)
-	{
+	if (tag_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -849,8 +813,7 @@ void net_nfc_client_tag_deinit(void)
 	net_nfc_client_tag_unset_tag_discovered();
 	net_nfc_client_tag_unset_tag_detached();
 
-	if (tag_proxy)
-	{
+	if (tag_proxy) {
 		g_object_unref(tag_proxy);
 		tag_proxy = NULL;
 	}

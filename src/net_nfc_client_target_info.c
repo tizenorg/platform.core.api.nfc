@@ -35,16 +35,12 @@ net_nfc_error_e net_nfc_get_tag_type(net_nfc_target_info_h target_info,
 		(net_nfc_target_info_s *)target_info;
 
 	if (type == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*type = NET_NFC_UNKNOWN_TARGET;
 
 	if (target_info == NULL)
-	{
 		return NET_NFC_INVALID_HANDLE;
-	}
 
 	*type = target_info_private->devType;
 
@@ -59,16 +55,12 @@ net_nfc_error_e net_nfc_get_tag_handle(net_nfc_target_info_h target_info,
 		(net_nfc_target_info_s *)target_info;
 
 	if (handle == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*handle = NULL;
 
 	if (target_info == NULL)
-	{
 		return NET_NFC_INVALID_HANDLE;
-	}
 
 	*handle = (net_nfc_target_handle_h)target_info_private->handle;
 
@@ -83,9 +75,7 @@ net_nfc_error_e net_nfc_get_tag_ndef_support(net_nfc_target_info_h target_info,
 		(net_nfc_target_info_s *)target_info;
 
 	if (target_info == NULL || is_support == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*is_support = (bool)target_info_private->is_ndef_supported;
 
@@ -100,9 +90,7 @@ net_nfc_error_e net_nfc_get_tag_ndef_state(net_nfc_target_info_h target_info,
 		(net_nfc_target_info_s *)target_info;
 
 	if (target_info == NULL || state == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*state = (net_nfc_ndef_card_state_e)target_info_private->ndefCardState;
 
@@ -117,9 +105,7 @@ net_nfc_error_e net_nfc_get_tag_max_data_size(net_nfc_target_info_h target_info,
 		(net_nfc_target_info_s *)target_info;
 
 	if (target_info == NULL || max_size == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*max_size = target_info_private->maxDataSize;
 
@@ -134,9 +120,7 @@ net_nfc_error_e net_nfc_get_tag_actual_data_size(
 		(net_nfc_target_info_s *)target_info;
 
 	if (target_info == NULL || actual_data == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*actual_data = target_info_private->actualDataSize;
 
@@ -151,24 +135,17 @@ net_nfc_error_e net_nfc_get_tag_info_keys(net_nfc_target_info_h target_info,
 	int i = 0;
 
 	if (keys == NULL || number_of_keys == NULL || target_info == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	if (handle->tag_info_list == NULL)
-	{
 		return NET_NFC_NO_DATA_FOUND;
-	}
 
 	if (handle->number_of_keys <= 0)
-	{
 		return NET_NFC_NO_DATA_FOUND;
-	}
 
 	DEBUG_CLIENT_MSG("number of keys = [%d]", handle->number_of_keys);
 
-	if (handle->keylist != NULL)
-	{
+	if (handle->keylist != NULL) {
 		*number_of_keys = handle->number_of_keys;
 		*keys = handle->keylist;
 
@@ -184,9 +161,7 @@ net_nfc_error_e net_nfc_get_tag_info_keys(net_nfc_target_info_h target_info,
 	net_nfc_tag_info_s *tag_info = handle->tag_info_list;
 
 	for (; i < handle->number_of_keys; i++, tag_info++)
-	{
 		(*keys)[i] = tag_info->key;
-	}
 
 	*number_of_keys = handle->number_of_keys;
 
@@ -204,29 +179,20 @@ net_nfc_error_e net_nfc_get_tag_info_value(net_nfc_target_info_h target_info,
 	net_nfc_tag_info_s *tag_info;
 
 	if (target_info == NULL || key == NULL || value == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	if (handle->tag_info_list == NULL)
-	{
 		return NET_NFC_NO_DATA_FOUND;
-	}
 
 	int i = 0;
 
 	tag_info = handle->tag_info_list;
 
-	for (; i < handle->number_of_keys; i++, tag_info++)
-	{
-		if (strcmp(key, tag_info->key) == 0)
-		{
-			if (tag_info->value == NULL)
-			{
+	for (; i < handle->number_of_keys; i++, tag_info++) {
+		if (strcmp(key, tag_info->key) == 0) {
+			if (tag_info->value == NULL) {
 				return NET_NFC_NO_DATA_FOUND;
-			}
-			else
-			{
+			} else {
 				*value = tag_info->value;
 				break;
 			}
@@ -248,9 +214,7 @@ net_nfc_error_e net_nfc_get_tag_ndef_message(net_nfc_target_info_h target_info,
 	net_nfc_error_e result;
 
 	if (target_info == NULL || msg == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	result = net_nfc_create_ndef_message_from_rawdata(msg,
 		(data_h)&target_info_private->raw_data);
@@ -266,15 +230,11 @@ net_nfc_error_e net_nfc_duplicate_target_info(net_nfc_target_info_h origin,
 	net_nfc_target_info_s *temp = NULL;
 
 	if (handle == NULL || result == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	_net_nfc_util_alloc_mem(temp, sizeof(net_nfc_target_info_s));
 	if (temp == NULL)
-	{
 		return NET_NFC_ALLOC_FAIL;
-	}
 
 	temp->ndefCardState = handle->ndefCardState;
 	temp->actualDataSize = handle->actualDataSize;
@@ -284,24 +244,20 @@ net_nfc_error_e net_nfc_duplicate_target_info(net_nfc_target_info_h origin,
 	temp->is_ndef_supported = handle->is_ndef_supported;
 	temp->number_of_keys = handle->number_of_keys;
 
-	if (temp->number_of_keys > 0)
-	{
+	if (temp->number_of_keys > 0) {
 		int i;
 
 		_net_nfc_util_alloc_mem(temp->tag_info_list, temp->number_of_keys * sizeof(net_nfc_tag_info_s));
-		if (temp->tag_info_list == NULL)
-		{
+		if (temp->tag_info_list == NULL) {
 			_net_nfc_util_free_mem(temp);
 			return NET_NFC_ALLOC_FAIL;
 		}
 
-		for (i = 0; i < handle->number_of_keys; i++)
-		{
+		for (i = 0; i < handle->number_of_keys; i++) {
 			if (handle->tag_info_list[i].key != NULL)
 				_net_nfc_util_strdup(temp->tag_info_list[i].key, handle->tag_info_list[i].key);
 
-			if (handle->tag_info_list[i].value != NULL)
-			{
+			if (handle->tag_info_list[i].value != NULL) {
 				data_s *data = (data_s *)handle->tag_info_list[i].value;
 
 				net_nfc_create_data(&temp->tag_info_list[i].value, data->buffer, data->length);
@@ -309,8 +265,7 @@ net_nfc_error_e net_nfc_duplicate_target_info(net_nfc_target_info_h origin,
 		}
 	}
 
-	if (handle->raw_data.length > 0)
-	{
+	if (handle->raw_data.length > 0) {
 		net_nfc_util_init_data(&temp->raw_data, handle->raw_data.length);
 		memcpy(temp->raw_data.buffer, handle->raw_data.buffer, temp->raw_data.length);
 	}
@@ -328,12 +283,10 @@ static net_nfc_error_e _release_tag_info(net_nfc_target_info_s *info)
 		return NET_NFC_NULL_PARAMETER;
 
 	list = info->tag_info_list;
-	if (list != NULL)
-	{
+	if (list != NULL) {
 		int i;
 
-		for (i = 0; i < info->number_of_keys; i++, list++)
-		{
+		for (i = 0; i < info->number_of_keys; i++, list++) {
 			if (list->key != NULL)
 				_net_nfc_util_free_mem(list->key);
 
@@ -345,9 +298,7 @@ static net_nfc_error_e _release_tag_info(net_nfc_target_info_s *info)
 	}
 
 	if (info->keylist != NULL)
-	{
 		_net_nfc_util_free_mem(info->keylist);
-	}
 
 	net_nfc_util_clear_data(&info->raw_data);
 

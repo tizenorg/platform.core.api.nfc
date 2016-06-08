@@ -32,4 +32,4 @@ net_nfc_target_info_s *net_nfc_client_tag_get_client_target_info(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_TAG_INTERNAL_H__
+#endif /* __NET_NFC_CLIENT_TAG_INTERNAL_H__ */

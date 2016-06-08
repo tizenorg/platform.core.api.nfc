@@ -43,4 +43,4 @@
 #include "net_nfc_client_hce.h"
 
 
-#endif //__NET_NFC_H__
+#endif /* __NET_NFC_H__ */

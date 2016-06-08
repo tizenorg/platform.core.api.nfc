@@ -35,9 +35,7 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_create_data(data_h *data,
 	data_s *tmp_data = NULL;
 
 	if (data == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*data = NULL;
 
@@ -46,9 +44,7 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_create_data(data_h *data,
 		return NET_NFC_ALLOC_FAIL;
 
 	if (length > 0 && bytes != NULL)
-	{
 		memcpy(tmp_data->buffer, bytes, length);
-	}
 
 	*data = (data_h)tmp_data;
 
@@ -67,9 +63,7 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_get_data(const data_h data,
 	*length = 0;
 
 	if (data == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	*bytes = tmp_data->buffer;
 	*length = tmp_data->length;
@@ -83,25 +77,18 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_set_data(data_h data,
 	data_s *tmp_data = (data_s *)data;
 
 	if (data == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	if (tmp_data->buffer == bytes && tmp_data->length == length)
-	{
 		return NET_NFC_OK;
-	}
 
 	net_nfc_util_clear_data(tmp_data);
 
-	if (length > 0)
-	{
+	if (length > 0) {
 		net_nfc_util_init_data(tmp_data, length);
 
 		if (bytes != NULL)
-		{
 			memcpy(tmp_data->buffer, bytes, length);
-		}
 	}
 
 	return NET_NFC_OK;
@@ -112,9 +99,7 @@ NET_NFC_EXPORT_API size_t net_nfc_get_data_length(const data_h data)
 	data_s *tmp_data = (data_s *)data;
 
 	if (data == NULL)
-	{
 		return 0;
-	}
 
 	return tmp_data->length;
 }
@@ -124,9 +109,7 @@ NET_NFC_EXPORT_API uint8_t *net_nfc_get_data_buffer(const data_h data)
 	data_s *tmp_data = (data_s *)data;
 
 	if (data == NULL)
-	{
 		return NULL;
-	}
 
 	return tmp_data->buffer;
 }
@@ -136,14 +119,11 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_free_data(data_h data)
 	data_s *tmp_data = (data_s *)data;
 
 	if (data == NULL)
-	{
 		return NET_NFC_NULL_PARAMETER;
-	}
 
 	if (tmp_data->buffer != NULL)
-	{
 		_net_nfc_util_free_mem(tmp_data->buffer);
-	}
+
 	_net_nfc_util_free_mem(tmp_data);
 
 	return NET_NFC_OK;

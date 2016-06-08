@@ -30,7 +30,7 @@ extern "C"
 @{
 	This document is for the APIs reference document
 
-        NFC Manager defines are defined in <nfc-typedef.h>
+		NFC Manager defines are defined in <nfc-typedef.h>
 
 */
 
@@ -145,4 +145,4 @@ net_nfc_error_e net_nfc_verify_signature_ndef_message(ndef_message_h msg);
 #endif
 
 
-#endif //__NET_NFC_SIGN_RECORD_H__
+#endif /* __NET_NFC_SIGN_RECORD_H__ */

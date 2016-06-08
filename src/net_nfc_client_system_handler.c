@@ -49,8 +49,7 @@ static void popup_set_active_callback(GObject *source_object,
 		NET_NFC_GDBUS_POPUP(source_object),
 		&result,
 		res,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("Can not finish popup_set_active: %s",
 			error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -58,8 +57,7 @@ static void popup_set_active_callback(GObject *source_object,
 		g_error_free(error);
 	}
 
-	if (func_data->callback != NULL)
-	{
+	if (func_data->callback != NULL) {
 		net_nfc_client_popup_set_state_callback callback =
 			(net_nfc_client_popup_set_state_callback)func_data->callback;
 
@@ -76,22 +74,19 @@ net_nfc_error_e net_nfc_client_sys_handler_set_state(int state,
 {
 	NetNfcCallback *func_data;
 
-	if (popup_proxy == NULL)
-	{
-		if(net_nfc_client_sys_handler_init() != NET_NFC_OK)
-		{
+	if (popup_proxy == NULL) {
+		if (net_nfc_client_sys_handler_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("popup_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
-	if (func_data == NULL )
+	if (func_data == NULL)
 		return NET_NFC_ALLOC_FAIL;
 
 	func_data->callback = (gpointer)callback;
@@ -113,27 +108,23 @@ net_nfc_error_e net_nfc_client_sys_handler_set_state_sync(int state)
 	net_nfc_error_e result = NET_NFC_OK;
 	GError *error = NULL;
 
-	if (popup_proxy == NULL)
-	{
-		if(net_nfc_client_sys_handler_init() != NET_NFC_OK)
-		{
+	if (popup_proxy == NULL) {
+		if (net_nfc_client_sys_handler_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("popup_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_popup_call_set_sync(popup_proxy,
 		state,
 		CHECK_FOREGROUND,
 		&result,
 		NULL,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SetActive: %s",
 			error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -151,19 +142,16 @@ net_nfc_error_e net_nfc_client_sys_handler_set_state_force(int state,
 {
 	NetNfcCallback *func_data;
 
-	if (popup_proxy == NULL)
-	{
-		if(net_nfc_client_sys_handler_init() != NET_NFC_OK)
-		{
+	if (popup_proxy == NULL) {
+		if (net_nfc_client_sys_handler_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("popup_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	func_data = g_try_new0(NetNfcCallback, 1);
 	if (func_data == NULL)
@@ -188,27 +176,23 @@ net_nfc_error_e net_nfc_client_sys_handler_set_state_force_sync(int state)
 	net_nfc_error_e result;
 	GError *error = NULL;
 
-	if (popup_proxy == NULL)
-	{
-		if(net_nfc_client_sys_handler_init() != NET_NFC_OK)
-		{
+	if (popup_proxy == NULL) {
+		if (net_nfc_client_sys_handler_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("popup_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_popup_call_set_sync(popup_proxy,
 		state,
 		NO_CHECK_FOREGROUND,
 		&result,
 		NULL,
-		&error) == FALSE)
-	{
+		&error) == FALSE) {
 		DEBUG_ERR_MSG("can not call SetActive: %s",
 			error->message);
 		result = NET_NFC_IPC_FAIL;
@@ -251,17 +235,15 @@ net_nfc_error_e net_nfc_client_sys_handler_get_launch_popup_state(
 	*state = NET_NFC_LAUNCH_APP_SELECT;
 
 	if (popup_proxy == NULL) {
-		if(net_nfc_client_sys_handler_init() != NET_NFC_OK)
-		{
+		if (net_nfc_client_sys_handler_init() != NET_NFC_OK) {
 			DEBUG_ERR_MSG("popup_proxy fail");
 			return NET_NFC_NOT_INITIALIZED;
 		}
 	}
 
 	/* prevent executing daemon when nfc is off */
-	if (net_nfc_client_manager_is_activated() == false) {
+	if (net_nfc_client_manager_is_activated() == false)
 		return NET_NFC_NOT_ACTIVATED;
-	}
 
 	if (net_nfc_gdbus_popup_call_get_sync(popup_proxy,
 		&result,
@@ -285,8 +267,7 @@ net_nfc_error_e net_nfc_client_sys_handler_init(void)
 {
 	GError *error = NULL;
 
-	if (popup_proxy)
-	{
+	if (popup_proxy) {
 		DEBUG_CLIENT_MSG("Already initialized");
 
 		return NET_NFC_OK;
@@ -299,8 +280,7 @@ net_nfc_error_e net_nfc_client_sys_handler_init(void)
 					"/org/tizen/NetNfcService/Popup",
 					NULL,
 					&error);
-	if (popup_proxy == NULL)
-	{
+	if (popup_proxy == NULL) {
 		DEBUG_ERR_MSG("Can not create proxy : %s", error->message);
 		g_error_free(error);
 
@@ -312,8 +292,7 @@ net_nfc_error_e net_nfc_client_sys_handler_init(void)
 
 void net_nfc_client_sys_handler_deinit(void)
 {
-	if (popup_proxy)
-	{
+	if (popup_proxy) {
 		g_object_unref(popup_proxy);
 		popup_proxy = NULL;
 	}

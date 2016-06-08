@@ -55,4 +55,4 @@ void net_nfc_client_sys_handler_deinit(void);
 }
 #endif
 
-#endif //__NET_NFC_CLIENT_SYSTEM_HANDLER_H__
+#endif /* __NET_NFC_CLIENT_SYSTEM_HANDLER_H__ */
