@@ -461,7 +461,11 @@ int nfc_se_remove_route_for_aid_internal(const char* pkg_name, const char *aid)
 	/* LCOV_EXCL_START */
 	CHECK_INIT();
 
-	result = net_nfc_client_se_remove_route_aid_sync(pkg_name, aid);
+	if (aid == NULL) {
+		result = net_nfc_client_se_remove_package_aids_sync(pkg_name);
+	} else {
+		result = net_nfc_client_se_remove_route_aid_sync(pkg_name, aid);
+	}
 
 	return nfc_common_convert_error_code(__func__, result);
 	/* LCOV_EXCL_STOP */
