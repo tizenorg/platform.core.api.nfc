@@ -26,6 +26,8 @@
 #include "net_nfc_client_manager.h"
 #include "net_nfc_client_handover.h"
 
+/* LCOV_EXCL_START */
+
 #ifndef NET_NFC_EXPORT_API
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
@@ -345,3 +347,6 @@ void net_nfc_client_handover_deinit(void)
 		handover_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

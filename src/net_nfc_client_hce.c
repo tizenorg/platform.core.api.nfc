@@ -28,6 +28,8 @@
 #include "net_nfc_client_hce_ipc.h"
 #include "net_nfc_client_hce.h"
 
+/* LCOV_EXCL_START */
+
 
 #ifndef NET_NFC_EXPORT_API
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
@@ -283,3 +285,6 @@ void net_nfc_client_hce_deinit(void)
 		hce_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

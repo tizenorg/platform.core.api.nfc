@@ -26,6 +26,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 #define DEACTIVATE_DELAY	500 /* ms */
 #define ACTIVATE_DELAY 100 /* ms */
 
@@ -430,3 +432,6 @@ bool net_nfc_client_manager_is_activated()
 
 	return is_activated;
 }
+
+/* LCOV_EXCL_STOP */
+

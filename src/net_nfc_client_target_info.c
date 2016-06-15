@@ -27,6 +27,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_get_tag_type(net_nfc_target_info_h target_info,
 	net_nfc_target_type_e *type)
@@ -320,3 +322,6 @@ net_nfc_error_e net_nfc_release_tag_info(net_nfc_target_info_h target_info)
 
 	return result;
 }
+
+/* LCOV_EXCL_STOP */
+

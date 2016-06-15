@@ -29,6 +29,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 typedef struct _P2p_SignalHandler P2pSignalHandler;
 
 struct _P2p_SignalHandler {
@@ -353,3 +355,6 @@ void net_nfc_client_p2p_deinit(void)
 		p2p_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

@@ -21,6 +21,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 NET_NFC_EXPORT_API net_nfc_error_e net_nfc_sign_records(ndef_message_h msg, int begin_index, int end_index, char *cert_file, char *password)
 {
 	return net_nfc_util_sign_records((ndef_message_s *)msg, begin_index, end_index, cert_file, password);
@@ -40,3 +42,6 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_verify_signature_records(ndef_record_
 {
 	return net_nfc_util_verify_signature_records((ndef_record_s *)begin_record, (ndef_record_s *)sign_record);
 }
+
+/* LCOV_EXCL_STOP */
+

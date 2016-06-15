@@ -30,6 +30,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 
 #define JEWEL_CMD_REQA 0x26
 #define JEWEL_CMD_WUPA 0x52
@@ -352,3 +354,6 @@ net_nfc_error_e net_nfc_client_jewel_write_with_no_erase(
 					callback,
 					user_data);
 }
+
+/* LCOV_EXCL_STOP */
+

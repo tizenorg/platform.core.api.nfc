@@ -31,6 +31,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 static NetNfcGDbusTag *tag_proxy = NULL;
 
 static NetNfcCallback tag_discovered_func_data;
@@ -818,3 +820,6 @@ void net_nfc_client_tag_deinit(void)
 		tag_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

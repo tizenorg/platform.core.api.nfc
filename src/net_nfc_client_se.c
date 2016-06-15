@@ -32,6 +32,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 typedef struct _SeFuncData SeFuncData;
 
 struct _SeFuncData {
@@ -1811,3 +1813,6 @@ void net_nfc_client_se_deinit(void)
 		auto_start_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

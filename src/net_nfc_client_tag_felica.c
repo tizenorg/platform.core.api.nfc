@@ -29,6 +29,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 #define FELICA_CMD_POLL 0x00
 #define FELICA_CMD_REQ_SERVICE 0x02
 #define FELICA_CMD_REQ_RESPONSE 0x04
@@ -505,3 +507,6 @@ net_nfc_error_e net_nfc_client_felica_request_system_code(
 					callback,
 					user_data);
 }
+
+/* LCOV_EXCL_STOP */
+

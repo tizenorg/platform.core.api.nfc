@@ -27,6 +27,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 typedef struct _LlcpFuncData LlcpFuncData;
 
 struct _LlcpFuncData {
@@ -2305,3 +2307,6 @@ void net_nfc_client_llcp_deinit(void)
 		llcp_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

@@ -28,6 +28,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 static NetNfcGDbusPopup *popup_proxy = NULL;
 static int popup_state = 0;
 
@@ -297,3 +299,6 @@ void net_nfc_client_sys_handler_deinit(void)
 		popup_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

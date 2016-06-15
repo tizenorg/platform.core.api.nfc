@@ -26,6 +26,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 static void test_call_sim_test_callback(GObject *source_object,
 					GAsyncResult *res,
 					gpointer user_data);
@@ -671,3 +673,6 @@ void net_nfc_client_test_deinit(void)
 		test_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

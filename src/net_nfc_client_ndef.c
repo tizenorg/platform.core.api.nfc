@@ -32,6 +32,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 static NetNfcGDbusNdef *ndef_proxy = NULL;
 
 static gboolean ndef_is_supported_tag(void);
@@ -595,3 +597,6 @@ void net_nfc_client_ndef_deinit(void)
 		ndef_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+
