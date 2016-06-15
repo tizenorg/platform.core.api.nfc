@@ -23,6 +23,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 
 NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_client_initialize()
@@ -80,3 +82,6 @@ net_nfc_error_e net_nfc_client_get_nfc_state(int *state)
 
 	return ret;
 }
+
+/* LCOV_EXCL_STOP */
+

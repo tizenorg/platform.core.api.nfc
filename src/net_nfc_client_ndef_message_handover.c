@@ -26,6 +26,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_create_carrier_config(net_nfc_carrier_config_h *config,
 	net_nfc_conn_handover_carrier_type_e type)
@@ -369,3 +371,6 @@ net_nfc_error_e net_nfc_create_handover_error_record(ndef_record_h *record, uint
 {
 	return net_nfc_util_create_handover_error_record((ndef_record_s **)record, reason, data);
 }
+
+/* LCOV_EXCL_STOP */
+

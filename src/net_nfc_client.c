@@ -37,6 +37,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 void __attribute__ ((constructor)) lib_init()
 {
 }
@@ -90,3 +92,6 @@ void net_nfc_client_gdbus_deinit(void)
 	net_nfc_client_tag_deinit();
 	net_nfc_client_manager_deinit();
 }
+
+/* LCOV_EXCL_STOP */
+

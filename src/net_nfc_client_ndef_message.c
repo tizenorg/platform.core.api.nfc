@@ -26,6 +26,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 
 #ifndef NET_NFC_MANAGER_DATA_PATH
 #define NET_NFC_MANAGER_DATA_PATH		"/opt/usr/share/nfc-manager-daemon"
@@ -262,3 +264,6 @@ net_nfc_error_e net_nfc_retrieve_current_ndef_message(
 
 	return result;
 }
+
+/* LCOV_EXCL_STOP */
+

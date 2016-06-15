@@ -31,6 +31,8 @@
 #include <signal.h>
 #include <glib-object.h>
 
+/* LCOV_EXCL_START */
+
 #include "net_nfc_typedef_internal.h"
 #include "net_nfc_debug_internal.h"
 #include "net_nfc_util_defines.h"
@@ -353,3 +355,6 @@ void net_nfc_client_hce_ipc_deinit()
 	if (net_nfc_client_hce_ipc_is_initialized() == true)
 		_finalize_client_socket();
 }
+
+/* LCOV_EXCL_STOP */
+

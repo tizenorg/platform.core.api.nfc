@@ -31,6 +31,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 static NetNfcGDbusTransceive *transceive_proxy = NULL;
 
 static GVariant *transceive_data_to_transceive_variant(
@@ -436,3 +438,6 @@ void net_nfc_client_transceive_deinit(void)
 		transceive_proxy = NULL;
 	}
 }
+
+/* LCOV_EXCL_STOP */
+

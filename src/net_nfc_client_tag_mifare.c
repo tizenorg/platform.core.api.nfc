@@ -31,6 +31,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 #define MIFARE_CMD_RAW			0x00U
 #define MIFARE_CMD_AUTH_A		0x60U /**< authenticate with key A */
 #define MIFARE_CMD_AUTH_B		0x61U /**< authenticate with key B */
@@ -888,4 +890,6 @@ net_nfc_error_e net_nfc_client_mifare_create_net_nfc_forum_key(data_h* key)
 
 	return net_nfc_create_data(key, net_nfc_forum_key, 6);
 }
+
+/* LCOV_EXCL_STOP */
 

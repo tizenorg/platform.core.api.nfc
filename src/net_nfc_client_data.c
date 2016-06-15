@@ -24,6 +24,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 NET_NFC_EXPORT_API net_nfc_error_e net_nfc_create_data_only(data_h *data)
 {
 	return net_nfc_create_data(data, NULL, 0);
@@ -128,3 +130,6 @@ NET_NFC_EXPORT_API net_nfc_error_e net_nfc_free_data(data_h data)
 
 	return NET_NFC_OK;
 }
+
+/* LCOV_EXCL_STOP */
+

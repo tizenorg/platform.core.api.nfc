@@ -25,6 +25,8 @@
 #define NET_NFC_EXPORT_API __attribute__((visibility("default")))
 #endif
 
+/* LCOV_EXCL_START */
+
 NET_NFC_EXPORT_API
 net_nfc_error_e net_nfc_create_record(ndef_record_h *record,
 	net_nfc_record_tnf_e tnf, data_h typeName, data_h id, data_h payload)
@@ -309,3 +311,6 @@ net_nfc_error_e net_nfc_create_uri_string_from_uri_record(ndef_record_h record,
 	return net_nfc_util_create_uri_string_from_uri_record(
 		(ndef_record_s *)record, uri);
 }
+
+/* LCOV_EXCL_STOP */
+
