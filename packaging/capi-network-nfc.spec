@@ -1,6 +1,6 @@
 Name:       capi-network-nfc
 Summary:    A NFC library in Native API
-Version:    0.3.3
+Version:    0.3.4
 Release:    0
 Group:      Network & Connectivity/NFC
 License:    Apache-2.0
@@ -13,6 +13,8 @@ BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(nfc-common-lib)
+BuildRequires:  pkgconfig(aul)
+BuildRequires:  pkgconfig(libsystemd-daemon)
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig

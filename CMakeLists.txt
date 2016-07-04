@@ -23,7 +23,7 @@ SET(service "network")
 SET(submodule "nfc")
 
 # for package file
-SET(dependents "dlog glib-2.0 gio-2.0 nfc-common-lib capi-base-common vconf capi-system-info")
+SET(dependents "dlog glib-2.0 gio-2.0 nfc-common-lib capi-base-common vconf capi-system-info aul libsystemd-daemon")
 SET(pc_dependents "capi-base-common")
 
 SET(fw_name "${project_prefix}-${service}-${submodule}")

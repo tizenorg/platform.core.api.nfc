@@ -24,6 +24,8 @@
 #include <dlog.h>
 #include <vconf.h>
 #include <system_info.h>
+#include <systemd/sd-login.h>
+#include <aul.h>
 
 #include "net_nfc.h"
 #include "nfc.h"
