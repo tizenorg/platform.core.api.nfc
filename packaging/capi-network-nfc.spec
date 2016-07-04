@@ -13,6 +13,8 @@ BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(nfc-common-lib)
+BuildRequires:  pkgconfig(aul)
+BuildRequires:  pkgconfig(libsystemd-daemon)
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig

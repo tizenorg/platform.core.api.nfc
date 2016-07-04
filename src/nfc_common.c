@@ -19,19 +19,85 @@
 _nfc_context_s gdbus_nfc_context;
 
 /* LCOV_EXCL_START */
+bool nfc_common_get_login_user(uid_t *uid)
+{
+	int i, ret;
+	uid_t *uids;
+	int uid_count;
+
+	uid_count = sd_get_uids(&uids);
+
+	if (uid_count <= 0) {
+		LOGD("sd_get_uids failed [%d]", uid_count);
+		return false;
+	}
+
+	for (i = 0; i < uid_count ; i++) {
+		char *state = NULL;
+
+		ret = sd_uid_get_state(uids[i], &state);
+
+		if (ret < 0) {
+			LOGD("sd_uid_get_state failed [%d]", ret);
+		} else {
+			if (!strncmp(state, "online", 6)) {
+				*uid = uids[i];
+				free(state);
+				free(uids);
+				return true;
+			}
+		}
+
+		free(state);
+	}
+
+	LOGD("not exist login user");
+
+	free(uids);
+	return false;
+}
+
+int _iter_func(const aul_app_info *info, void *data)
+{
+	uid_t uid = 0;
+	int *pid = (int *)data;
+	int status;
+
+        if (nfc_common_get_login_user(&uid) == false) {
+		LOGD("net_nfc_util_get_login_user is failed");
+		return 0;
+	}
+
+	status = aul_app_get_status_bypid_for_uid(info->pid, uid);
+
+	LOGD("login user is %d, pid is %d, status is %d", (int)uid, info->pid, status);
+
+	if(status == STATUS_VISIBLE || status == STATUS_FOCUS) {
+		*pid = info->pid;
+		return -1;
+	}
+	return 0;
+}
+
 pid_t nfc_common_get_focus_app_pid()
 {
-/*
-	Ecore_X_Window focus;
-	pid_t pid;
+	int ret;
+	uid_t uid = 0;
+        pid_t pid = 0;
 
-	ecore_x_init(NULL);
+	if (nfc_common_get_login_user(&uid) == false) {
+		LOGD("nfc_common_get_login_user is failed");
+		return -1;
+        }
 
-	focus = ecore_x_window_focus_get();
-	if (ecore_x_netwm_pid_get(focus, &pid))
+	ret = aul_app_get_all_running_app_info_for_uid(_iter_func, &pid, uid);
+
+	if (ret == AUL_R_OK) {
 		return pid;
-*/
-	return -1;
+	} else {
+		LOGD("aul_app_get_all_running_app_info_for_uid is failed");
+                return -1;
+        }
 }
 
 char * nfc_common_get_bt_address_string(data_h data)
@@ -104,6 +170,8 @@ int nfc_common_convert_error_code(const char *func, int native_error_code)
 	case NET_NFC_INSUFFICIENT_STORAGE:
 	case NET_NFC_NOT_INITIALIZED:
 	case NET_NFC_NOT_REGISTERED:
+	case NET_NFC_NO_DATA_FOUND:
+	case NET_NFC_NOT_ALLOWED_OPERATION:
 		error_code = NFC_ERROR_OPERATION_FAILED;
 		errorstr = "OPERATION_FAILED";
 		break;
@@ -120,9 +188,7 @@ int nfc_common_convert_error_code(const char *func, int native_error_code)
 
 	case NET_NFC_OUT_OF_BOUND:
 	case NET_NFC_NULL_PARAMETER:
-	case NET_NFC_NOT_ALLOWED_OPERATION:
 	case NET_NFC_LLCP_INVALID_SOCKET:
-	case NET_NFC_NO_DATA_FOUND:
 		error_code = NFC_ERROR_INVALID_PARAMETER;
 		errorstr = "INVALID_PARAMETER";
 		break;
@@ -167,6 +233,10 @@ int nfc_common_convert_error_code(const char *func, int native_error_code)
 	case NET_NFC_NOT_ACTIVATED:
 		error_code = NFC_ERROR_NOT_ACTIVATED;
 		errorstr = "NOT_ACTIVATED";
+		break;
+	case NET_NFC_DATA_CONFLICTED:
+		error_code = NFC_ERROR_DATA_CONFLICTED;
+		errorstr = "DATA_CONFLICTED";
 		break;
 	default:
 		error_code = NFC_ERROR_OPERATION_FAILED;
