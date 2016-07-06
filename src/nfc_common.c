@@ -63,7 +63,7 @@ int _iter_func(const aul_app_info *info, void *data)
 	int *pid = (int *)data;
 	int status;
 
-        if (nfc_common_get_login_user(&uid) == false) {
+	if (nfc_common_get_login_user(&uid) == false) {
 		LOGD("net_nfc_util_get_login_user is failed");
 		return 0;
 	}
@@ -72,7 +72,7 @@ int _iter_func(const aul_app_info *info, void *data)
 
 	LOGD("login user is %d, pid is %d, status is %d", (int)uid, info->pid, status);
 
-	if(status == STATUS_VISIBLE || status == STATUS_FOCUS) {
+	if (status == STATUS_VISIBLE || status == STATUS_FOCUS) {
 		*pid = info->pid;
 		return -1;
 	}
@@ -83,12 +83,12 @@ pid_t nfc_common_get_focus_app_pid()
 {
 	int ret;
 	uid_t uid = 0;
-        pid_t pid = 0;
+	pid_t pid = 0;
 
 	if (nfc_common_get_login_user(&uid) == false) {
 		LOGD("nfc_common_get_login_user is failed");
 		return -1;
-        }
+	}
 
 	ret = aul_app_get_all_running_app_info_for_uid(_iter_func, &pid, uid);
 
@@ -96,8 +96,8 @@ pid_t nfc_common_get_focus_app_pid()
 		return pid;
 	} else {
 		LOGD("aul_app_get_all_running_app_info_for_uid is failed");
-                return -1;
-        }
+		return -1;
+	}
 }
 
 char * nfc_common_get_bt_address_string(data_h data)
